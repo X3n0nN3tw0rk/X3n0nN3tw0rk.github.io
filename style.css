@@ -1,5 +1,5 @@
 :root {
-    --primary: #fc2651;
+    --primary: #460969;
     --primary-hover: #e91e47;
     --primary-light: rgba(252, 38, 81, 0.1);
     --primary-lighter: rgba(252, 38, 81, 0.05);
@@ -602,4 +602,5 @@ footer {
     .zone-item:hover {
         transform: translateY(-4px) scale(1.01);
     }
+
 }
