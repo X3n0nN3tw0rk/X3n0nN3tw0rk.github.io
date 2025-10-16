@@ -66,7 +66,7 @@ async function listZones() {
                             popup.style.position = "fixed";
                             popup.style.bottom = "20px";
                             popup.style.right = "20px";
-                            popup.style.backgroundColor = "#cce5ff";
+                            popup.style.backgroundColor = "#460969";
                             popup.style.color = "#004085";
                             popup.style.padding = "10px";
                             popup.style.border = "1px solid #b8daff";
@@ -544,7 +544,7 @@ function cloakIcon(url) {
 }
 function cloakName(string) {
     if ((string+"").trim().length === 0) {
-        document.title = "gn-math";
+        document.title = "X3n0nN3tw0rk";
         return;
     }
     document.title = string;
@@ -692,4 +692,5 @@ XMLHttpRequest.prototype.open = function (method, url) {
 
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
+
 };
