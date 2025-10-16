@@ -146,22 +146,22 @@ header {
 #sortOptions {
     padding: 0.875rem 1rem;
     border: 0;
-    border-radius: var(--radius);
+   border-radius: var(--radius);
     background: var(--glass);
     backdrop-filter: blur(20px);
-    color: var(--text-muted);
+    color: var(--text);
     font-size: 15px;
     cursor: pointer;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-width: 130px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: #2a0440;
 }
 
 #sortOptions:hover {
-    background: var(--text);
+    background: #460969;
     transform: translateY(-1px);
-    box-shadow: var(--shadow);
+    box-shadow: #2a0440;
     color: var(--glass);
 }
 
@@ -171,9 +171,9 @@ header {
 }
 
 #settings {
-    background: rgba(255, 255, 255, 0.1);
+    background: #460969;
     border: 0;
-    color: white;
+    color: var(--glass);
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.75rem;
@@ -188,7 +188,7 @@ header {
 }
 
 #settings:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--text);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -501,7 +501,7 @@ main {
     width: 100%;
     padding: 0.875rem 1rem;
     background: var(--gradient-primary);
-    color: white;
+    color: #460969;
     border: 0;
     border-radius: var(--radius);
     cursor: pointer;
@@ -521,41 +521,7 @@ main {
     transform: translateY(0);
 }
 
-footer {
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
-    padding: 1rem 1rem;
-    text-align: center;
 
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.footer-links a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
-}
-
-.footer-links a:hover {
-    color: var(--primary-hover);
-    background: var(--primary-light);
-    transform: translateY(-1px);
-}
 
 @media (max-width: 768px) {
     .header-content {
@@ -585,9 +551,7 @@ footer {
         font-size: 13px;
     }
 
-    .footer-links {
-        gap: 1.5rem;
-    }
+    
 }
 
 @media (max-width: 480px) {
