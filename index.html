@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
@@ -11,19 +11,33 @@
             return 'Are you sure you want to leave? Any unsaved changes will be lost.';
         });
     </script>
-    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
     <meta name="google-adsense-account" content="ca-pub-5521219086088837">
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-WX5VS54ZDW');
     </script>
-    <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script><script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script>
+    <script>
+        (function() {
+            function signalGooglefcPresent() {
+                if (!window.frames['googlefcPresent']) {
+                    if (document.body) {
+                        const iframe = document.createElement('iframe');
+                        iframe.style = 'width:0;height:0;border:none;z-index:-1000;left:-1000px;top:-1000px;display:none;';
+                        iframe.name = 'googlefcPresent';
+                        document.body.appendChild(iframe);
+                    } else {
+                        setTimeout(signalGooglefcPresent, 0);
+                    }
+                }
+            }
+            signalGooglefcPresent();
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +57,10 @@
 <body class="dark-mode">
     <header>
         <div class="header-content">
-            <div class="logo">X3n0nN3tw0rk</div>
+            <div class="logo">
+                <img src="favicon.png" alt="favicon" class="logo-favicon">
+                X3n0nN3tw0rk
+            </div>
             <div class="search-container">
                 <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
                 <select id="sortOptions" onchange="sortZones()">
@@ -57,15 +74,14 @@
             </div>
         </div>
     </header>
+
     <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-client="ca-pub-5521219086088837"
-    data-ad-slot="5549138288"
-    data-ad-format="auto"
-    data-full-width-responsive="true"></ins>
-   <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-   </script>
+         style="display:block; text-align:center;"
+         data-ad-client="ca-pub-5521219086088837"
+         data-ad-slot="5549138288"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
     <main>
         <details id="featuredZonesWrapper" open>
@@ -102,21 +118,18 @@
                 <h3 id="popupTitle">Title</h3>
                 <button id="popupClose" onclick="closePopup()">×</button>
             </div>
-            <div id="popupBody">
-                Content will be here
-            </div>
+            <div id="popupBody">Content will be here</div>
         </div>
     </div>
 
     <ins class="adsbygoogle"
-    style="display:block; text-align:center;"
-    data-ad-client="ca-pub-5521219086088837"
-    data-ad-slot="5549138288"
-    data-ad-format="auto"
-    data-full-width-responsive="true"></ins>
-   <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-   </script>
+         style="display:block; text-align:center;"
+         data-ad-client="ca-pub-5521219086088837"
+         data-ad-slot="5549138288"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
     <footer>
         <div class="footer-links">
             <a href="#" onclick="loadDMCA(); return false;">DMCA</a>
@@ -131,10 +144,7 @@
     <script>
         const search = new URLSearchParams(window.location.search);
         const privacy = search.get('privacy');
-        if (privacy) {
-            loadPrivacy();
-        }
+        if (privacy) { loadPrivacy(); }
     </script>
 </body>
 </html>
-
