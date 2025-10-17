@@ -131,7 +131,7 @@ header {
 }
 
 #searchBar:focus {
-    background: #460969;
+    background: var(--glass);
     box-shadow: #2a0440, var(--shadow);
     transform: translateY(-1px);
     color: var(--glass);
@@ -140,7 +140,7 @@ header {
 }
 
 #searchBar::placeholder {
-    color: var(--text-muted);
+    color: var(--text);
 }
 
 #sortOptions {
@@ -159,10 +159,10 @@ header {
 }
 
 #sortOptions:hover {
-    background: #460969;
+    background: var(--glass);
     transform: translateY(-1px);
     box-shadow: #2a0440;
-    color: var(--glass);
+    color: var(--text);
 }
 
 .control-buttons {
@@ -188,7 +188,7 @@ header {
 }
 
 #settings:hover {
-    background: var(--text);
+    background: var(--glass);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -501,7 +501,7 @@ main {
     width: 100%;
     padding: 0.875rem 1rem;
     background: var(--gradient-primary);
-    color: #460969;
+    color: #230336;
     border: 0;
     border-radius: var(--radius);
     cursor: pointer;
