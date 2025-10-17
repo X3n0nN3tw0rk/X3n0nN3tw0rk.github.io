@@ -132,9 +132,6 @@
 
     <footer>
         <div class="footer-links">
-            <a href="#" onclick="loadDMCA(); return false;">DMCA</a>
-            <a href="#" onclick="showContact(); return false;">Contact</a>
-            <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
             <a href="javascript:saveData()">Export Data</a>
             <a href="#" onclick="document.getElementById('importData').click(); return false;">Import Data</a>
             <input type="file" id="importData" style="display: none;" onchange="loadData(event)">
@@ -143,11 +140,10 @@
     <script src="script.js"></script>
     <script>
         const search = new URLSearchParams(window.location.search);
-        const privacy = search.get('privacy');
-        if (privacy) { loadPrivacy(); }
     </script>
 </body>
 </html>
+
 
 
 
