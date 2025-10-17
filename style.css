@@ -79,15 +79,25 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-header {
-    background: var(--gradient-primary);
-    color: black;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(20px);
-}
+<header>
+    <div class="header-content">
+        <div class="logo">
+            <img src="favicon.png" alt="favicon" class="logo-favicon">
+            X3n0nN3tw0rk
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+            <select id="sortOptions" onchange="sortZones()">
+                <option value="name">Name</option>
+                <option value="id">ID (Date)</option>
+                <option value="popular">Popular</option>
+            </select>
+        </div>
+        <div class="control-buttons">
+            <button id="settings">Settings</button>
+        </div>
+    </div>
+</header>
 
 .header-content {
     max-width: 1200px;
@@ -100,6 +110,8 @@ header {
 }
 
 .logo {
+    display: flex;              /* allows image + text inline */
+    align-items: center;        /* vertically center favicon with text */
     font-size: 1.75rem;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -108,6 +120,13 @@ header {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+.logo-favicon {
+    width: 32px;                /* favicon size */
+    height: 32px;
+    margin-right: 0.5rem;       /* spacing between favicon and text */
+}
+
 
 .search-container {
     display: flex;
@@ -569,3 +588,4 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
