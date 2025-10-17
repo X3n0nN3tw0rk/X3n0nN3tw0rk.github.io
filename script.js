@@ -8,8 +8,8 @@ const zonesurls = [
     "https://cdn.jsdelivr.net/gh/X3n0nN3tw0rk/assets@main/zones.json"
 ];
 let zonesURL = zonesurls[Math.floor(Math.random() * zonesurls.length)];
-const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
-const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
+const coverURL = "https://cdn.jsdelivr.net/gh/X3n0nN3tw0rk/covers@main";
+const htmlURL = "https://cdn.jsdelivr.net/gh/X3n0nN3tw0rk/html@main";
 let zones = [];
 let popularityData = {};
 const featuredContainer = document.getElementById('featuredZones');
@@ -19,22 +19,22 @@ async function listZones() {
       let shajson;
       let sha;
         try {
-          sharesponse = await fetch("https://api.github.com/repos/gn-math/assets/commits?t="+Date.now());
+          sharesponse = await fetch("https://api.github.com/repos/X3n0nN3tw0rk/assets/commits?t="+Date.now());
         } catch (error) {}
         if (sharesponse && sharesponse.status === 200) {
           try {
             shajson = await sharesponse.json();
             sha = shajson[0]['sha'];
             if (sha) {
-                zonesURL = `https://cdn.jsdelivr.net/gh/gn-math/assets@${sha}/zones.json`;
+                zonesURL = `https://cdn.jsdelivr.net/gh/X3n0nN3tw0rk/assets@${sha}/zones.json`;
             }
           } catch (error) {
             try {
-                let secondarysharesponse = await fetch("https://raw.githubusercontent.com/gn-math/xml/refs/heads/main/sha.txt?t="+Date.now());
+                let secondarysharesponse = await fetch("https://raw.githubusercontent.com/X3n0nN3tw0rk/xml/refs/heads/main/sha.txt?t="+Date.now());
                 if (secondarysharesponse && secondarysharesponse.status === 200) {
                     sha = (await secondarysharesponse.text()).trim();
                     if (sha) {
-                        zonesURL = `https://cdn.jsdelivr.net/gh/gn-math/assets@${sha}/zones.json`;
+                        zonesURL = `https://cdn.jsdelivr.net/gh/X3n0nN3tw0rk/assets@${sha}/zones.json`;
                     }
                 }
             } catch(error) {}
@@ -71,7 +71,7 @@ async function listZones() {
                             popup.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.1)";
                             popup.style.fontFamily = "Arial, sans-serif";
                             
-                            popup.innerHTML = `Play more games at <a href="https://gn-math.github.io" target="_blank" style="color:#004085; font-weight:bold;">https://gn-math.github.io</a>!`;
+                            popup.innerHTML = `Play more games at <a href="https://x3n0nn3tw0rk.github.io" target="_blank" style="color:#004085; font-weight:bold;">https://x3n0nn3tw0rk.github.io</a>!`;
                             
                             const closeBtn = document.createElement("button");
                             closeBtn.innerText = "✖";
@@ -108,7 +108,7 @@ async function listZones() {
 }
 async function fetchPopularity() {
     try {
-        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gn-math/html@main/files?period=year");
+        const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/X3n0nN3tw0rk/html@main/files?period=year");
         const data = await response.json();
         data.forEach(file => {
             const idMatch = file.name.match(/\/(\d+)\.html$/);
@@ -611,5 +611,6 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
