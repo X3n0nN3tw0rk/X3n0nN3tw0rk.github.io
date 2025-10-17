@@ -180,9 +180,9 @@ header {
 }
 
 #settings {
-    background: var(--text);
+    background: #bac3cb;
     border: 0;
-    color: var(--glass);
+    color: #bac3cb;
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0.75rem;
@@ -197,7 +197,7 @@ header {
 }
 
 #settings:hover {
-    background: var(--text);
+    background: #bac3cb;
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
