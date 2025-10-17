@@ -510,7 +510,7 @@ main {
     width: 100%;
     padding: 0.875rem 1rem;
     background: var(--gradient-primary);
-    color: #230336;
+    color: var(--glass);
     border: 0;
     border-radius: var(--radius);
     cursor: pointer;
@@ -578,3 +578,4 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
