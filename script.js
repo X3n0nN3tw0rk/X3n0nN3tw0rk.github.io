@@ -130,11 +130,15 @@ function sortZones() {
     } else if (sortBy === 'popular') {
         zones.sort((a, b) => (popularityData[b.id] || 0) - (popularityData[a.id] || 0));
     }
-    zones.sort((a, b) => (a.id === -1 ? -1 : b.id === -1 ? 1 : 0));
+
+    // ⛔ Filter out any zones with an id or index of -1 (like the Discord button)
+    zones = zones.filter(z => z.id !== -1);
+
     if (featuredContainer.innerHTML === "") {
         const featured = zones.filter(z => z.featured);
         displayFeaturedZones(featured);
     }
+
     displayZones(zones);
 }
 
@@ -610,6 +614,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
