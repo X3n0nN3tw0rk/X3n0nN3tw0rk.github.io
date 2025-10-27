@@ -132,7 +132,7 @@ header {
     border-radius: var(--radius);
     background: #bac3cb;
     backdrop-filter: blur(20px);
-    color: var(--glass);
+    color: var(--text);
     font-size: 15px;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -140,10 +140,10 @@ header {
 }
 
 #searchBar:focus {
-    background: var(--text);
+    background: var(--glass);
     box-shadow: #2a0440, var(--shadow);
     transform: translateY(-1px);
-    color: var(--glass);
+    color: var(--text);
     border: 1;
     border-radius: #170222
 }
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
