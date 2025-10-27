@@ -149,7 +149,7 @@ header {
 }
 
 #searchBar::placeholder {
-    color: var(--glass);
+    color: #bac3cb;
 }
 
 #sortOptions {
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
