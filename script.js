@@ -532,38 +532,18 @@ function darkMode() {
     document.body.classList.toggle("dark-mode");
 }
 
-function cloakIcon(url) {
-    const link = document.querySelector("link[rel~='icon']");
-    link.rel = "icon";
-    if ((url+"").trim().length === 0) {
-        link.href = "favicon.png";
-    } else {
-        link.href = url;
-    }
-    document.head.appendChild(link);
-}
-function cloakName(string) {
-    if ((string+"").trim().length === 0) {
-        document.title = "X3n0nN3tw0rk";
-        return;
-    }
-    document.title = string;
-}
-
-function tabCloak() {
-    closePopup();
-    document.getElementById('popupTitle').textContent = "Tab Cloak";
-    const popupBody = document.getElementById('popupBody');
-    popupBody.innerHTML = `
-        <label for="tab-cloak-textbox" style="font-weight: bold;">Set Tab Title:</label><br>
-        <input type="text" id="tab-cloak-textbox" placeholder="Enter new tab name..." oninput="cloakName(this.value)">
-        <br><br><br><br>
-        <label for="tab-cloak-textbox" style="font-weight: bold;">Set Tab Icon:</label><br>
-        <input type="text" id="tab-cloak-textbox" placeholder="Enter new tab icon..." oninput='cloakIcon(this.value)'>
-        <br><br><br>
-    `;
-    popupBody.contentEditable = false;
-    document.getElementById('popupOverlay').style.display = "flex";
+function openAboutBlank() {
+    const newTab = window.open("about:blank", "_blank");
+    const iframe = newTab.document.createElement("iframe");
+    iframe.src = window.location.href;
+    iframe.style.position = "fixed";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "none";
+    newTab.document.body.style.margin = "0";
+    newTab.document.body.appendChild(iframe);
 }
 
 const settings = document.getElementById('settings');
@@ -571,10 +551,10 @@ settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
     popupBody.innerHTML = `
-    <button id="settings-button" onclick="darkMode()">Toggle Dark Mode</button>
-    <br><br>
-    <button id="settings-button" onclick="tabCloak()">Tab Cloak</button>
-    <br>
+        <button id="settings-button" onclick="darkMode()">Toggle Dark Mode</button>
+        <br><br>
+        <button id="settings-button" onclick="openAboutBlank()">Open in about:blank</button>
+        <br>
     `;
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
@@ -614,6 +594,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
