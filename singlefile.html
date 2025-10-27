@@ -1261,26 +1261,7 @@ function darkMode() {
     document.body.classList.toggle("dark-mode");
 }
 
-function cloakIcon(url) {
-    const link = document.querySelector("link[rel~='icon']");
-    link.rel = "icon";
-    if ((url+"").trim().length === 0) {
-        link.href = "favicon.png";
-    } else {
-        link.href = url;
-    }
-    document.head.appendChild(link);
-}
-function cloakName(string) {
-    if ((string+"").trim().length === 0) {
-        document.title = "gn-math";
-        return;
-    }
-    document.title = string;
-}
-
 function openAboutBlank() {
-    closePopup();
     const newTab = window.open("about:blank", "_blank");
     const iframe = newTab.document.createElement("iframe");
     iframe.src = window.location.href;
@@ -1307,7 +1288,6 @@ settings.addEventListener('click', () => {
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
-
 
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
