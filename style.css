@@ -140,7 +140,7 @@ header {
 }
 
 #searchBar:focus {
-    background: var(--glass);
+    background: var(--text);
     box-shadow: #2a0440, var(--shadow);
     transform: translateY(-1px);
     color: var(--glass);
@@ -149,7 +149,7 @@ header {
 }
 
 #searchBar::placeholder {
-    color: var(--text);
+    color: var(--glass);
 }
 
 #sortOptions {
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
