@@ -132,7 +132,7 @@ header {
     border-radius: var(--radius);
     background: var(--glass);
     backdrop-filter: blur(20px);
-    color: var(--glass);
+    color: var(--text);
     font-size: 15px;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
