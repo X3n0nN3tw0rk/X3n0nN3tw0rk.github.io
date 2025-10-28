@@ -4,7 +4,7 @@
         <base href="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
     <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
     <meta name="google-adsense-account" content="ca-pub-5521219086088837">
@@ -1262,16 +1262,40 @@ function darkMode() {
 
 function openAboutBlank() {
     const newTab = window.open("about:blank", "_blank");
-    const iframe = newTab.document.createElement("iframe");
-    iframe.src = window.location.href;
-    iframe.style.position = "fixed";
-    iframe.style.top = "0";
-    iframe.style.left = "0";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    newTab.document.body.style.margin = "0";
-    newTab.document.body.appendChild(iframe);
+    const doc = newTab.document;
+
+    // Add proper HTML structure
+    doc.write(`
+        <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                <style>
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        height: 100%;
+                        overflow: hidden;
+                        background: #000;
+                    }
+                    iframe {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                        transform: scale(1);
+                        transform-origin: top left;
+                    }
+                </style>
+            </head>
+            <body>
+                <iframe src="${window.location.href}"></iframe>
+            </body>
+        </html>
+    `);
+
+    doc.close();
 }
 
 const settings = document.getElementById('settings');
@@ -1287,6 +1311,7 @@ settings.addEventListener('click', () => {
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
+
 
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
