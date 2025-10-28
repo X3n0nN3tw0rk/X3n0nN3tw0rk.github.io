@@ -180,7 +180,7 @@ header {
 }
 
 #settings {
-    background: #bac3cb;
+    background: var(--text);
     border: 0;
     color: #bac3cb;
     font-size: 1.2rem;
@@ -197,7 +197,7 @@ header {
 }
 
 #settings:hover {
-    background: #bac3cb;
+    background: var(--text);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -578,6 +578,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
