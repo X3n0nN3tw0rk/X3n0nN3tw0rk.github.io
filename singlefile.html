@@ -1258,37 +1258,35 @@ function openAboutBlank() {
     const newTab = window.open("about:blank", "_blank");
     const doc = newTab.document;
 
-    // Add proper HTML structure
+    // Copy your current page into the new tab's iframe
+    doc.open();
     doc.write(`
         <html>
-            <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                <style>
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        overflow: hidden;
-                        background: #000;
-                    }
-                    iframe {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        border: none;
-                        transform: scale(1);
-                        transform-origin: top left;
-                    }
-                </style>
-            </head>
-            <body>
-                <iframe src="${window.location.href}"></iframe>
-            </body>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    overflow: hidden;
+                    background: #000;
+                }
+                iframe {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe srcdoc="${document.documentElement.outerHTML.replace(/"/g, '&quot;')}"></iframe>
+        </body>
         </html>
     `);
-
     doc.close();
 }
 
