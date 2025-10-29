@@ -1261,22 +1261,17 @@ function darkMode() {
 }
 
 function openAboutBlank() {
-    const newTab = window.open("about:blank", "_blank");
-    const doc = newTab.document;
-
-    // Copy your current page into the new tab's iframe
-    doc.open();
-    doc.write(`
+    const html = `
         <html>
         <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
                 html, body {
                     margin: 0;
                     padding: 0;
                     height: 100%;
-                    overflow: hidden;
                     background: #000;
+                    overflow: hidden;
                 }
                 iframe {
                     position: fixed;
@@ -1289,11 +1284,12 @@ function openAboutBlank() {
             </style>
         </head>
         <body>
-            <iframe srcdoc="${document.documentElement.outerHTML.replace(/"/g, '&quot;')}"></iframe>
+            <iframe src="${window.location.href}"></iframe>
         </body>
         </html>
-    `);
-    doc.close();
+    `;
+    const data = "data:text/html;charset=utf-8," + encodeURIComponent(html);
+    window.open(data, "_blank");
 }
 
 const settings = document.getElementById('settings');
@@ -1309,7 +1305,6 @@ settings.addEventListener('click', () => {
     popupBody.contentEditable = false;
     document.getElementById('popupOverlay').style.display = "flex";
 });
-
 
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
