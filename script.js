@@ -528,24 +528,87 @@ async function saveData() {
     reader.readAsText(file);
   }
 
-function darkMode() {
-    document.body.classList.toggle("dark-mode");
+// --- Tab Cloak functions ---
+function cloakIcon(url) {
+    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
+    link.rel = "icon";
+    if ((url + "").trim().length === 0) {
+        link.href = "favicon.png";
+    } else {
+        link.href = url;
+    }
+    document.head.appendChild(link);
 }
 
+function cloakName(string) {
+    if ((string + "").trim().length === 0) {
+        document.title = "gn-math";
+        return;
+    }
+    document.title = string;
+}
+
+function tabCloak() {
+    const popupTitle = document.getElementById('popupTitle');
+    const popupBody = document.getElementById('popupBody');
+
+    popupTitle.textContent = "Tab Cloak";
+    popupBody.innerHTML = `
+        <label for="tab-cloak-title" style="font-weight: bold;">Set Tab Title:</label><br>
+        <input type="text" id="tab-cloak-title" placeholder="Enter new tab name..." oninput="cloakName(this.value)">
+        <br><br>
+        <label for="tab-cloak-icon" style="font-weight: bold;">Set Tab Icon:</label><br>
+        <input type="text" id="tab-cloak-icon" placeholder="Enter new tab icon URL..." oninput="cloakIcon(this.value)">
+        <br><br>
+    `;
+    popupBody.contentEditable = false;
+    document.getElementById('popupOverlay').style.display = "flex";
+}
+
+// --- Open in blank-style tab ---
 function openAboutBlank() {
-    // Open the current page in a new tab safely
-    window.open(window.location.href, "_blank", "noopener,noreferrer");
+    // Open a new tab with your site inside an iframe
+    const html = `
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    overflow: hidden;
+                    background: #fff;
+                }
+                iframe {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe src="${window.location.href}"></iframe>
+        </body>
+        </html>
+    `;
+    const data = "data:text/html;charset=utf-8," + encodeURIComponent(html);
+    window.open(data, "_blank");
 }
 
-
+// --- Settings popup ---
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
+
     popupBody.innerHTML = `
-        <button id="settings-button" onclick="darkMode()">Toggle Dark Mode</button>
+        <button id="settings-button" onclick="tabCloak()">Tab Cloak</button>
         <br><br>
-        <button id="settings-button" onclick="openAboutBlank()">Open in about:blank</button>
+        <button id="settings-button" onclick="openAboutBlank()">Open in blank tab</button>
         <br>
     `;
     popupBody.contentEditable = false;
@@ -586,6 +649,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
