@@ -533,36 +533,10 @@ function darkMode() {
 }
 
 function openAboutBlank() {
-    const html = `
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    height: 100%;
-                    background: #000;
-                    overflow: hidden;
-                }
-                iframe {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    border: none;
-                }
-            </style>
-        </head>
-        <body>
-            <iframe src="${window.location.href}"></iframe>
-        </body>
-        </html>
-    `;
-    const data = "data:text/html;charset=utf-8," + encodeURIComponent(html);
-    window.open(data, "_blank");
+    // Open the current page in a new tab safely
+    window.open(window.location.href, "_blank", "noopener,noreferrer");
 }
+
 
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
@@ -612,6 +586,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
