@@ -533,41 +533,35 @@ function darkMode() {
 }
 
 function openAboutBlank() {
-    const newTab = window.open("about:blank", "_blank");
-    const doc = newTab.document;
-
-    // Add proper HTML structure
-    doc.write(`
+    const html = `
         <html>
-            <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                <style>
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        overflow: hidden;
-                        background: #000;
-                    }
-                    iframe {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        border: none;
-                        transform: scale(1);
-                        transform-origin: top left;
-                    }
-                </style>
-            </head>
-            <body>
-                <iframe src="${window.location.href}"></iframe>
-            </body>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                    background: #000;
+                    overflow: hidden;
+                }
+                iframe {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe src="${window.location.href}"></iframe>
+        </body>
         </html>
-    `);
-
-    doc.close();
+    `;
+    const data = "data:text/html;charset=utf-8," + encodeURIComponent(html);
+    window.open(data, "_blank");
 }
 
 const settings = document.getElementById('settings');
@@ -618,6 +612,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
