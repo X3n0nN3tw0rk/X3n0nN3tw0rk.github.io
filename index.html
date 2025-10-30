@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- 🔒 Simple Password Protection -->
+<script>
+const correctPassword = "1234"; // change this to your desired password
+function askPassword() {
+    let entered = prompt("Enter password to continue:");
+    if (entered !== correctPassword) {
+        document.write("<h2>Access Denied</h2>");
+        throw new Error("Access denied"); // stops page load
+    }
+}
+askPassword();
+</script>
+<!-- 🔒 End Password Protection -->
+
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <link rel="apple-touch-icon"href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
     <meta name="google-adsense-account" content="ca-pub-5521219086088837">
@@ -129,10 +144,4 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
 
