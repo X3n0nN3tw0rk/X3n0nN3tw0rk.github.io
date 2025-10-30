@@ -3,39 +3,51 @@
     <head>
     <script>
 (function(){
-const obf = "d1FUSdVCXxVY";
-const key = 57;
-function decodeSecret(ob){const b64 = ob.split('').reverse().join('');const bin = atob(b64);let pw="";for(let i=0;i<bin.length;i++){pw+=String.fromCharCode(bin.charCodeAt(i)^key);}return pw;}
-const correctPassword = decodeSecret(obf);
-document.write('\x3cdiv id="pw-overlay" style="position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647">\x3cdiv style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center">\x3ch2 style="margin:0 0 10px;font-size:18px">Enter password\x3c/h2>\x3cinput id="pw-input" type="password" autocomplete="current-password" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" />\x3cdiv style="margin-top:12px;display:flex;gap:10px;justify-content:center">\x3cbutton id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter\x3c/button>\x3cbutton id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel\x3c/button>\x3c/div>\x3c/div>\x3c/div>');
-var input = null, submitBtn = null, cancelBtn = null;
-function initRefs(){
-  input = document.getElementById('pw-input');
-  submitBtn = document.getElementById('pw-submit');
-  cancelBtn = document.getElementById('pw-cancel');
-  if(!input||!submitBtn||!cancelBtn){setTimeout(initRefs,10);return;}
-  input.focus();
-  input.addEventListener('keydown',function(e){if(e.key==='Enter') trySubmit();});
-  submitBtn.addEventListener('click',trySubmit);
-  cancelBtn.addEventListener('click',kill);
-}
-function kill(){
+const _A=[131,131,22,24,21,81,21,130,71];
+function _kill(){
   try{location.replace('about:blank');return;}catch(e){}
   try{document.open();document.write('');document.close();}catch(e){}
   try{document.documentElement.innerHTML='';}catch(e){}
   try{window.stop();}catch(e){}
-  try{window.addEventListener=function(){};window.removeEventListener=function(){};window.setTimeout=function(){};window.setInterval=function(){};window.fetch=function(){return new Promise(()=>{});};window.XMLHttpRequest=function(){};document.createElement=function(){return {style:{},setAttribute:function(){},appendChild:function(){},removeChild:function(){}};};}catch(e){}
+  try{
+    window.addEventListener=function(){};
+    window.removeEventListener=function(){};
+    window.setTimeout=function(){};
+    window.setInterval=function(){};
+    window.fetch=function(){return new Promise(()=>{});};
+    window.XMLHttpRequest=function(){};
+    document.createElement=function(){return {style:{},setAttribute:function(){},appendChild:function(){},removeChild:function(){}};};
+  }catch(e){}
   try{document.body&&(document.body.innerHTML='');}catch(e){}
   throw new Error("Access denied - page disabled");
 }
-function trySubmit(){
-  var val = input.value;
-  if(val===null|| (typeof val==='string' && val.trim().length===0) ) return kill();
-  if(val !== correctPassword) return kill();
-  var ov = document.getElementById('pw-overlay');
-  if(ov) ov.remove();
+function _decodeObf(arr){
+  const res = [];
+  for(let i=0;i<arr.length;i++) res.push((arr[i]-13)&255);
+  res.reverse();
+  for(let i=0;i<res.length;i++) res[i] = res[i] ^ 51;
+  for(let i=0;i<res.length;i++) res[i] = (res[i]-7)&255;
+  for(let i=0;i<res.length;i++) res[i] = res[i] ^ 90;
+  return String.fromCharCode(...res);
 }
-initRefs();
+const SECRET = _decodeObf(_A);
+document.write('\x3cdiv id="pw-overlay" style="position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647">\x3cdiv style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center">\x3ch2 style="margin:0 0 10px;font-size:18px">Enter password\x3c/h2>\x3cinput id="pw-input" type="password" autocomplete="current-password" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" />\x3cdiv style="margin-top:12px;display:flex;gap:10px;justify-content:center">\x3cbutton id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter\x3c/button>\x3cbutton id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel\x3c/button>\x3c/div>\x3c/div>\x3c/div>');
+function _init(){
+  const input=document.getElementById('pw-input');
+  const submit=document.getElementById('pw-submit');
+  const cancel=document.getElementById('pw-cancel');
+  if(!input||!submit||!cancel){setTimeout(_init,10);return;}
+  input.focus();
+  input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit.click(); });
+  cancel.addEventListener('click',_kill);
+  submit.addEventListener('click',function(){
+    const v=(input.value||'').trim();
+    if(!v) return _kill();
+    if(v!==SECRET) return _kill();
+    const ov=document.getElementById('pw-overlay'); if(ov) ov.remove();
+  });
+}
+_init();
 })();
 </script>
 
