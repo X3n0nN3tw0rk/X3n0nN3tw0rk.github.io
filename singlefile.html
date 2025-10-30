@@ -2,35 +2,56 @@
 <html lang="en">
     <head>
        <script>
-// ✅ Put this at the very top of <head> before any other scripts or external includes
 (function(){
-    const correctPassword = "YOUR_PASSWORD_HERE"; // set your password here
+    const correctPassword = "YOUR_PASSWORD_HERE"; // <-- set your password
 
-    // prompt user
+    // ask for password
     const entered = prompt("Enter password to continue:");
 
-    // if wrong, completely replace the page and stop everything
-    if (entered !== correctPassword) {
-        const killHtml = '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Access Denied</title></head><body style="margin:0;background:#0b0b0b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><div style="text-align:center;"><h1 style="margin:0 0 8px 0;font-size:28px;">Access Denied</h1><p style="margin:0;opacity:0.8;">You do not have permission to view this page.</p></div></body></html>';
-
+    // kill condition: cancel (null), empty, or wrong
+    if (entered === null || (typeof entered === "string" && entered.trim().length === 0) || entered !== correctPassword) {
+        // 1) Try a clean redirect to about:blank (replaces current page, no history entry)
         try {
-            // replace entire document
-            document.open();
-            document.write(killHtml);
-            document.close();
+            location.replace('about:blank');
+            // if that works, return so the script stops here
+            return;
         } catch (e) {
-            // fallback: set body content
-            try { document.documentElement.innerHTML = killHtml; } catch (e2) {}
+            // ignore and proceed to fallback wipe
         }
 
-        // try to halt any further loading / timers / network activity
-        try { window.stop(); } catch(e){}
+        // 2) Fallback: aggressively wipe and disable the page
+        try {
+            // wipe document
+            document.open();
+            document.write('');
+            document.close();
+        } catch (e) {}
 
-        // attempt to prevent more scripts from running by throwing
-        throw new Error("Access denied");
+        try { document.documentElement.innerHTML = ''; } catch (e) {}
+
+        // try to stop loading resources
+        try { window.stop(); } catch (e) {}
+
+        // disable many window APIs to prevent scripts from running
+        try {
+            window.addEventListener = function(){};
+            window.removeEventListener = function(){};
+            window.setTimeout = function(){};
+            window.setInterval = function(){};
+            window.fetch = function(){ return new Promise(()=>{}); };
+            window.XMLHttpRequest = function(){};
+            document.createElement = function(){ return { style: {}, setAttribute: function(){}, appendChild: function(){}, removeChild: function(){}}; };
+        } catch(e){}
+
+        // final attempt to blank the page and halt further inline execution
+        try { document.body && (document.body.innerHTML = ''); } catch(e){}
+
+        // throw to stop any following scripts
+        throw new Error("Access denied - page disabled");
     }
 })();
 </script>
+
 
 
         <base href="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/">
