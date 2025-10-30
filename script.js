@@ -567,36 +567,43 @@ function tabCloak() {
 
 // --- Open in blank-style tab ---
 function openAboutBlank() {
-    // Open a new tab with your site inside an iframe
-    const html = `
+    const siteURL = window.location.href; // your current site URL
+    const viewer = window.open("", "_blank");
+
+    // If popup blocking prevents it from opening
+    if (!viewer) {
+        alert("Please allow pop-ups to open about:blank view.");
+        return;
+    }
+
+    viewer.document.write(`
+        <!DOCTYPE html>
         <html>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>about:blank</title>
             <style>
                 html, body {
                     margin: 0;
                     padding: 0;
                     height: 100%;
                     overflow: hidden;
-                    background: #fff;
+                    background: white;
                 }
                 iframe {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
+                    border: none;
                     width: 100%;
                     height: 100%;
-                    border: none;
                 }
             </style>
         </head>
         <body>
-            <iframe src="${window.location.href}"></iframe>
+            <iframe src="${siteURL}" allowfullscreen></iframe>
         </body>
         </html>
-    `;
-    const data = "data:text/html;charset=utf-8," + encodeURIComponent(html);
-    window.open(data, "_blank");
+    `);
+
+    viewer.document.close();
 }
 
 // --- Settings popup ---
@@ -649,6 +656,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
