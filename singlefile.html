@@ -2,19 +2,36 @@
 <html lang="en">
     <head>
        <script>
-// Simple password protection
-const correctPassword = "1234"; // change this to your password
+// ✅ Put this at the very top of <head> before any other scripts or external includes
+(function(){
+    const correctPassword = "YOUR_PASSWORD_HERE"; // set your password here
 
-function askPassword() {
-    let entered = prompt("Enter password to continue:");
+    // prompt user
+    const entered = prompt("Enter password to continue:");
+
+    // if wrong, completely replace the page and stop everything
     if (entered !== correctPassword) {
-        document.body.innerHTML = "<h2>Access Denied</h2>";
-        throw new Error("Access denied"); // stops the rest of the page from loading
-    }
-}
+        const killHtml = '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Access Denied</title></head><body style="margin:0;background:#0b0b0b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;"><div style="text-align:center;"><h1 style="margin:0 0 8px 0;font-size:28px;">Access Denied</h1><p style="margin:0;opacity:0.8;">You do not have permission to view this page.</p></div></body></html>';
 
-askPassword();
+        try {
+            // replace entire document
+            document.open();
+            document.write(killHtml);
+            document.close();
+        } catch (e) {
+            // fallback: set body content
+            try { document.documentElement.innerHTML = killHtml; } catch (e2) {}
+        }
+
+        // try to halt any further loading / timers / network activity
+        try { window.stop(); } catch(e){}
+
+        // attempt to prevent more scripts from running by throwing
+        throw new Error("Access denied");
+    }
+})();
 </script>
+
 
         <base href="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/">
     <link rel="icon" type="image/png" href="favicon.png">
