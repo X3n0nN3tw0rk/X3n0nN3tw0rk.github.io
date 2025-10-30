@@ -625,6 +625,18 @@ settings.addEventListener('click', () => {
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
+// --- Favicon click audio ---
+const faviconImg = document.querySelector('.logo-favicon'); // your <img class="logo-favicon">
+const clickAudio = new Audio('click-sound.mp3'); // replace with your audio file path
+
+if (faviconImg) {
+    faviconImg.style.cursor = 'pointer'; // makes it clear it's clickable
+    faviconImg.addEventListener('click', () => {
+        clickAudio.currentTime = 0; // restart if clicked multiple times
+        clickAudio.play().catch(e => console.log("Audio play failed:", e));
+    });
+}
+
 listZones();
 
 const schoolList = ["deledao", "goguardian", "lightspeed", "linewize", "securly", ".edu/"];
@@ -656,6 +668,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
