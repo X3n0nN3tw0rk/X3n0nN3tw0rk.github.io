@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <script>
+// Simple password protection
+const correctPassword = "1234"; // change this to your password
+
+function askPassword() {
+    let entered = prompt("Enter password to continue:");
+    if (entered !== correctPassword) {
+        document.body.innerHTML = "<h2>Access Denied</h2>";
+        throw new Error("Access denied"); // stops the rest of the page from loading
+    }
+}
+
+askPassword();
+</script>
+
         <base href="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
