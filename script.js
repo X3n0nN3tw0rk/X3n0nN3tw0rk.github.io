@@ -636,38 +636,41 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-let bgAudio;
-function startMusic() {
-    if (!bgAudio) {
-        bgAudio = new Audio('daisy-daisy.mp3');
-        bgAudio.loop = true;
-        bgAudio.volume = 0.5;
-        bgAudio.play();
-    }
-}
+let bgAudio = window.bgAudio || new Audio('daisy-daisy.mp3');
+bgAudio.loop = true;
+bgAudio.volume = 0.5;
 
-function handleZoneAudio(isOpening) {
-    if (!bgAudio) return;
-    if (isOpening) {
-        bgAudio.pause();
-    } else {
-        bgAudio.play();
-    }
+if (!window.bgAudioStarted) {
+    bgAudio.play().catch(() => {});
+    window.bgAudioStarted = true;
 }
+window.bgAudio = bgAudio;
+
+window.handleZoneAudio = function(isOpening) {
+    if (!window.bgAudio) return;
+    if (isOpening) {
+        window.bgAudio.pause();
+    } else {
+        if (window.bgAudio.paused) {
+            setTimeout(() => {
+                window.bgAudio.play().catch(() => {});
+            }, 100);
+        }
+    }
+};
 
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
-    handleZoneAudio(true);
+    window.handleZoneAudio(true);
     if (originalOpenZone) originalOpenZone(file);
 };
 
 const originalCloseZone = window.closeZone;
 window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
-    handleZoneAudio(false);
+    window.handleZoneAudio(false);
 };
 
-startMusic();
 
 listZones();
 
@@ -700,6 +703,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
