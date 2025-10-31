@@ -637,30 +637,35 @@ if (faviconImg) {
     });
 }
 // Create the audio object
+// == Audio Setup ==
 let bgAudio = new Audio('1750140333_m_8-m8vaa09_3209.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 1;
+window.bgAudio = bgAudio;
+window.bgAudioStarted = false;
 
-// Function to start background audio
-function startBgAudio() {
+// == Try to Start Audio ==
+function tryStartAudio() {
     if (!window.bgAudioStarted) {
-        bgAudio.play().catch(() => {
-            // If autoplay is blocked, resume on first user interaction
+        bgAudio.play().then(() => {
+            window.bgAudioStarted = true;
+        }).catch(() => {
+            // Wait for user interaction if autoplay blocked
             function resumeAudio() {
                 bgAudio.play().catch(() => {});
                 window.removeEventListener('click', resumeAudio);
+                window.removeEventListener('keydown', resumeAudio);
             }
             window.addEventListener('click', resumeAudio);
+            window.addEventListener('keydown', resumeAudio);
         });
-        window.bgAudioStarted = true;
     }
 }
 
-// Start the audio
-startBgAudio();
-window.bgAudio = bgAudio;
+// Start on page load
+tryStartAudio();
 
-// Function to pause/resume audio on zone open/close
+// == Zone Audio Handler ==
 window.handleZoneAudio = function(isOpening) {
     if (!window.bgAudio) return;
     if (isOpening) {
@@ -674,18 +679,17 @@ window.handleZoneAudio = function(isOpening) {
     }
 };
 
-// Wrap existing openZone function
+// == Wrap openZone / closeZone ==
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
-    window.handleZoneAudio(true); // pause audio
+    window.handleZoneAudio(true);
     if (originalOpenZone) originalOpenZone(file);
 };
 
-// Wrap existing closeZone function
 const originalCloseZone = window.closeZone;
 window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
-    window.handleZoneAudio(false); // resume audio
+    window.handleZoneAudio(false);
 };
 
 listZones();
@@ -719,6 +723,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
