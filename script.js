@@ -636,50 +636,22 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-const bgAudio = new Audio('Lonely.mp3');
+const bgAudio = new Audio('daisy-daisy.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 0.5;
 bgAudio.play();
 
-function openZone(file) {
+const originalOpenZone = openZone;
+openZone = function(file) {
     bgAudio.pause();
-    if (file.url.startsWith("http")) {
-        window.open(file.url, "_blank");
-    } else {
-        const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-        fetch(url + "?t=" + Date.now()).then(response => response.text()).then(html => {
-            if (zoneFrame.contentDocument === null) {
-                zoneFrame = document.createElement("iframe");
-                zoneFrame.id = "zoneFrame";
-                zoneViewer.appendChild(zoneFrame);
-            }
-            zoneFrame.contentDocument.open();
-            zoneFrame.contentDocument.write(html);
-            zoneFrame.contentDocument.close();
-            document.getElementById('zoneName').textContent = file.name;
-            document.getElementById('zoneId').textContent = file.id;
-            document.getElementById('zoneAuthor').textContent = "by " + file.author;
-            if (file.authorLink) {
-                document.getElementById('zoneAuthor').href = file.authorLink;
-            }
-            zoneViewer.style.display = "block";
-            const url = new URL(window.location);
-            url.searchParams.set('id', file.id);
-            history.pushState(null, '', url.toString());
-            zoneViewer.hidden = true;
-        }).catch(error => alert("Failed to load zone: " + error));
-    }
-}
+    originalOpenZone(file);
+};
 
-function closeZone() {
-    zoneViewer.hidden = false;
-    zoneViewer.style.display = "none";
-    zoneViewer.removeChild(zoneFrame);
-    const url = new URL(window.location);
-    url.searchParams.delete('id');
-    history.pushState(null, '', url.toString());
+const originalCloseZone = closeZone;
+closeZone = function() {
+    originalCloseZone();
     bgAudio.play();
-}
+};
 
 listZones();
 
@@ -712,6 +684,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
