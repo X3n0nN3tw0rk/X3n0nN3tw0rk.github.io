@@ -636,7 +636,7 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-let bgAudio = new Audio('Lonely.mp3');
+let bgAudio = new Audio('1750140333_m_8-m8vaa09_3209.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 1;
 
@@ -714,6 +714,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
