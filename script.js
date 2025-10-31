@@ -636,15 +636,16 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
+// Create the audio object
 let bgAudio = new Audio('1750140333_m_8-m8vaa09_3209.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 1;
 
-// Attempt to autoplay on page load
+// Function to start background audio
 function startBgAudio() {
     if (!window.bgAudioStarted) {
         bgAudio.play().catch(() => {
-            // Autoplay blocked, play on first click anywhere
+            // If autoplay is blocked, resume on first user interaction
             function resumeAudio() {
                 bgAudio.play().catch(() => {});
                 window.removeEventListener('click', resumeAudio);
@@ -655,10 +656,11 @@ function startBgAudio() {
     }
 }
 
+// Start the audio
 startBgAudio();
 window.bgAudio = bgAudio;
 
-// Pause/resume when zones open/close
+// Function to pause/resume audio on zone open/close
 window.handleZoneAudio = function(isOpening) {
     if (!window.bgAudio) return;
     if (isOpening) {
@@ -667,22 +669,23 @@ window.handleZoneAudio = function(isOpening) {
         if (window.bgAudio.paused) {
             setTimeout(() => {
                 window.bgAudio.play().catch(() => {});
-            }, 50); // shorter delay works fine
+            }, 100);
         }
     }
 };
 
-// Wrap existing openZone/closeZone functions
+// Wrap existing openZone function
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
-    window.handleZoneAudio(true);
+    window.handleZoneAudio(true); // pause audio
     if (originalOpenZone) originalOpenZone(file);
 };
 
+// Wrap existing closeZone function
 const originalCloseZone = window.closeZone;
 window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
-    window.handleZoneAudio(false);
+    window.handleZoneAudio(false); // resume audio
 };
 
 listZones();
@@ -716,6 +719,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
