@@ -636,7 +636,7 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-let bgAudio = new Audio('daisy-daisy.mp3');
+let bgAudio = new Audio('Lonely.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 0.5;
 
@@ -714,6 +714,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
