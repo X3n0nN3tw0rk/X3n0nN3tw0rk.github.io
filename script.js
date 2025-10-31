@@ -18,7 +18,7 @@ function sortZones(){if(sortOptions&&sortOptions.value){if(sortOptions.value=="p
 function renderFeaturedZones(){if(!featuredContainer)return;featuredContainer.innerHTML='';for(const zone of zones){const div=document.createElement('div');div.className='zone-item';div.innerText=zone.name;div.addEventListener('click',()=>openZone(zone.id));featuredContainer.appendChild(div);}}
 function openZone(id){const zone=zones.find(z=>z.id==id);if(!zone)return;zoneFrame.src=zone.url;zoneViewer.style.display='block';window.handleZoneAudio(true);}
 function closeZone(){zoneViewer.style.display='none';zoneFrame.src='';window.handleZoneAudio(false);}
-listZones();
+
 
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
@@ -725,6 +725,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
