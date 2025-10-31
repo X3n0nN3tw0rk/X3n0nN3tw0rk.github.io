@@ -636,22 +636,38 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-const bgAudio = new Audio('daisy-daisy.mp3');
-bgAudio.loop = true;
-bgAudio.volume = 0.5;
-bgAudio.play();
+let bgAudio;
+function startMusic() {
+    if (!bgAudio) {
+        bgAudio = new Audio('daisy-daisy.mp3');
+        bgAudio.loop = true;
+        bgAudio.volume = 0.5;
+        bgAudio.play();
+    }
+}
 
-const originalOpenZone = openZone;
-openZone = function(file) {
-    bgAudio.pause();
-    originalOpenZone(file);
+function handleZoneAudio(isOpening) {
+    if (!bgAudio) return;
+    if (isOpening) {
+        bgAudio.pause();
+    } else {
+        bgAudio.play();
+    }
+}
+
+const originalOpenZone = window.openZone;
+window.openZone = function(file) {
+    handleZoneAudio(true);
+    if (originalOpenZone) originalOpenZone(file);
 };
 
-const originalCloseZone = closeZone;
-closeZone = function() {
-    originalCloseZone();
-    bgAudio.play();
+const originalCloseZone = window.closeZone;
+window.closeZone = function() {
+    if (originalCloseZone) originalCloseZone();
+    handleZoneAudio(false);
 };
+
+startMusic();
 
 listZones();
 
@@ -684,6 +700,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
