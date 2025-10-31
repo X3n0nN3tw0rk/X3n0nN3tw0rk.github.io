@@ -638,7 +638,7 @@ if (faviconImg) {
 }
 let bgAudio = new Audio('Lonely.mp3');
 bgAudio.loop = true;
-bgAudio.volume = 0.5;
+bgAudio.volume = 1;
 
 function startBgAudio() {
     if (!window.bgAudioStarted) {
@@ -714,6 +714,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
