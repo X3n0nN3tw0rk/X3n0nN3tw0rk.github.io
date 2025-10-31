@@ -640,9 +640,11 @@ let bgAudio = new Audio('1750140333_m_8-m8vaa09_3209.mp3');
 bgAudio.loop = true;
 bgAudio.volume = 1;
 
+// Attempt to autoplay on page load
 function startBgAudio() {
     if (!window.bgAudioStarted) {
         bgAudio.play().catch(() => {
+            // Autoplay blocked, play on first click anywhere
             function resumeAudio() {
                 bgAudio.play().catch(() => {});
                 window.removeEventListener('click', resumeAudio);
@@ -656,6 +658,7 @@ function startBgAudio() {
 startBgAudio();
 window.bgAudio = bgAudio;
 
+// Pause/resume when zones open/close
 window.handleZoneAudio = function(isOpening) {
     if (!window.bgAudio) return;
     if (isOpening) {
@@ -664,12 +667,12 @@ window.handleZoneAudio = function(isOpening) {
         if (window.bgAudio.paused) {
             setTimeout(() => {
                 window.bgAudio.play().catch(() => {});
-            }, 100);
+            }, 50); // shorter delay works fine
         }
     }
 };
 
-// Wrap your existing openZone/closeZone to include the toggle
+// Wrap existing openZone/closeZone functions
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
     window.handleZoneAudio(true);
@@ -681,7 +684,6 @@ window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
     window.handleZoneAudio(false);
 };
-
 
 listZones();
 
@@ -714,6 +716,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
