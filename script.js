@@ -636,38 +636,52 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-let bgAudio;
-function startMusic() {
-    if (!bgAudio) {
-        bgAudio = new Audio('daisy-daisy.mp3');
-        bgAudio.loop = true;
-        bgAudio.volume = 0.5;
-        bgAudio.play();
+let bgAudio = new Audio('daisy-daisy.mp3');
+bgAudio.loop = true;
+bgAudio.volume = 0.5;
+
+function startBgAudio() {
+    if (!window.bgAudioStarted) {
+        bgAudio.play().catch(() => {
+            function resumeAudio() {
+                bgAudio.play().catch(() => {});
+                window.removeEventListener('click', resumeAudio);
+            }
+            window.addEventListener('click', resumeAudio);
+        });
+        window.bgAudioStarted = true;
     }
 }
 
-function handleZoneAudio(isOpening) {
-    if (!bgAudio) return;
+startBgAudio();
+window.bgAudio = bgAudio;
+
+window.handleZoneAudio = function(isOpening) {
+    if (!window.bgAudio) return;
     if (isOpening) {
-        bgAudio.pause();
+        window.bgAudio.pause();
     } else {
-        bgAudio.play();
+        if (window.bgAudio.paused) {
+            setTimeout(() => {
+                window.bgAudio.play().catch(() => {});
+            }, 100);
+        }
     }
-}
+};
 
+// Wrap your existing openZone/closeZone to include the toggle
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
-    handleZoneAudio(true);
+    window.handleZoneAudio(true);
     if (originalOpenZone) originalOpenZone(file);
 };
 
 const originalCloseZone = window.closeZone;
 window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
-    handleZoneAudio(false);
+    window.handleZoneAudio(false);
 };
 
-startMusic();
 
 listZones();
 
@@ -700,6 +714,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
