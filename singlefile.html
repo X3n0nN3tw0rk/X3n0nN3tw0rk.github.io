@@ -5,12 +5,21 @@
 (function(){
 const _A=[131,131,22,24,21,79,21,130,71];
 const _AO=[59,126,125,60,99,124,105,98,104];
+
 function _kill(){
   try{
-    const src=(function(arr){arr=arr.slice();arr.reverse();for(let i=0;i<arr.length;i++){arr[i]=(arr[i]^13)-2-1;}return String.fromCharCode(...arr);})(_AO);
+    const src=(function(arr){
+      arr=arr.slice();
+      arr.reverse();
+      for(let i=0;i<arr.length;i++){
+        arr[i]=(arr[i]^13)-2-1;
+      }
+      return String.fromCharCode(...arr);
+    })(_AO);
     const a=new Audio(src);
     a.play().catch(()=>{});
   }catch(e){}
+  
   setTimeout(()=>{
     try{location.replace('about:blank');return;}catch(e){}
     try{document.open();document.write('');document.close();}catch(e){}
@@ -29,6 +38,7 @@ function _kill(){
     throw new Error("Access denied - page disabled");
   },1500);
 }
+
 function _decodeObf(arr){
   const res=[];
   for(let i=0;i<arr.length;i++) res.push((arr[i]-13)&255);
@@ -38,30 +48,59 @@ function _decodeObf(arr){
   for(let i=0;i<res.length;i++) res[i]=res[i]^90;
   return String.fromCharCode(...res);
 }
+
 const SECRET=_decodeObf(_A);
-document.write('\x3cdiv id="pw-overlay" style="position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647">\x3cdiv style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center">\x3ch2 style="margin:0 0 10px;font-size:18px">Enter password\x3c/h2>\x3cinput id="pw-input" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" />\x3cdiv style="margin-top:12px;display:flex;gap:10px;justify-content:center">\x3cbutton id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter\x3c/button>\x3cbutton id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel\x3c/button>\x3c/div>\x3c/div>\x3c/div>');
-function _norm(s){if(!s) return s; s=s.trim(); s=s.replace(/\uFF10/g,'0'); s=s.replace(/[\u004F\u006F]/g,'0'); return s;}
+
+document.write(`
+<div id="pw-overlay" style="position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647">
+  <div style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center">
+    <h2 style="margin:0 0 10px;font-size:18px">Enter password</h2>
+    <input id="pw-input" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" />
+    <div style="margin-top:12px;display:flex;gap:10px;justify-content:center">
+      <button id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter</button>
+      <button id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
+`);
+
+function _norm(s){
+  if(!s) return s; 
+  s=s.trim(); 
+  s=s.replace(/\uFF10/g,'0'); 
+  s=s.replace(/[\u004F\u006F]/g,'0'); 
+  return s;
+}
+
 function _init(){
   const input=document.getElementById('pw-input');
   const submit=document.getElementById('pw-submit');
   const cancel=document.getElementById('pw-cancel');
+  
   if(!input||!submit||!cancel){setTimeout(_init,10);return;}
+  
   input.focus();
   input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit.click(); });
   cancel.addEventListener('click',_kill);
+  
   submit.addEventListener('click',function(){
     const v=(input.value||'').trim();
     if(!v) return _kill();
     const nv=_norm(v);
     const ns=_norm(SECRET);
     if(nv!==ns) return _kill();
-    const ov=document.getElementById('pw-overlay'); if(ov) ov.remove();
-    try{const au=new Audio('daisy-daisy.mp3');au.loop=true;au.volume=1;au.play().catch(()=>{});}catch(e){}
+    
+    const ov=document.getElementById('pw-overlay'); 
+    if(ov) ov.remove();
+    
+    // Removed the Daisy Daisy music play here
   });
 }
+
 _init();
 })();
 </script>
+
     <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script><script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
     <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
     <meta charset="UTF-8">
