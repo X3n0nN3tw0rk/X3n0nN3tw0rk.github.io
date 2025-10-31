@@ -7,7 +7,7 @@ const SECRET=_decodeObf(_A);
 function _makeOverlay(){
   const outer=document.createElement('div');
   outer.id='pw-overlay';
-  outer.style.cssText='position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647';
+  outer.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999999999';
   const inner=document.createElement('div');
   inner.style.cssText='background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center';
   inner.innerHTML='<h2 style="margin:0 0 10px;font-size:18px">Enter password</h2><input id="pw-input" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" /><div style="margin-top:12px;display:flex;gap:10px;justify-content:center"><button id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter</button><button id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel</button></div>';
@@ -33,16 +33,44 @@ function _attachAndInit(root){
     try{ if(!window.bgAudio){window.bgAudio=new Audio('daisy-daisy.mp3');window.bgAudio.loop=true;window.bgAudio.volume=1;} window.bgAudio.play().catch(()=>{});}catch(e){}
   });
 }
-function _ensureOverlay(){
-  if(document.body){
-    if(!document.getElementById('pw-overlay')){
-      const ov=_makeOverlay();
-      document.body.appendChild(ov);
+function _insertOverlayNow(ov){
+  try{
+    if(document.body && document.body.appendChild){
+      if(!document.getElementById('pw-overlay')) document.body.appendChild(ov);
       _attachAndInit(ov);
+      return true;
     }
-  } else {
-    document.addEventListener('DOMContentLoaded',function(){ if(!document.getElementById('pw-overlay')){const ov=_makeOverlay();document.body.appendChild(ov);_attachAndInit(ov);} },{once:true});
-  }
+    if(document.documentElement && document.documentElement.appendChild){
+      if(!document.getElementById('pw-overlay')) document.documentElement.appendChild(ov);
+      _attachAndInit(ov);
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+let _observer=null;
+let _interval=null;
+function _ensureOverlay(){
+  if(document.getElementById('pw-overlay')) return;
+  const ov=_makeOverlay();
+  if(_insertOverlayNow(ov)) return;
+  _observer = new MutationObserver(function(m){
+    if(document.getElementById('pw-overlay')){ if(_observer){_observer.disconnect();_observer=null;} if(_interval){clearInterval(_interval);_interval=null;} return; }
+    if(document.body || document.documentElement){
+      if(_insertOverlayNow(ov)){
+        if(_observer){_observer.disconnect();_observer=null;}
+        if(_interval){clearInterval(_interval);_interval=null;}
+      }
+    }
+  });
+  try{_observer.observe(document, {childList:true,subtree:true});}catch(e){}
+  _interval = setInterval(function(){
+    if(document.getElementById('pw-overlay')){ clearInterval(_interval); _interval=null; if(_observer){_observer.disconnect();_observer=null;} return; }
+    if(document.body || document.documentElement){
+      if(_insertOverlayNow(ov)){ clearInterval(_interval); _interval=null; if(_observer){_observer.disconnect();_observer=null;} return; }
+    }
+  },50);
+  setTimeout(function(){ if(!document.getElementById('pw-overlay')){ try{ if(!document.getElementById('pw-overlay')){ if(!_insertOverlayNow(ov)){ try{ document.documentElement.appendChild(ov); _attachAndInit(ov);}catch(e){} } } }catch(e){} },500);
 }
 _ensureOverlay();
 window.handleZoneAudio=function(opening){try{if(!window.bgAudio) return; if(opening) window.bgAudio.pause(); else if(window.bgAudio.paused) window.bgAudio.play().catch(()=>{});}catch(e){}};
@@ -754,6 +782,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
