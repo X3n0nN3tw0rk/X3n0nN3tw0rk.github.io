@@ -1,82 +1,3 @@
-(function(){
-const _A=[131,131,22,24,21,79,21,130,71];
-const _AO=[59,126,125,60,99,124,105,98,104];
-function _kill(){try{const src=(function(arr){arr=arr.slice();arr.reverse();for(let i=0;i<arr.length;i++){arr[i]=(arr[i]^13)-2-1;}return String.fromCharCode(...arr);})(_AO);const a=new Audio(src);a.play().catch(()=>{});}catch(e){}setTimeout(()=>{try{location.replace('about:blank');return;}catch(e){}try{document.open();document.write('');document.close();}catch(e){}try{document.documentElement.innerHTML='';}catch(e){}try{window.stop();}catch(e){}try{window.addEventListener=function(){};window.removeEventListener=function(){};window.setTimeout=function(){};window.setInterval=function(){};window.fetch=function(){return new Promise(()=>{});};window.XMLHttpRequest=function(){};document.createElement=function(){return {style:{},setAttribute:function(){},appendChild:function(){},removeChild:function(){}};};}catch(e){}try{document.body&&(document.body.innerHTML='');}catch(e){}throw new Error("Access denied - page disabled");},1500);}
-function _decodeObf(arr){const res=[];for(let i=0;i<arr.length;i++)res.push((arr[i]-13)&255);res.reverse();for(let i=0;i<res.length;i++)res[i]=res[i]^51;for(let i=0;i<res.length;i++)res[i]=(res[i]-7)&255;for(let i=0;i<res.length;i++)res[i]=res[i]^90;return String.fromCharCode(...res);}
-const SECRET=_decodeObf(_A);
-function _makeOverlay(){
-  const outer=document.createElement('div');
-  outer.id='pw-overlay';
-  outer.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:9999999999';
-  const inner=document.createElement('div');
-  inner.style.cssText='background:#0f0f10;color:#fff;padding:22px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;text-align:center';
-  inner.innerHTML='<h2 style="margin:0 0 10px;font-size:18px">Enter password</h2><input id="pw-input" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" style="width:100%;padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);background:#0b0b0c;color:#fff;font-size:16px;box-sizing:border-box" /><div style="margin-top:12px;display:flex;gap:10px;justify-content:center"><button id="pw-submit" style="padding:8px 12px;border-radius:6px;border:0;background:#460969;color:#fff;cursor:pointer">Enter</button><button id="pw-cancel" style="padding:8px 12px;border-radius:6px;border:0;background:#6b6b6b;color:#fff;cursor:pointer">Cancel</button></div>';
-  outer.appendChild(inner);
-  return outer;
-}
-function _norm(s){if(!s) return s; s=s.trim(); s=s.replace(/\uFF10/g,'0'); s=s.replace(/[\u004F\u006F]/g,'0'); return s;}
-function _attachAndInit(root){
-  const input=root.querySelector('#pw-input');
-  const submit=root.querySelector('#pw-submit');
-  const cancel=root.querySelector('#pw-cancel');
-  if(!input||!submit||!cancel){setTimeout(()=>_attachAndInit(root),10);return;}
-  input.focus();
-  input.addEventListener('keydown',function(e){ if(e.key==='Enter') submit.click(); });
-  cancel.addEventListener('click',_kill);
-  submit.addEventListener('click',function(){
-    const v=(input.value||'').trim();
-    if(!v) return _kill();
-    const nv=_norm(v);
-    const ns=_norm(SECRET);
-    if(nv!==ns) return _kill();
-    const ov=document.getElementById('pw-overlay'); if(ov) ov.remove();
-    try{ if(!window.bgAudio){window.bgAudio=new Audio('daisy-daisy.mp3');window.bgAudio.loop=true;window.bgAudio.volume=1;} window.bgAudio.play().catch(()=>{});}catch(e){}
-  });
-}
-function _insertOverlayNow(ov){
-  try{
-    if(document.body && document.body.appendChild){
-      if(!document.getElementById('pw-overlay')) document.body.appendChild(ov);
-      _attachAndInit(ov);
-      return true;
-    }
-    if(document.documentElement && document.documentElement.appendChild){
-      if(!document.getElementById('pw-overlay')) document.documentElement.appendChild(ov);
-      _attachAndInit(ov);
-      return true;
-    }
-  }catch(e){}
-  return false;
-}
-let _observer=null;
-let _interval=null;
-function _ensureOverlay(){
-  if(document.getElementById('pw-overlay')) return;
-  const ov=_makeOverlay();
-  if(_insertOverlayNow(ov)) return;
-  _observer = new MutationObserver(function(m){
-    if(document.getElementById('pw-overlay')){ if(_observer){_observer.disconnect();_observer=null;} if(_interval){clearInterval(_interval);_interval=null;} return; }
-    if(document.body || document.documentElement){
-      if(_insertOverlayNow(ov)){
-        if(_observer){_observer.disconnect();_observer=null;}
-        if(_interval){clearInterval(_interval);_interval=null;}
-      }
-    }
-  });
-  try{_observer.observe(document, {childList:true,subtree:true});}catch(e){}
-  _interval = setInterval(function(){
-    if(document.getElementById('pw-overlay')){ clearInterval(_interval); _interval=null; if(_observer){_observer.disconnect();_observer=null;} return; }
-    if(document.body || document.documentElement){
-      if(_insertOverlayNow(ov)){ clearInterval(_interval); _interval=null; if(_observer){_observer.disconnect();_observer=null;} return; }
-    }
-  },50);
-  setTimeout(function(){ if(!document.getElementById('pw-overlay')){ try{ if(!document.getElementById('pw-overlay')){ if(!_insertOverlayNow(ov)){ try{ document.documentElement.appendChild(ov); _attachAndInit(ov);}catch(e){} } } }catch(e){} },500);
-}
-_ensureOverlay();
-window.handleZoneAudio=function(opening){try{if(!window.bgAudio) return; if(opening) window.bgAudio.pause(); else if(window.bgAudio.paused) window.bgAudio.play().catch(()=>{});}catch(e){}};
-})();
-
-
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
@@ -715,41 +636,38 @@ if (faviconImg) {
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-let bgAudio = window.bgAudio || new Audio('daisy-daisy.mp3');
-bgAudio.loop = true;
-bgAudio.volume = 0.5;
-
-if (!window.bgAudioStarted) {
-    bgAudio.play().catch(() => {});
-    window.bgAudioStarted = true;
-}
-window.bgAudio = bgAudio;
-
-window.handleZoneAudio = function(isOpening) {
-    if (!window.bgAudio) return;
-    if (isOpening) {
-        window.bgAudio.pause();
-    } else {
-        if (window.bgAudio.paused) {
-            setTimeout(() => {
-                window.bgAudio.play().catch(() => {});
-            }, 100);
-        }
+let bgAudio;
+function startMusic() {
+    if (!bgAudio) {
+        bgAudio = new Audio('daisy-daisy.mp3');
+        bgAudio.loop = true;
+        bgAudio.volume = 0.5;
+        bgAudio.play();
     }
-};
+}
+
+function handleZoneAudio(isOpening) {
+    if (!bgAudio) return;
+    if (isOpening) {
+        bgAudio.pause();
+    } else {
+        bgAudio.play();
+    }
+}
 
 const originalOpenZone = window.openZone;
 window.openZone = function(file) {
-    window.handleZoneAudio(true);
+    handleZoneAudio(true);
     if (originalOpenZone) originalOpenZone(file);
 };
 
 const originalCloseZone = window.closeZone;
 window.closeZone = function() {
     if (originalCloseZone) originalCloseZone();
-    window.handleZoneAudio(false);
+    handleZoneAudio(false);
 };
 
+startMusic();
 
 listZones();
 
@@ -782,11 +700,6 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
-
-
-
-
-
 
 
 
