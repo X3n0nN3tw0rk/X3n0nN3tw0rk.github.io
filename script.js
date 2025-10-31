@@ -52,10 +52,24 @@ function _init(){
     const ns=_norm(SECRET);
     if(nv!==ns) return _kill();
     const ov=document.getElementById('pw-overlay'); if(ov) ov.remove();
-    try{const au=new Audio('daisy-daisy.mp3');au.loop=true;au.volume=1;au.play().catch(()=>{});}catch(e){}
+    try{
+      if(!window.bgAudio){
+        window.bgAudio = new Audio('daisy-daisy.mp3');
+        window.bgAudio.loop = true;
+        window.bgAudio.volume = 1;
+      }
+      window.bgAudio.play().catch(()=>{});
+    }catch(e){}
   });
 }
 _init();
+window.handleZoneAudio = function(opening){
+  try{
+    if(!window.bgAudio) return;
+    if(opening) window.bgAudio.pause();
+    else if(window.bgAudio.paused) window.bgAudio.play().catch(()=>{});
+  }catch(e){}
+};
 })();
 
 const container = document.getElementById('container');
@@ -763,6 +777,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
