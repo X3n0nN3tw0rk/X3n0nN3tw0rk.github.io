@@ -136,6 +136,7 @@ function sortZones() {
 
     // ⛔ Filter out any zones with an id or index of -1 (like the Discord button)
     zones = zones.filter(z => z.id !== -1);
+zones = zones.filter(z => z.id !== 596);
 
     if (featuredContainer.innerHTML === "") {
         const featured = zones.filter(z => z.featured);
@@ -726,6 +727,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
