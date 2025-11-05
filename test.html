@@ -1476,52 +1476,109 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
     </script>
-    <!-- Spotify Jukebox -->
-<div id="spotifyJukebox" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 340px;
-  height: 480px;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-  display: none;
-  z-index: 9999;
-">
-  <iframe style="border:none;width:100%;height:100%;"
-    src="https://open.spotify.com/embed/playlist/0CFHULUBj3wKgVZlEUjDk6?utm_source=generator"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<!-- 🎵 Jukebox UI -->
+<div id="jukebox">
+  <button id="jukeboxToggle">🎵 Jukebox</button>
+  <div id="jukeboxPanel" style="display:none;">
+    <p id="songTitle">No song playing</p>
+    <button id="prevSong">⏮</button>
+    <button id="playPause">▶️</button>
+    <button id="nextSong">⏭</button>
+  </div>
 </div>
 
-<!-- Toggle Button -->
-<button id="toggleJukebox" style="
+<script>
+const songs = [
+  "JukeBox/I LOVE YOU SO JUMPSTYLE (Slowed).mp3",
+  "JukeBox/Lady Gaga - Judas - GOJO VS SUKUNA.mp3",
+  "JukeBox/Montagem Direção (Slowed) .mp3",
+  "JukeBox/1750140333_m_8-m8vaa09_3209.mp3"
+];
+
+let currentSong = 0;
+let isPlaying = false;
+const audio = new Audio();
+const playPause = document.getElementById("playPause");
+const songTitle = document.getElementById("songTitle");
+
+function loadSong(index) {
+  audio.src = songs[index];
+  songTitle.textContent = songs[index].split("/").pop().replace(".mp3", "");
+}
+
+function playSong() {
+  audio.play();
+  isPlaying = true;
+  playPause.textContent = "⏸";
+}
+
+function pauseSong() {
+  audio.pause();
+  isPlaying = false;
+  playPause.textContent = "▶️";
+}
+
+playPause.onclick = () => {
+  if (!audio.src) loadSong(currentSong);
+  isPlaying ? pauseSong() : playSong();
+};
+
+document.getElementById("nextSong").onclick = () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+  if (isPlaying) playSong();
+};
+
+document.getElementById("prevSong").onclick = () => {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong);
+  if (isPlaying) playSong();
+};
+
+document.getElementById("jukeboxToggle").onclick = () => {
+  const panel = document.getElementById("jukeboxPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+};
+</script>
+
+<style>
+#jukebox {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #1DB954;
-  color: #fff;
+  font-family: sans-serif;
+}
+#jukeboxToggle {
+  background: #1db954;
+  color: white;
   border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 26px;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  z-index: 10000;
-">🎵</button>
+}
+#jukeboxPanel {
+  margin-top: 8px;
+  background: #222;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  width: 220px;
+  text-align: center;
+}
+#jukeboxPanel button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+#songTitle {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+</style>
 
-<script>
-const toggle = document.getElementById('toggleJukebox');
-const box = document.getElementById('spotifyJukebox');
-let open = false;
-
-toggle.addEventListener('click', () => {
-  open = !open;
-  box.style.display = open ? 'block' : 'none';
-});
-</script>
 
 </body>
 </html>
