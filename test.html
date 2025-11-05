@@ -1476,108 +1476,100 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
     </script>
-<!-- 🎵 Jukebox UI -->
-<div id="jukebox">
-  <button id="jukeboxToggle">🎵 Jukebox</button>
-  <div id="jukeboxPanel" style="display:none;">
-    <p id="songTitle">No song playing</p>
-    <button id="prevSong">⏮</button>
-    <button id="playPause">▶️</button>
-    <button id="nextSong">⏭</button>
-  </div>
-</div>
-
 <script>
-const songs = [
+const playlist = [
   "JukeBox/I LOVE YOU SO JUMPSTYLE (Slowed).mp3",
   "JukeBox/Lady Gaga - Judas - GOJO VS SUKUNA.mp3",
-  "JukeBox/Montagem Direção (Slowed) .mp3",
+  "JukeBox/Montagem Direção (Slowed).mp3", // removed extra space
   "JukeBox/1750140333_m_8-m8vaa09_3209.mp3"
 ];
 
-let currentSong = 0;
-let isPlaying = false;
-const audio = new Audio();
-const playPause = document.getElementById("playPause");
-const songTitle = document.getElementById("songTitle");
+let currentTrack = 0;
+let audio = new Audio();
+audio.volume = 1;
+audio.loop = false;
 
-function loadSong(index) {
-  audio.src = songs[index];
-  songTitle.textContent = songs[index].split("/").pop().replace(".mp3", "");
+function playTrack(index) {
+  if (index < 0 || index >= playlist.length) index = 0;
+  currentTrack = index;
+  audio.src = playlist[currentTrack];
+  audio.play().catch(() => {
+    function resume() {
+      audio.play().catch(()=>{});
+      window.removeEventListener('click', resume);
+    }
+    window.addEventListener('click', resume);
+  });
 }
 
-function playSong() {
-  audio.play();
-  isPlaying = true;
-  playPause.textContent = "⏸";
+audio.addEventListener('ended', () => {
+  currentTrack = (currentTrack + 1) % playlist.length;
+  playTrack(currentTrack);
+});
+
+function createJukeBoxUI() {
+  const box = document.createElement('div');
+  box.style.position = 'fixed';
+  box.style.bottom = '20px';
+  box.style.right = '20px';
+  box.style.background = '#0f0f10';
+  box.style.color = '#fff';
+  box.style.padding = '12px';
+  box.style.borderRadius = '10px';
+  box.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+  box.style.fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif';
+  box.style.zIndex = '999999';
+  box.style.textAlign = 'center';
+
+  const title = document.createElement('div');
+  title.textContent = '🎧 JukeBox';
+  title.style.fontWeight = 'bold';
+  title.style.marginBottom = '8px';
+  box.appendChild(title);
+
+  const playPauseBtn = document.createElement('button');
+  playPauseBtn.textContent = '⏸ Pause';
+  playPauseBtn.style.margin = '0 6px';
+  playPauseBtn.style.padding = '6px 12px';
+  playPauseBtn.style.borderRadius = '6px';
+  playPauseBtn.style.border = 'none';
+  playPauseBtn.style.background = '#460969';
+  playPauseBtn.style.color = '#fff';
+  playPauseBtn.style.cursor = 'pointer';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = '⏭ Next';
+  nextBtn.style.margin = '0 6px';
+  nextBtn.style.padding = '6px 12px';
+  nextBtn.style.borderRadius = '6px';
+  nextBtn.style.border = 'none';
+  nextBtn.style.background = '#6b6b6b';
+  nextBtn.style.color = '#fff';
+  nextBtn.style.cursor = 'pointer';
+
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸ Pause';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶ Play';
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    playTrack(currentTrack);
+  });
+
+  box.appendChild(playPauseBtn);
+  box.appendChild(nextBtn);
+  document.body.appendChild(box);
 }
 
-function pauseSong() {
-  audio.pause();
-  isPlaying = false;
-  playPause.textContent = "▶️";
-}
-
-playPause.onclick = () => {
-  if (!audio.src) loadSong(currentSong);
-  isPlaying ? pauseSong() : playSong();
-};
-
-document.getElementById("nextSong").onclick = () => {
-  currentSong = (currentSong + 1) % songs.length;
-  loadSong(currentSong);
-  if (isPlaying) playSong();
-};
-
-document.getElementById("prevSong").onclick = () => {
-  currentSong = (currentSong - 1 + songs.length) % songs.length;
-  loadSong(currentSong);
-  if (isPlaying) playSong();
-};
-
-document.getElementById("jukeboxToggle").onclick = () => {
-  const panel = document.getElementById("jukeboxPanel");
-  panel.style.display = panel.style.display === "none" ? "block" : "none";
-};
+createJukeBoxUI();
+playTrack(0);
 </script>
-
-<style>
-#jukebox {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-family: sans-serif;
-}
-#jukeboxToggle {
-  background: #1db954;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-#jukeboxPanel {
-  margin-top: 8px;
-  background: #222;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  width: 220px;
-  text-align: center;
-}
-#jukeboxPanel button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 0 5px;
-}
-#songTitle {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-</style>
 
 
 </body>
