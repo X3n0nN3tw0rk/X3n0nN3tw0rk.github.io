@@ -642,59 +642,6 @@ if (faviconImg) {
 }
 // Create the audio object
 // == Audio Setup ==
-let bgAudio = new Audio('1750140333_m_8-m8vaa09_3209.mp3');
-bgAudio.loop = true;
-bgAudio.volume = 1;
-window.bgAudio = bgAudio;
-window.bgAudioStarted = false;
-
-// == Try to Start Audio ==
-function tryStartAudio() {
-    if (!window.bgAudioStarted) {
-        bgAudio.play().then(() => {
-            window.bgAudioStarted = true;
-        }).catch(() => {
-            // Wait for user interaction if autoplay blocked
-            function resumeAudio() {
-                bgAudio.play().catch(() => {});
-                window.removeEventListener('click', resumeAudio);
-                window.removeEventListener('keydown', resumeAudio);
-            }
-            window.addEventListener('click', resumeAudio);
-            window.addEventListener('keydown', resumeAudio);
-        });
-    }
-}
-
-// Start on page load
-tryStartAudio();
-
-// == Zone Audio Handler ==
-window.handleZoneAudio = function(isOpening) {
-    if (!window.bgAudio) return;
-    if (isOpening) {
-        window.bgAudio.pause();
-    } else {
-        if (window.bgAudio.paused) {
-            setTimeout(() => {
-                window.bgAudio.play().catch(() => {});
-            }, 100);
-        }
-    }
-};
-
-// == Wrap openZone / closeZone ==
-const originalOpenZone = window.openZone;
-window.openZone = function(file) {
-    window.handleZoneAudio(true);
-    if (originalOpenZone) originalOpenZone(file);
-};
-
-const originalCloseZone = window.closeZone;
-window.closeZone = function() {
-    if (originalCloseZone) originalCloseZone();
-    window.handleZoneAudio(false);
-};
 
 listZones();
 
@@ -727,6 +674,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
