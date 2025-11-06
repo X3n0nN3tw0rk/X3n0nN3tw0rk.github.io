@@ -1478,10 +1478,10 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     </script>
 <script>
 const playlist = [
-  "JukeBox/I LOVE YOU SO JUMPSTYLE (Slowed).mp3",
-  "JukeBox/Lady Gaga - Judas - GOJO VS SUKUNA.mp3",
-  "JukeBox/Montagem_Direcao.mp3", // removed extra space
-  "JukeBox/1750140333_m_8-m8vaa09_3209.mp3"
+  { title: "I LOVE YOU SO JUMPSTYLE (Slowed)", file: "JukeBox/I LOVE YOU SO JUMPSTYLE (Slowed).mp3" },
+  { title: "Judas", file: "JukeBox/Lady Gaga - Judas - GOJO VS SUKUNA.mp3" },
+  { title: "Montagem Direção (Slowed)", file: "JukeBox/Montagem_Direcao.mp3" },
+  { title: "Lonely Lonely", file: "JukeBox/1750140333_m_8-m8vaa09_3209.mp3" }
 ];
 
 let currentTrack = 0;
@@ -1492,7 +1492,7 @@ audio.loop = false;
 function playTrack(index) {
   if (index < 0 || index >= playlist.length) index = 0;
   currentTrack = index;
-  audio.src = playlist[currentTrack];
+  audio.src = playlist[currentTrack].file;
   audio.play().catch(() => {
     function resume() {
       audio.play().catch(()=>{});
@@ -1500,6 +1500,7 @@ function playTrack(index) {
     }
     window.addEventListener('click', resume);
   });
+  updateUI();
 }
 
 audio.addEventListener('ended', () => {
@@ -1507,53 +1508,106 @@ audio.addEventListener('ended', () => {
   playTrack(currentTrack);
 });
 
-function createJukeBoxUI() {
+let playPauseBtn, trackTitle, progressBar;
+
+function createSpotifyUI() {
   const box = document.createElement('div');
   box.style.position = 'fixed';
   box.style.bottom = '20px';
   box.style.right = '20px';
-  box.style.background = '#0f0f10';
-  box.style.color = '#fff';
-  box.style.padding = '12px';
+  box.style.width = '320px';
+  box.style.height = '90px';
+  box.style.background = '#121212';
   box.style.borderRadius = '10px';
-  box.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
-  box.style.fontFamily = '-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif';
+  box.style.display = 'flex';
+  box.style.flexDirection = 'row';
+  box.style.alignItems = 'center';
+  box.style.padding = '10px';
+  box.style.color = '#fff';
+  box.style.fontFamily = 'Arial, sans-serif';
+  box.style.boxShadow = '0 8px 24px rgba(0,0,0,0.6)';
   box.style.zIndex = '999999';
-  box.style.textAlign = 'center';
 
-  const title = document.createElement('div');
-  title.textContent = '🎧 JukeBox';
-  title.style.fontWeight = 'bold';
-  title.style.marginBottom = '8px';
-  box.appendChild(title);
+  const cover = document.createElement('div');
+  cover.style.width = '70px';
+  cover.style.height = '70px';
+  cover.style.borderRadius = '5px';
+  cover.style.background = 'linear-gradient(135deg, #460969, #6b6b6b)';
+  box.appendChild(cover);
 
-  const playPauseBtn = document.createElement('button');
-  playPauseBtn.textContent = '⏸ Pause';
-  playPauseBtn.style.margin = '0 6px';
-  playPauseBtn.style.padding = '6px 12px';
-  playPauseBtn.style.borderRadius = '6px';
+  const info = document.createElement('div');
+  info.style.flex = '1';
+  info.style.marginLeft = '10px';
+  info.style.display = 'flex';
+  info.style.flexDirection = 'column';
+  info.style.justifyContent = 'center';
+
+  trackTitle = document.createElement('div');
+  trackTitle.textContent = playlist[currentTrack].title;
+  trackTitle.style.fontWeight = 'bold';
+  trackTitle.style.fontSize = '14px';
+  trackTitle.style.marginBottom = '4px';
+  info.appendChild(trackTitle);
+
+  progressBar = document.createElement('div');
+  progressBar.style.width = '100%';
+  progressBar.style.height = '4px';
+  progressBar.style.background = '#333';
+  progressBar.style.borderRadius = '2px';
+  progressBar.style.overflow = 'hidden';
+  const fill = document.createElement('div');
+  fill.style.height = '100%';
+  fill.style.width = '0%';
+  fill.style.background = '#1DB954'; // Spotify green
+  progressBar.appendChild(fill);
+  info.appendChild(progressBar);
+
+  const controls = document.createElement('div');
+  controls.style.display = 'flex';
+  controls.style.alignItems = 'center';
+  controls.style.gap = '8px';
+  controls.style.marginTop = '6px';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '⏮';
+  prevBtn.style.background = 'none';
+  prevBtn.style.border = 'none';
+  prevBtn.style.color = '#fff';
+  prevBtn.style.cursor = 'pointer';
+  prevBtn.style.fontSize = '16px';
+
+  playPauseBtn = document.createElement('button');
+  playPauseBtn.textContent = '⏸';
+  playPauseBtn.style.background = '#1DB954';
   playPauseBtn.style.border = 'none';
-  playPauseBtn.style.background = '#460969';
   playPauseBtn.style.color = '#fff';
+  playPauseBtn.style.borderRadius = '50%';
+  playPauseBtn.style.width = '36px';
+  playPauseBtn.style.height = '36px';
   playPauseBtn.style.cursor = 'pointer';
+  playPauseBtn.style.fontSize = '16px';
 
   const nextBtn = document.createElement('button');
-  nextBtn.textContent = '⏭ Next';
-  nextBtn.style.margin = '0 6px';
-  nextBtn.style.padding = '6px 12px';
-  nextBtn.style.borderRadius = '6px';
+  nextBtn.textContent = '⏭';
+  nextBtn.style.background = 'none';
   nextBtn.style.border = 'none';
-  nextBtn.style.background = '#6b6b6b';
   nextBtn.style.color = '#fff';
   nextBtn.style.cursor = 'pointer';
+  nextBtn.style.fontSize = '16px';
+
+  controls.appendChild(prevBtn);
+  controls.appendChild(playPauseBtn);
+  controls.appendChild(nextBtn);
+  info.appendChild(controls);
+  box.appendChild(info);
 
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸ Pause';
+      playPauseBtn.textContent = '⏸';
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶ Play';
+      playPauseBtn.textContent = '▶';
     }
   });
 
@@ -1562,15 +1616,28 @@ function createJukeBoxUI() {
     playTrack(currentTrack);
   });
 
-  box.appendChild(playPauseBtn);
-  box.appendChild(nextBtn);
+  prevBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+    playTrack(currentTrack);
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.duration > 0) {
+      fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+    }
+  });
+
   document.body.appendChild(box);
 }
 
-createJukeBoxUI();
+function updateUI() {
+  trackTitle.textContent = playlist[currentTrack].title;
+  playPauseBtn.textContent = audio.paused ? '▶' : '⏸';
+}
+
+createSpotifyUI();
 playTrack(0);
 </script>
-
 
 </body>
 </html>
