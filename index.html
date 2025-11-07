@@ -258,106 +258,112 @@ audio.addEventListener('ended', () => {
   playTrack(currentTrack);
 });
 
-let playPauseBtn, trackTitle, progressBar;
+let playPauseBtn, trackTitle, progressFill, cover;
 
 function createSpotifyUI() {
   const box = document.createElement('div');
   box.style.position = 'fixed';
   box.style.bottom = '20px';
   box.style.right = '20px';
-  box.style.width = '320px';
-  box.style.height = '90px';
-  box.style.background = '#121212';
+  box.style.width = '360px';
+  box.style.height = '80px';
+  box.style.background = '#181818';
   box.style.borderRadius = '10px';
   box.style.display = 'flex';
-  box.style.flexDirection = 'row';
   box.style.alignItems = 'center';
-  box.style.padding = '10px';
+  box.style.padding = '10px 14px';
   box.style.color = '#fff';
-  box.style.fontFamily = 'Arial, sans-serif';
-  box.style.boxShadow = '0 8px 24px rgba(0,0,0,0.6)';
+  box.style.fontFamily = 'Circular, Helvetica, Arial, sans-serif';
+  box.style.boxShadow = '0 8px 24px rgba(0,0,0,0.7)';
   box.style.zIndex = '999999';
+  box.style.transition = 'transform 0.3s ease';
+  box.style.cursor = 'default';
 
-  const cover = document.createElement('div');
-  cover.style.width = '70px';
-  cover.style.height = '70px';
-  cover.style.borderRadius = '5px';
-  cover.style.background = 'linear-gradient(135deg, #460969, #6b6b6b)';
+  cover = document.createElement('div');
+  cover.style.width = '60px';
+  cover.style.height = '60px';
+  cover.style.borderRadius = '6px';
+  cover.style.background = 'linear-gradient(135deg, #2e2e2e, #3c3c3c)';
+  cover.style.flexShrink = '0';
+  cover.style.overflow = 'hidden';
   box.appendChild(cover);
 
   const info = document.createElement('div');
   info.style.flex = '1';
-  info.style.marginLeft = '10px';
+  info.style.marginLeft = '14px';
   info.style.display = 'flex';
   info.style.flexDirection = 'column';
   info.style.justifyContent = 'center';
+  info.style.overflow = 'hidden';
 
   trackTitle = document.createElement('div');
   trackTitle.textContent = playlist[currentTrack].title;
-  trackTitle.style.fontWeight = 'bold';
-  trackTitle.style.fontSize = '14px';
-  trackTitle.style.marginBottom = '4px';
+  trackTitle.style.fontWeight = '600';
+  trackTitle.style.fontSize = '15px';
+  trackTitle.style.whiteSpace = 'nowrap';
+  trackTitle.style.overflow = 'hidden';
+  trackTitle.style.textOverflow = 'ellipsis';
+  trackTitle.style.marginBottom = '6px';
   info.appendChild(trackTitle);
 
-  progressBar = document.createElement('div');
+  const progressBar = document.createElement('div');
   progressBar.style.width = '100%';
   progressBar.style.height = '4px';
-  progressBar.style.background = '#333';
+  progressBar.style.background = '#404040';
   progressBar.style.borderRadius = '2px';
   progressBar.style.overflow = 'hidden';
-  const fill = document.createElement('div');
-  fill.style.height = '100%';
-  fill.style.width = '0%';
-  fill.style.background = '#1DB954'; // Spotify green
-  progressBar.appendChild(fill);
+  progressFill = document.createElement('div');
+  progressFill.style.height = '100%';
+  progressFill.style.width = '0%';
+  progressFill.style.background = '#1DB954';
+  progressBar.appendChild(progressFill);
   info.appendChild(progressBar);
 
   const controls = document.createElement('div');
   controls.style.display = 'flex';
   controls.style.alignItems = 'center';
-  controls.style.gap = '8px';
-  controls.style.marginTop = '6px';
+  controls.style.justifyContent = 'center';
+  controls.style.gap = '10px';
+  controls.style.marginTop = '8px';
 
   const prevBtn = document.createElement('button');
-  prevBtn.textContent = '⏮';
-  prevBtn.style.background = 'none';
-  prevBtn.style.border = 'none';
-  prevBtn.style.color = '#fff';
-  prevBtn.style.cursor = 'pointer';
-  prevBtn.style.fontSize = '16px';
+  prevBtn.innerHTML = '⏮';
+  styleButton(prevBtn);
 
   playPauseBtn = document.createElement('button');
-  playPauseBtn.textContent = '⏸';
+  playPauseBtn.innerHTML = '⏸';
   playPauseBtn.style.background = '#1DB954';
-  playPauseBtn.style.border = 'none';
-  playPauseBtn.style.color = '#fff';
   playPauseBtn.style.borderRadius = '50%';
-  playPauseBtn.style.width = '36px';
-  playPauseBtn.style.height = '36px';
+  playPauseBtn.style.width = '40px';
+  playPauseBtn.style.height = '40px';
+  playPauseBtn.style.color = '#fff';
+  playPauseBtn.style.border = 'none';
+  playPauseBtn.style.fontSize = '18px';
   playPauseBtn.style.cursor = 'pointer';
-  playPauseBtn.style.fontSize = '16px';
+  playPauseBtn.style.transition = 'transform 0.1s ease';
+  playPauseBtn.onmouseenter = () => (playPauseBtn.style.transform = 'scale(1.05)');
+  playPauseBtn.onmouseleave = () => (playPauseBtn.style.transform = 'scale(1)');
 
   const nextBtn = document.createElement('button');
-  nextBtn.textContent = '⏭';
-  nextBtn.style.background = 'none';
-  nextBtn.style.border = 'none';
-  nextBtn.style.color = '#fff';
-  nextBtn.style.cursor = 'pointer';
-  nextBtn.style.fontSize = '16px';
+  nextBtn.innerHTML = '⏭';
+  styleButton(nextBtn);
 
   controls.appendChild(prevBtn);
   controls.appendChild(playPauseBtn);
   controls.appendChild(nextBtn);
+
   info.appendChild(controls);
   box.appendChild(info);
+
+  document.body.appendChild(box);
 
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸';
+      playPauseBtn.innerHTML = '⏸';
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶';
+      playPauseBtn.innerHTML = '▶';
     }
   });
 
@@ -373,24 +379,35 @@ function createSpotifyUI() {
 
   audio.addEventListener('timeupdate', () => {
     if (audio.duration > 0) {
-      fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+      progressFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
     }
   });
+}
 
-  document.body.appendChild(box);
+function styleButton(btn) {
+  btn.style.background = 'none';
+  btn.style.border = 'none';
+  btn.style.color = '#b3b3b3';
+  btn.style.fontSize = '18px';
+  btn.style.cursor = 'pointer';
+  btn.style.transition = 'color 0.2s ease';
+  btn.onmouseenter = () => (btn.style.color = '#fff');
+  btn.onmouseleave = () => (btn.style.color = '#b3b3b3');
 }
 
 function updateUI() {
   trackTitle.textContent = playlist[currentTrack].title;
-  playPauseBtn.textContent = audio.paused ? '▶' : '⏸';
+  playPauseBtn.innerHTML = audio.paused ? '▶' : '⏸';
 }
 
 createSpotifyUI();
 playTrack(0);
 </script>
 
+
 </body>
 </html>
+
 
 
 
