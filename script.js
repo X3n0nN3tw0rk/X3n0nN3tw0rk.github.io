@@ -15,7 +15,8 @@ const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
 let zones = [];
 let popularityData = {};
-const featuredContainer = document.getElementById('featuredZones');
+// const featuredContainer = document.getElementById('featuredZones'); // ⛔ Removed
+
 async function listZones() {
     try {
       let sharesponse;
@@ -136,62 +137,17 @@ function sortZones() {
 
     // ⛔ Filter out any zones with an id or index of -1 (like the Discord button)
     zones = zones.filter(z => z.id !== -1);
-zones = zones.filter(z => z.id !== 596);
+    zones = zones.filter(z => z.id !== 596);
 
-    if (featuredContainer.innerHTML === "") {
-        const featured = zones.filter(z => z.featured);
-        displayFeaturedZones(featured);
-    }
+    // if (featuredContainer.innerHTML === "") {
+    //     const featured = zones.filter(z => z.featured);
+    //     displayFeaturedZones(featured);
+    // } // ⛔ Removed featured zones
 
     displayZones(zones);
 }
 
-function displayFeaturedZones(featuredZones) {
-    featuredContainer.innerHTML = "";
-    featuredZones.forEach((file, index) => {
-        const zoneItem = document.createElement("div");
-        zoneItem.className = "zone-item";
-        zoneItem.onclick = () => openZone(file);
-        const img = document.createElement("img");
-        img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-        img.alt = file.name;
-        img.loading = "lazy";
-        img.className = "lazy-zone-img";
-        zoneItem.appendChild(img);
-        const button = document.createElement("button");
-        button.textContent = file.name;
-        button.onclick = (event) => {
-            event.stopPropagation();
-            openZone(file);
-        };
-        zoneItem.appendChild(button);
-        featuredContainer.appendChild(zoneItem);
-    });
-    if (featuredContainer.innerHTML === "") {
-        featuredContainer.innerHTML = "No featured zones found.";
-    } else {
-        document.getElementById("allZonesSummary").textContent = `Featured Zones (${featuredZones.length})`;
-    }
-
-    const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !zoneViewer.hidden) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove("lazy-zone-img");
-                observer.unobserve(img);
-            }
-        });
-    }, {
-        rootMargin: "100px", 
-        threshold: 0.1
-    });
-
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-    });
-}
+// function displayFeaturedZones(featuredZones) { ... } // ⛔ Removed
 
 function displayZones(zones) {
     container.innerHTML = "";
@@ -243,9 +199,9 @@ function displayZones(zones) {
 function filterZones() {
     const query = searchBar.value.toLowerCase();
     const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
-    if (query.length !== 0) {
-        document.getElementById("featuredZonesWrapper").removeAttribute("open");
-    }
+    // if (query.length !== 0) {
+    //     document.getElementById("featuredZonesWrapper").removeAttribute("open"); // ⛔ Removed
+    // }
     displayZones(filteredZones);
 }
 
@@ -684,6 +640,7 @@ function showFeaturedZones() {
 // Call this function whenever you want to unhide it
 // Example: after loading featured zones
 showFeaturedZones();
+
 
 
 
