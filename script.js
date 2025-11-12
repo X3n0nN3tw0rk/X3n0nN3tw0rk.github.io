@@ -675,14 +675,16 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
 
 };
 // Example: show featured zones when some condition is met
+// To show the dropdown later
 function showFeaturedZones() {
     const wrapper = document.getElementById('featuredZonesWrapper');
-    wrapper.removeAttribute('hidden');  // or wrapper.style.display = "block";
+    wrapper.style.display = "block"; // makes the <details> appear
 }
 
 // Call this function whenever you want to unhide it
 // Example: after loading featured zones
 showFeaturedZones();
+
 
 
 
