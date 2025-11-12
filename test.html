@@ -814,7 +814,7 @@ const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
 let zones = [];
 let popularityData = {};
-const featuredContainer = document.getElementById('featuredZones');
+//const featuredContainer = document.getElementById('featuredZones');
 async function listZones() {
     try {
       let sharesponse;
@@ -951,10 +951,10 @@ function sortZones() {
     zones = zones.filter(z => z.id !== -1);
 zones = zones.filter(z => z.id !== 596);
 
-    if (featuredContainer.innerHTML === "") {
-        const featured = zones.filter(z => z.featured);
-        displayFeaturedZones(featured);
-    }
+    // if (featuredContainer.innerHTML === "") {
+    //     const featured = zones.filter(z => z.featured);
+    //     displayFeaturedZones(featured);
+    // }
 
     displayZones(zones);
 }
@@ -1057,9 +1057,9 @@ function displayZones(zones) {
 function filterZones() {
     const query = searchBar.value.toLowerCase();
     const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
-    if (query.length !== 0) {
-        document.getElementById("featuredZonesWrapper").removeAttribute("open");
-    }
+    // if (query.length !== 0) {
+    //     document.getElementById("featuredZonesWrapper").removeAttribute("open");
+    // }
     displayZones(filteredZones);
 }
 
