@@ -674,13 +674,13 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+// Hide the Featured Zones wrapper on page load
 document.addEventListener("DOMContentLoaded", function() {
     const featuredWrapper = document.getElementById("featuredZonesWrapper");
     if (featuredWrapper) {
         featuredWrapper.style.display = "none";
     }
 });
-
 
 
 
