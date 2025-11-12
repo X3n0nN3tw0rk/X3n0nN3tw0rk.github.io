@@ -674,17 +674,15 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
-// Hide the Featured Zones wrapper on page load
-document.addEventListener("DOMContentLoaded", function() {
-    const featuredWrapper = document.getElementById("featuredZonesWrapper");
-    if (featuredWrapper) {
-        featuredWrapper.style.display = "none";
-    }
-});
+// Example: show featured zones when some condition is met
+function showFeaturedZones() {
+    const wrapper = document.getElementById('featuredZonesWrapper');
+    wrapper.removeAttribute('hidden');  // or wrapper.style.display = "block";
+}
 
-
-
-
+// Call this function whenever you want to unhide it
+// Example: after loading featured zones
+showFeaturedZones();
 
 
 
