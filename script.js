@@ -674,6 +674,13 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+document.addEventListener("DOMContentLoaded", function() {
+    const featuredWrapper = document.getElementById("featuredZonesWrapper");
+    if (featuredWrapper) {
+        featuredWrapper.style.display = "none";
+    }
+});
+
 
 
 
