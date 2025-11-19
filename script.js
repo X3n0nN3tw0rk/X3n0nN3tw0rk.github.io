@@ -1,54 +1,3 @@
-// ─────────────────────────────────────────────
-// Firebase Imports
-// ─────────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  updateDoc, 
-  increment, 
-  collection, 
-  addDoc, 
-  serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-
-// ─────────────────────────────────────────────
-// Firebase Config
-// ─────────────────────────────────────────────
-const firebaseConfig = {
-  apiKey: "AIzaSyDPE7r1JGRKtxk-U-bvCYTrnDneGJlovAI",
-  authDomain: "xenlogsgithub.firebaseapp.com",
-  projectId: "xenlogsgithub",
-  storageBucket: "xenlogsgithub.firebasestorage.app",
-  messagingSenderId: "896363685370",
-  appId: "1:896363685370:web:d334fb66e7c4f3e6dc3043"
-};
-
-// ─────────────────────────────────────────────
-// START Firebase
-// ─────────────────────────────────────────────
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-async function logVisit() {
-  // Log each visit
-  await addDoc(collection(db, "visits"), {
-    userAgent: navigator.userAgent,
-    timestamp: serverTimestamp()
-  });
-
-  // Update global count
-  const statsRef = doc(db, "stats", "global");
-
-  await updateDoc(statsRef, { openCount: increment(1) })
-    .catch(async () => {
-      // If global doc doesn't exist, create it
-      await setDoc(statsRef, { openCount: 1 });
-    });
-}
-
-// Run logger
-logVisit();
 
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
@@ -682,6 +631,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
