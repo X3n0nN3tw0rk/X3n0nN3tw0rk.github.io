@@ -1,3 +1,55 @@
+// ─────────────────────────────────────────────
+// Firebase Imports
+// ─────────────────────────────────────────────
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  updateDoc, 
+  increment, 
+  collection, 
+  addDoc, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
+// ─────────────────────────────────────────────
+// Firebase Config
+// ─────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_APP.firebaseapp.com",
+  projectId: "YOUR_APP",
+  storageBucket: "YOUR_APP.appspot.com",
+  messagingSenderId: "0000000000",
+  appId: "YOUR_APP_ID"
+};
+
+// ─────────────────────────────────────────────
+// START Firebase
+// ─────────────────────────────────────────────
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+async function logVisit() {
+  // Log each visit
+  await addDoc(collection(db, "visits"), {
+    userAgent: navigator.userAgent,
+    timestamp: serverTimestamp()
+  });
+
+  // Update global count
+  const statsRef = doc(db, "stats", "global");
+
+  await updateDoc(statsRef, { openCount: increment(1) })
+    .catch(async () => {
+      // If global doc doesn't exist, create it
+      await setDoc(statsRef, { openCount: 1 });
+    });
+}
+
+// Run logger
+logVisit();
+
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
@@ -630,6 +682,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
