@@ -17,12 +17,12 @@ import {
 // Firebase Config
 // ─────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_APP.firebaseapp.com",
-  projectId: "YOUR_APP",
-  storageBucket: "YOUR_APP.appspot.com",
-  messagingSenderId: "0000000000",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDPE7r1JGRKtxk-U-bvCYTrnDneGJlovAI",
+  authDomain: "xenlogsgithub.firebaseapp.com",
+  projectId: "xenlogsgithub",
+  storageBucket: "xenlogsgithub.firebasestorage.app",
+  messagingSenderId: "896363685370",
+  appId: "1:896363685370:web:d334fb66e7c4f3e6dc3043"
 };
 
 // ─────────────────────────────────────────────
@@ -682,6 +682,7 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
+
 
 
 
