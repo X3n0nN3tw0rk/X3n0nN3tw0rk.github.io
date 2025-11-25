@@ -16,6 +16,31 @@ h1 {
     font-size: 36px;
     margin-bottom: 30px;
 }
+
+/* Add/Edit panel - outside of cards */
+#menuPanel {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+#menuPanel input {
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #111;
+    color: white;
+}
+.save-btn {
+    background: #00aaff;
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Gallery */
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -33,12 +58,14 @@ h1 {
     transform: scale(1.03);
     box-shadow: 0 0 25px rgba(0,0,0,0.5);
 }
+
+/* Preview snapshot */
 .preview-area {
     width: 100%;
     height: 150px;
     background: #111;
-    position: relative;
     overflow: hidden;
+    position: relative;
 }
 .preview-iframe {
     width: 400%;
@@ -46,7 +73,7 @@ h1 {
     transform: scale(0.25);
     transform-origin: top left;
     border: none;
-    pointer-events: none; /* disable interaction */
+    pointer-events: none; /* disable interaction in preview */
 }
 .preview-img {
     width: 100%;
@@ -59,27 +86,6 @@ h1 {
     font-weight: bold;
     font-size: 18px;
     text-align: center;
-}
-.menu-panel {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-.menu-panel input {
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid #555;
-    background: #111;
-    color: white;
-}
-.save-btn {
-    background: #00aaff;
-    color: black;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
 }
 
 /* FULLSCREEN VIEWER */
@@ -123,13 +129,15 @@ h1 {
 
 <h1>Portfolio Embed Gallery</h1>
 
-<div class="menu-panel">
+<!-- ADD/EDIT SITE PANEL (separate from gallery) -->
+<div id="menuPanel">
     <input id="nameInput" placeholder="Website Name">
     <input id="urlInput" placeholder="Embed URL">
     <input id="imgInput" placeholder="Preview Image URL">
     <button class="save-btn" onclick="addSite()">Add Site</button>
 </div>
 
+<!-- Gallery -->
 <div class="gallery" id="gallery"></div>
 
 <!-- Fullscreen viewer -->
@@ -143,8 +151,10 @@ h1 {
 // Load saved sites
 let sites = JSON.parse(localStorage.getItem("embedSites")) || [];
 
-// Save to localStorage
-function save() { localStorage.setItem("embedSites", JSON.stringify(sites)); }
+// Save sites
+function save() {
+    localStorage.setItem("embedSites", JSON.stringify(sites));
+}
 
 // Render gallery
 function render() {
@@ -166,12 +176,12 @@ function render() {
     });
 }
 
-// Add new site
+// Add new site from panel
 function addSite() {
     const name = document.getElementById("nameInput").value;
     const url = document.getElementById("urlInput").value;
     const img = document.getElementById("imgInput").value;
-    if(!url && !img && !name) return;
+    if(!name && !url && !img) return;
     sites.push({name, url, img});
     save();
     render();
@@ -180,7 +190,7 @@ function addSite() {
     document.getElementById("imgInput").value = "";
 }
 
-// Preview iframe fallback
+// Check preview iframe fallback
 function checkPreview(e) {
     const iframe = e.target;
     const i = iframe.getAttribute("data-i");
@@ -210,6 +220,7 @@ function openViewer(i) {
         }
     }, 500);
 }
+
 function closeViewer() {
     document.getElementById("viewer").style.display = "none";
     document.getElementById("viewerFrame").src = "";
