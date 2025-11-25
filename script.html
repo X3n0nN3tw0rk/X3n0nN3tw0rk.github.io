@@ -3,76 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Embed Gallery</title>
+<title>Always Embed Portfolio Gallery</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
-  h1 { text-align: center; margin-bottom: 30px; }
-  .gallery { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-  .card { width: 220px; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; cursor: pointer; }
-  .card img { width: 100%; height: 120px; object-fit: cover; }
-  .card .title { text-align: center; font-weight: bold; padding: 5px; }
-  .card .edit { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; cursor: pointer; }
-  .embed-frame { width: 90%; height: 600px; border: 2px solid #ccc; border-radius: 8px; margin: 0 auto; display: block; }
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f0f2f5;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+  .card {
+    position: relative;
+    width: 220px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+  }
+  .card .title {
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    font-size: 14px;
+  }
+  .card .edit-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 18px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .embed-container {
+    display: flex;
+    justify-content: center;
+  }
+  iframe#embedFrame {
+    width: 90%;
+    height: 600px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+  }
+  #fallbackNotice {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+  }
 </style>
 </head>
 <body>
 
-<h1>Embed Gallery</h1>
+<h1>Always-Embed Portfolio Gallery</h1>
 
 <div class="gallery" id="gallery"></div>
 
-<iframe id="embedFrame" class="embed-frame" src="" frameborder="0" allowfullscreen></iframe>
+<div class="embed-container">
+  <iframe id="embedFrame" src="" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="fallbackNotice"></div>
 
 <script>
 const defaultProjects = [
   {name: "Wikipedia", url: "https://en.wikipedia.org/wiki/Main_Page", img: "https://via.placeholder.com/220x120.png?text=Wikipedia"},
   {name: "Example", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Example"},
+  {name: "Project 3", url: "", img: "https://via.placeholder.com/220x120.png?text=Preview+3"},
+  {name: "Project 4", url: "", img: "https://via.placeholder.com/220x120.png?text=Preview+4"},
+  {name: "Project 5", url: "", img: "https://via.placeholder.com/220x120.png?text=Preview+5"},
 ];
 
 let projects = JSON.parse(localStorage.getItem('projects')) || defaultProjects;
+
+const gallery = document.getElementById('gallery');
+const embedFrame = document.getElementById('embedFrame');
+const fallbackNotice = document.getElementById('fallbackNotice');
 
 function saveProjects() {
   localStorage.setItem('projects', JSON.stringify(projects));
 }
 
-const gallery = document.getElementById('gallery');
-const embedFrame = document.getElementById('embedFrame');
-
 function renderGallery() {
   gallery.innerHTML = "";
-  projects.forEach((p, i) => {
+  projects.forEach((project, index) => {
     const card = document.createElement('div');
     card.className = 'card';
-    
+
     const img = document.createElement('img');
-    img.src = p.img;
+    img.src = project.img;
     card.appendChild(img);
-    
+
     const title = document.createElement('div');
     title.className = 'title';
-    title.textContent = p.name;
+    title.textContent = project.name;
     card.appendChild(title);
-    
-    const edit = document.createElement('div');
-    edit.className = 'edit';
-    edit.textContent = '…';
-    edit.onclick = (e) => {
+
+    const editIcon = document.createElement('div');
+    editIcon.className = 'edit-icon';
+    editIcon.textContent = '…';
+    editIcon.onclick = (e) => {
       e.stopPropagation();
-      const newName = prompt("Project name:", p.name);
-      const newURL = prompt("Project URL (must allow iframe):", p.url);
-      const newImg = prompt("Preview image URL:", p.img);
-      if(newName) p.name = newName;
-      if(newURL) p.url = newURL;
-      if(newImg) p.img = newImg;
+      const newName = prompt("Project Name:", project.name);
+      const newURL = prompt("Project URL:", project.url);
+      const newImg = prompt("Preview Image URL:", project.img);
+      if(newName !== null) project.name = newName;
+      if(newURL !== null) project.url = newURL;
+      if(newImg !== null) project.img = newImg;
       saveProjects();
       renderGallery();
     };
-    card.appendChild(edit);
-    
+    card.appendChild(editIcon);
+
     card.onclick = () => {
-      embedFrame.src = p.url;
+      if (!project.url) {
+        embedFrame.src = "";
+        fallbackNotice.textContent = "No URL provided for this project.";
+        return;
+      }
+
+      embedFrame.src = project.url;
+      fallbackNotice.textContent = "";
+
+      // Detect if iframe failed (common with X-Frame-Options)
+      setTimeout(() => {
+        try {
+          const doc = embedFrame.contentDocument || embedFrame.contentWindow.document;
+          // If accessing document fails, site is blocking
+        } catch(e) {
+          embedFrame.src = project.img; // show preview instead
+          fallbackNotice.textContent = "Site cannot be embedded. Showing preview image.";
+        }
+      }, 500);
     };
-    
+
     gallery.appendChild(card);
   });
 }
