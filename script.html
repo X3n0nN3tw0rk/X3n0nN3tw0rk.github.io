@@ -1,83 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Embed Gallery</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f4f4f4;
-    }
-    h1 {
-      text-align: center;
-    }
-    .link-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 40px;
-      gap: 10px;
-    }
-    .link-list button {
-      padding: 10px 15px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-    }
-    .link-list button:hover {
-      background-color: #0056b3;
-    }
-    .embed-container {
-      display: flex;
-      justify-content: center;
-    }
-    iframe {
-      width: 90%;
-      height: 600px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Embed Gallery</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    position: relative;
+    width: 200px;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: white;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .card .title {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .embed-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  iframe {
+    width: 90%;
+    height: 600px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+  }
+</style>
 </head>
 <body>
 
-  <h1>Embed Link Gallery</h1>
+<h1>My Portfolio Gallery</h1>
 
-  <!-- Buttons for the links -->
-  <div class="link-list">
-    <button onclick="loadEmbed(0)">Site 1</button>
-    <button onclick="loadEmbed(1)">Site 2</button>
-    <button onclick="loadEmbed(2)">Site 3</button>
-    <button onclick="loadEmbed(3)">Site 4</button>
-    <button onclick="loadEmbed(4)">Site 5</button>
+<!-- Gallery of portfolio items -->
+<div class="gallery">
+  <div class="card" onclick="loadEmbed(0)">
+    <img src="https://via.placeholder.com/200x120.png?text=Preview+1" alt="Preview 1">
+    <div class="title">Project 1</div>
   </div>
 
-  <!-- Embedded iframe -->
-  <div class="embed-container">
-    <iframe id="embedFrame" src="" frameborder="0" allowfullscreen></iframe>
+  <div class="card" onclick="loadEmbed(1)">
+    <img src="https://via.placeholder.com/200x120.png?text=Preview+2" alt="Preview 2">
+    <div class="title">Project 2</div>
   </div>
 
-  <script>
-    // Index of links - fill in your URLs manually
-    const links = [
-      "mathstutor.life", // Link 1
-      "1ball.st", // Link 2
-      "chatgpt.com", // Link 3
-      "youtube.com", // Link 4
-      "x3n0nn3tw0rk.github.io"  // Link 5
-    ];
+  <div class="card" onclick="loadEmbed(2)">
+    <img src="https://via.placeholder.com/200x120.png?text=Preview+3" alt="Preview 3">
+    <div class="title">Project 3</div>
+  </div>
 
-    function loadEmbed(index) {
-      const iframe = document.getElementById('embedFrame');
-      iframe.src = links[index];
-    }
-  </script>
+  <div class="card" onclick="loadEmbed(3)">
+    <img src="https://via.placeholder.com/200x120.png?text=Preview+4" alt="Preview 4">
+    <div class="title">Project 4</div>
+  </div>
+
+  <div class="card" onclick="loadEmbed(4)">
+    <img src="https://via.placeholder.com/200x120.png?text=Preview+5" alt="Preview 5">
+    <div class="title">Project 5</div>
+  </div>
+</div>
+
+<!-- Embedded iframe -->
+<div class="embed-container">
+  <iframe id="embedFrame" src="" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<script>
+  // Index of embed links - fill in your URLs
+  const links = [
+    "1ball.st", // Project 1 URL
+    "https://satoru.one/", // Project 2 URL
+    "neal.fun", // Project 3 URL
+    "", // Project 4 URL
+    ""  // Project 5 URL
+  ];
+
+  function loadEmbed(index) {
+    document.getElementById('embedFrame').src = links[index];
+  }
+</script>
 
 </body>
 </html>
