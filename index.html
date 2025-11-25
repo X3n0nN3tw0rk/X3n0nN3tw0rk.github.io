@@ -239,131 +239,136 @@ let audio = new Audio();
 audio.volume = 1;
 audio.loop = false;
 
-function playTrack(index) {
-  if (index < 0 || index >= playlist.length) index = 0;
-  currentTrack = index;
-  audio.src = playlist[currentTrack].file;
-  audio.play().catch(() => {
-    function resume() {
-      audio.play().catch(()=>{});
-      window.removeEventListener('click', resume);
-    }
-    window.addEventListener('click', resume);
-  });
-  updateUI();
-}
+// DO NOT AUTOPLAY — first load paused
+audio.src = playlist[0].file;
 
-audio.addEventListener('ended', () => {
-  currentTrack = (currentTrack + 1) % playlist.length;
-  playTrack(currentTrack);
-});
-
-let playPauseBtn, trackTitle, progressFill, cover;
+let spotifyBox; 
+let toggleBtn;
+let playPauseBtn, trackTitle, progressBar;
 
 function createSpotifyUI() {
-  const box = document.createElement('div');
-  box.style.position = 'fixed';
-  box.style.bottom = '20px';
-  box.style.right = '20px';
-  box.style.width = '360px';
-  box.style.height = '80px';
-  box.style.background = '#181818';
-  box.style.borderRadius = '10px';
-  box.style.display = 'flex';
-  box.style.alignItems = 'center';
-  box.style.padding = '10px 14px';
-  box.style.color = '#fff';
-  box.style.fontFamily = 'Circular, Helvetica, Arial, sans-serif';
-  box.style.boxShadow = '0 8px 24px rgba(0,0,0,0.7)';
-  box.style.zIndex = '999999';
-  box.style.transition = 'transform 0.3s ease';
-  box.style.cursor = 'default';
+  // --- TOGGLE BUTTON ---
+  toggleBtn = document.createElement("button");
+  toggleBtn.textContent = "Hide Player";
+  toggleBtn.style.position = "fixed";
+  toggleBtn.style.bottom = "120px";
+  toggleBtn.style.right = "20px";
+  toggleBtn.style.padding = "10px 16px";
+  toggleBtn.style.borderRadius = "8px";
+  toggleBtn.style.background = "#1DB954";
+  toggleBtn.style.color = "#fff";
+  toggleBtn.style.border = "none";
+  toggleBtn.style.cursor = "pointer";
+  toggleBtn.style.zIndex = "999999";
+  document.body.appendChild(toggleBtn);
 
-  cover = document.createElement('div');
-  cover.style.width = '60px';
-  cover.style.height = '60px';
-  cover.style.borderRadius = '6px';
-  cover.style.background = 'linear-gradient(135deg, #2e2e2e, #3c3c3c)';
-  cover.style.flexShrink = '0';
-  cover.style.overflow = 'hidden';
-  box.appendChild(cover);
+  toggleBtn.addEventListener("click", () => {
+    spotifyBox.style.display = (spotifyBox.style.display === "none") ? "flex" : "none";
+    toggleBtn.textContent = (spotifyBox.style.display === "none") ? "Show Player" : "Hide Player";
+  });
+
+  // --- PLAYER BOX ---
+  spotifyBox = document.createElement('div');
+  spotifyBox.style.position = 'fixed';
+  spotifyBox.style.bottom = '20px';
+  spotifyBox.style.right = '20px';
+  spotifyBox.style.width = '320px';
+  spotifyBox.style.height = '90px';
+  spotifyBox.style.background = '#121212';
+  spotifyBox.style.borderRadius = '10px';
+  spotifyBox.style.display = 'flex';
+  spotifyBox.style.flexDirection = 'row';
+  spotifyBox.style.alignItems = 'center';
+  spotifyBox.style.padding = '10px';
+  spotifyBox.style.color = '#fff';
+  spotifyBox.style.fontFamily = 'Arial, sans-serif';
+  spotifyBox.style.boxShadow = '0 8px 24px rgba(0,0,0,0.6)';
+  spotifyBox.style.zIndex = '999999';
+
+  const cover = document.createElement('div');
+  cover.style.width = '70px';
+  cover.style.height = '70px';
+  cover.style.borderRadius = '5px';
+  cover.style.background = 'linear-gradient(135deg, #460969, #6b6b6b)';
+  spotifyBox.appendChild(cover);
 
   const info = document.createElement('div');
   info.style.flex = '1';
-  info.style.marginLeft = '14px';
+  info.style.marginLeft = '10px';
   info.style.display = 'flex';
   info.style.flexDirection = 'column';
   info.style.justifyContent = 'center';
-  info.style.overflow = 'hidden';
 
   trackTitle = document.createElement('div');
   trackTitle.textContent = playlist[currentTrack].title;
-  trackTitle.style.fontWeight = '600';
-  trackTitle.style.fontSize = '15px';
-  trackTitle.style.whiteSpace = 'nowrap';
-  trackTitle.style.overflow = 'hidden';
-  trackTitle.style.textOverflow = 'ellipsis';
-  trackTitle.style.marginBottom = '6px';
+  trackTitle.style.fontWeight = 'bold';
+  trackTitle.style.fontSize = '14px';
+  trackTitle.style.marginBottom = '4px';
   info.appendChild(trackTitle);
 
-  const progressBar = document.createElement('div');
+  progressBar = document.createElement('div');
   progressBar.style.width = '100%';
   progressBar.style.height = '4px';
-  progressBar.style.background = '#404040';
+  progressBar.style.background = '#333';
   progressBar.style.borderRadius = '2px';
   progressBar.style.overflow = 'hidden';
-  progressFill = document.createElement('div');
-  progressFill.style.height = '100%';
-  progressFill.style.width = '0%';
-  progressFill.style.background = '#1DB954';
-  progressBar.appendChild(progressFill);
+  
+  const fill = document.createElement('div');
+  fill.style.height = '100%';
+  fill.style.width = '0%';
+  fill.style.background = '#1DB954';
+  progressBar.appendChild(fill);
+
   info.appendChild(progressBar);
 
   const controls = document.createElement('div');
   controls.style.display = 'flex';
   controls.style.alignItems = 'center';
-  controls.style.justifyContent = 'center';
-  controls.style.gap = '10px';
-  controls.style.marginTop = '8px';
+  controls.style.gap = '8px';
+  controls.style.marginTop = '6px';
 
   const prevBtn = document.createElement('button');
-  prevBtn.innerHTML = '⏮';
-  styleButton(prevBtn);
+  prevBtn.textContent = '⏮';
+  prevBtn.style.background = 'none';
+  prevBtn.style.border = 'none';
+  prevBtn.style.color = '#fff';
+  prevBtn.style.cursor = 'pointer';
+  prevBtn.style.fontSize = '16px';
 
   playPauseBtn = document.createElement('button');
-  playPauseBtn.innerHTML = '⏸';
+  playPauseBtn.textContent = '▶'; // START PAUSED
   playPauseBtn.style.background = '#1DB954';
-  playPauseBtn.style.borderRadius = '50%';
-  playPauseBtn.style.width = '40px';
-  playPauseBtn.style.height = '40px';
-  playPauseBtn.style.color = '#fff';
   playPauseBtn.style.border = 'none';
-  playPauseBtn.style.fontSize = '18px';
+  playPauseBtn.style.color = '#fff';
+  playPauseBtn.style.borderRadius = '50%';
+  playPauseBtn.style.width = '36px';
+  playPauseBtn.style.height = '36px';
   playPauseBtn.style.cursor = 'pointer';
-  playPauseBtn.style.transition = 'transform 0.1s ease';
-  playPauseBtn.onmouseenter = () => (playPauseBtn.style.transform = 'scale(1.05)');
-  playPauseBtn.onmouseleave = () => (playPauseBtn.style.transform = 'scale(1)');
+  playPauseBtn.style.fontSize = '16px';
 
   const nextBtn = document.createElement('button');
-  nextBtn.innerHTML = '⏭';
-  styleButton(nextBtn);
+  nextBtn.textContent = '⏭';
+  nextBtn.style.background = 'none';
+  nextBtn.style.border = 'none';
+  nextBtn.style.color = '#fff';
+  nextBtn.style.cursor = 'pointer';
+  nextBtn.style.fontSize = '16px';
 
   controls.appendChild(prevBtn);
   controls.appendChild(playPauseBtn);
   controls.appendChild(nextBtn);
-
   info.appendChild(controls);
-  box.appendChild(info);
 
-  document.body.appendChild(box);
+  spotifyBox.appendChild(info);
+  document.body.appendChild(spotifyBox);
 
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.innerHTML = '⏸';
+      playPauseBtn.textContent = '⏸';
     } else {
       audio.pause();
-      playPauseBtn.innerHTML = '▶';
+      playPauseBtn.textContent = '▶';
     }
   });
 
@@ -379,33 +384,24 @@ function createSpotifyUI() {
 
   audio.addEventListener('timeupdate', () => {
     if (audio.duration > 0) {
-      progressFill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
+      fill.style.width = ((audio.currentTime / audio.duration) * 100) + '%';
     }
   });
 }
 
-function styleButton(btn) {
-  btn.style.background = 'none';
-  btn.style.border = 'none';
-  btn.style.color = '#b3b3b3';
-  btn.style.fontSize = '18px';
-  btn.style.cursor = 'pointer';
-  btn.style.transition = 'color 0.2s ease';
-  btn.onmouseenter = () => (btn.style.color = '#fff');
-  btn.onmouseleave = () => (btn.style.color = '#b3b3b3');
-}
-
+// Updates the UI title + play button state
 function updateUI() {
   trackTitle.textContent = playlist[currentTrack].title;
-  playPauseBtn.innerHTML = audio.paused ? '▶' : '⏸';
+  playPauseBtn.textContent = audio.paused ? '▶' : '⏸';
 }
 
+// Load UI only — DO NOT autoplay
 createSpotifyUI();
-playTrack(0);
 </script>
 
 </body>
 </html>
+
 
 
 
