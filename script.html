@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Embed Gallery</title>
+<title>Embed Portfolio Gallery</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@
 
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
         gap: 25px;
     }
 
@@ -29,40 +29,44 @@
         border-radius: 16px;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        cursor: pointer;
         transition: 0.3s;
     }
 
     .card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 25px rgba(0,0,0,0.7);
+        transform: scale(1.03);
+        box-shadow: 0 0 25px rgba(0,0,0,0.5);
     }
 
-    .preview-wrapper {
+    /* Preview box */
+    .preview-area {
         width: 100%;
-        height: 200px;
+        height: 150px;
         background: #111;
+        overflow: hidden;
         position: relative;
     }
 
-    iframe {
-        width: 100%;
-        height: 100%;
+    .preview-iframe {
+        width: 400%;
+        height: 400%;
+        transform: scale(0.25);
+        transform-origin: top left;
         border: none;
-        background: black;
+        pointer-events: none; /* Disable interaction in preview */
     }
 
-    .fallback-img {
+    .preview-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
         display: none;
+        object-fit: cover;
     }
 
     .title {
-        font-size: 20px;
-        padding: 15px;
+        padding: 12px;
         font-weight: bold;
+        font-size: 18px;
     }
 
     .menu-btn {
@@ -72,11 +76,12 @@
         background: rgba(0,0,0,0.6);
         border: none;
         color: white;
-        font-size: 22px;
-        width: 32px;
-        height: 32px;
+        font-size: 20px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         cursor: pointer;
+        z-index: 10;
     }
 
     .menu-panel {
@@ -89,7 +94,7 @@
         display: none;
         flex-direction: column;
         gap: 8px;
-        z-index: 99;
+        z-index: 20;
     }
 
     .menu-panel input {
@@ -109,12 +114,59 @@
         border-radius: 6px;
         cursor: pointer;
     }
+
+    /* FULL-SCREEN VIEWER */
+    #viewer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        display: none;
+        flex-direction: column;
+    }
+
+    #viewer iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    #backBtn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: white;
+        color: black;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 50;
+        font-size: 16px;
+        border: none;
+    }
+
+    #viewerFallback {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    }
 </style>
 </head>
 <body>
 
 <h1>Website Embed Portfolio</h1>
+
 <div class="gallery" id="gallery"></div>
+
+<!-- FULLSCREEN VIEWER -->
+<div id="viewer">
+    <button id="backBtn" onclick="closeViewer()">← Back</button>
+    <iframe id="viewerFrame"></iframe>
+    <img id="viewerFallback">
+</div>
 
 <script>
 let sites = JSON.parse(localStorage.getItem("embedSites")) || [
@@ -123,67 +175,86 @@ let sites = JSON.parse(localStorage.getItem("embedSites")) || [
     { name: "", url: "", img: "" }
 ];
 
-// SAVE
 function save() {
     localStorage.setItem("embedSites", JSON.stringify(sites));
 }
 
-// BUILD CARDS
 function render() {
     const gallery = document.getElementById("gallery");
     gallery.innerHTML = "";
 
-    sites.forEach((site, index) => {
-        let card = document.createElement("div");
-        card.className = "card";
+    sites.forEach((site, i) => {
+        let c = document.createElement("div");
+        c.className = "card";
 
-        card.innerHTML = `
-            <div class="preview-wrapper">
-                <iframe src="${site.url}" data-index="${index}" onload="checkEmbed(event)"></iframe>
-                <img src="${site.img}" class="fallback-img" id="fallback-${index}">
-                <button class="menu-btn" onclick="toggleMenu(${index})">⋮</button>
-
-                <div class="menu-panel" id="menu-${index}">
-                    <input placeholder="Website Name" value="${site.name}" id="name-${index}">
-                    <input placeholder="Embed URL" value="${site.url}" id="url-${index}">
-                    <input placeholder="Preview Image URL" value="${site.img}" id="img-${index}">
-                    <button class="save-btn" onclick="updateSite(${index})">Save</button>
+        c.innerHTML = `
+            <div class="preview-area" onclick="openViewer(${i})">
+                <iframe class="preview-iframe" src="${site.url}" data-i="${i}" onload="checkPreview(event)"></iframe>
+                <img id="pimg-${i}" class="preview-img" src="${site.img}">
+                <button class="menu-btn" onclick="event.stopPropagation();toggleMenu(${i})">⋮</button>
+                <div class="menu-panel" id="menu-${i}">
+                    <input id="name-${i}" placeholder="Website Name" value="${site.name}">
+                    <input id="url-${i}" placeholder="Embed URL" value="${site.url}">
+                    <input id="img-${i}" placeholder="Preview Image URL" value="${site.img}">
+                    <button class="save-btn" onclick="updateSite(${i})">Save</button>
                 </div>
             </div>
             <div class="title">${site.name || "Unnamed Site"}</div>
         `;
 
-        gallery.appendChild(card);
+        gallery.appendChild(c);
     });
 }
 
-// TOGGLE MENU
 function toggleMenu(i) {
-    const menu = document.getElementById("menu-" + i);
-    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+    let m = document.getElementById("menu-" + i);
+    m.style.display = m.style.display === "flex" ? "none" : "flex";
 }
 
-// SAVE CHANGES
 function updateSite(i) {
     sites[i].name = document.getElementById("name-" + i).value;
-    sites[i].url = document.getElementById("url-" + i).value;
-    sites[i].img = document.getElementById("img-" + i).value;
+    sites[i].url  = document.getElementById("url-" + i).value;
+    sites[i].img  = document.getElementById("img-" + i).value;
     save();
     render();
 }
 
-// EMBED CHECKER (detects CSP blocks)
-function checkEmbed(e) {
+function checkPreview(e) {
     let iframe = e.target;
-    let index = iframe.getAttribute("data-index");
+    let i = iframe.getAttribute("data-i");
 
-    try {
-        // Attempt to access iframe → throws error if blocked
-        let test = iframe.contentWindow.location.href;
-    } catch (err) {
+    try { iframe.contentWindow.location.href; }
+    catch (err) {
         iframe.style.display = "none";
-        document.getElementById("fallback-" + index).style.display = "block";
+        document.getElementById("pimg-" + i).style.display = "block";
     }
+}
+
+/* FULL SCREEN VIEWER */
+function openViewer(i) {
+    let viewer = document.getElementById("viewer");
+    let frame = document.getElementById("viewerFrame");
+    let fallback = document.getElementById("viewerFallback");
+
+    viewer.style.display = "flex";
+    fallback.style.display = "none";
+    frame.style.display = "block";
+
+    frame.src = sites[i].url;
+
+    setTimeout(() => {
+        try { frame.contentWindow.location.href; }
+        catch {
+            frame.style.display = "none";
+            fallback.src = sites[i].img;
+            fallback.style.display = "block";
+        }
+    }, 800);
+}
+
+function closeViewer() {
+    document.getElementById("viewer").style.display = "none";
+    document.getElementById("viewerFrame").src = "";
 }
 
 render();
