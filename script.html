@@ -2,231 +2,166 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Portfolio Embed Gallery</title>
+<title>Embed Gallery with Iframely</title>
+<script async src="https://iframely.net/embed.js"></script>
 <style>
+
 body {
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;
-    margin: 0;
-    padding: 40px;
-    color: white;
+  background: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
 }
+
 h1 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Add/Edit panel - outside of cards */
-#menuPanel {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-}
-#menuPanel input {
-    padding: 6px;
-    border-radius: 6px;
-    border: 1px solid #555;
-    background: #111;
-    color: white;
-}
-.save-btn {
-    background: #00aaff;
-    color: black;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* Gallery */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding-bottom: 50px;
 }
+
 .card {
-    background: #1b1b1b;
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    transition: 0.3s;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid #333;
 }
+
 .card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  transform: scale(1.02);
 }
 
-/* Preview snapshot */
-.preview-area {
-    width: 100%;
-    height: 150px;
-    background: #111;
-    overflow: hidden;
-    position: relative;
-}
-.preview-iframe {
-    width: 400%;
-    height: 400%;
-    transform: scale(0.25);
-    transform-origin: top left;
-    border: none;
-    pointer-events: none; /* disable interaction in preview */
-}
-.preview-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
-.title {
-    padding: 12px;
-    font-weight: bold;
-    font-size: 18px;
-    text-align: center;
+.card-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-/* FULLSCREEN VIEWER */
+.preview-wrapper {
+  pointer-events: none; 
+}
+
 #viewer {
-    position: fixed;
-    top:0; left:0;
-    width: 100%;
-    height: 100%;
-    background: black;
-    display: none;
-    flex-direction: column;
-    z-index: 100;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000;
+  display: none;
+  z-index: 9999;
 }
-#viewer iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
+
+#viewerContent {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow: auto;
+  padding: 20px;
 }
-#viewerFallback {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
+
 #backBtn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: white;
-    color: black;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    border: none;
-    z-index: 101;
+  position: fixed;
+  top: 10px; left: 10px;
+  padding: 10px 15px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 10000;
 }
+
 </style>
 </head>
 <body>
 
-<h1>Portfolio Embed Gallery</h1>
+<h1>Embed Portfolio Gallery</h1>
 
-<!-- ADD/EDIT SITE PANEL (separate from gallery) -->
-<div id="menuPanel">
-    <input id="nameInput" placeholder="Website Name">
-    <input id="urlInput" placeholder="Embed URL">
-    <input id="imgInput" placeholder="Preview Image URL">
-    <button class="save-btn" onclick="addSite()">Add Site</button>
-</div>
-
-<!-- Gallery -->
 <div class="gallery" id="gallery"></div>
 
-<!-- Fullscreen viewer -->
 <div id="viewer">
-    <button id="backBtn" onclick="closeViewer()">← Back</button>
-    <iframe id="viewerFrame"></iframe>
-    <img id="viewerFallback">
+  <button id="backBtn" onclick="closeViewer()">← Back</button>
+  <div id="viewerContent"></div>
 </div>
 
 <script>
-// Load saved sites
-let sites = JSON.parse(localStorage.getItem("embedSites")) || [];
 
-// Save sites
-function save() {
-    localStorage.setItem("embedSites", JSON.stringify(sites));
+// --- Your Embed Items Here ---
+const items = [
+  {
+    title: "Google (Iframely Card)",
+    type: "iframely",
+    code: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 140px; padding-bottom: 0;"><a href="https://www.google.com/" data-iframely-url="https://iframely.net/2mwAKE?theme=dark"></a></div></div>`
+  },
+
+  {
+    title: "Example Site (Iframe Embed)",
+    type: "iframe",
+    url: "https://example.com"
+  },
+
+  {
+    title: "Another Example",
+    type: "iframely",
+    code: `<div class="iframely-embed"><a href="https://github.com" data-iframely-url="https://iframely.net/FakeID?theme=dark"></a></div>`
+  }
+];
+
+
+// -------- BUILD GALLERY --------
+function buildGallery() {
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  items.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = () => openViewer(index);
+
+    card.innerHTML = `
+      <div class="card-title">${item.title}</div>
+      <div class="preview-wrapper">
+        ${item.type === "iframely" ? item.code : `<iframe src="${item.url}" style="width:100%;height:140px;border:none;pointer-events:none;"></iframe>`}
+      </div>
+    `;
+
+    gallery.appendChild(card);
+  });
+
+  // Re-run Iframely to render cards
+  iframely && iframely.load();
 }
 
-// Render gallery
-function render() {
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
-    sites.forEach((site, i) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.onclick = () => openViewer(i);
+buildGallery();
 
-        card.innerHTML = `
-            <div class="preview-area">
-                <iframe class="preview-iframe" src="${site.url}" data-i="${i}" onload="checkPreview(event)"></iframe>
-                <img class="preview-img" id="pimg-${i}" src="${site.img}">
-            </div>
-            <div class="title">${site.name || "Unnamed Site"}</div>
-        `;
-        gallery.appendChild(card);
-    });
-}
 
-// Add new site from panel
-function addSite() {
-    const name = document.getElementById("nameInput").value;
-    const url = document.getElementById("urlInput").value;
-    const img = document.getElementById("imgInput").value;
-    if(!name && !url && !img) return;
-    sites.push({name, url, img});
-    save();
-    render();
-    document.getElementById("nameInput").value = "";
-    document.getElementById("urlInput").value = "";
-    document.getElementById("imgInput").value = "";
-}
+// -------- OPEN VIEWER --------
+function openViewer(index) {
+  const viewer = document.getElementById("viewer");
+  const content = document.getElementById("viewerContent");
+  const item = items[index];
 
-// Check preview iframe fallback
-function checkPreview(e) {
-    const iframe = e.target;
-    const i = iframe.getAttribute("data-i");
-    try { iframe.contentWindow.location.href; }
-    catch(err) {
-        iframe.style.display = "none";
-        document.getElementById("pimg-" + i).style.display = "block";
-    }
-}
+  viewer.style.display = "block";
 
-// Fullscreen viewer
-function openViewer(i) {
-    const viewer = document.getElementById("viewer");
-    const frame = document.getElementById("viewerFrame");
-    const fallback = document.getElementById("viewerFallback");
-    viewer.style.display = "flex";
-    frame.style.display = "block";
-    fallback.style.display = "none";
-    frame.src = sites[i].url;
-
-    setTimeout(() => {
-        try { frame.contentWindow.location.href; }
-        catch {
-            frame.style.display = "none";
-            fallback.src = sites[i].img;
-            fallback.style.display = "block";
-        }
-    }, 500);
+  if (item.type === "iframely") {
+    content.innerHTML = item.code;
+    iframely.load();
+  } else {
+    content.innerHTML = `<iframe src="${item.url}" style="width:100%;height:100%;border:none;"></iframe>`;
+  }
 }
 
 function closeViewer() {
-    document.getElementById("viewer").style.display = "none";
-    document.getElementById("viewerFrame").src = "";
+  document.getElementById("viewer").style.display = "none";
+  document.getElementById("viewerContent").innerHTML = "";
 }
 
-render();
 </script>
 
 </body>
