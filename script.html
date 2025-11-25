@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customizable Embed Gallery</title>
+<title>Portfolio Gallery</title>
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,7 +28,6 @@
   .card {
     position: relative;
     width: 220px;
-    height: 140px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -38,10 +37,10 @@
     flex-direction: column;
   }
 
-  .card iframe {
+  .card img {
     width: 100%;
-    height: 100px;
-    border: none;
+    height: 120px;
+    object-fit: cover;
   }
 
   .card .title {
@@ -66,51 +65,29 @@
     justify-content: center;
     cursor: pointer;
   }
-
-  .embed-container {
-    display: flex;
-    justify-content: center;
-  }
-
-  iframe#embedFrame {
-    width: 90%;
-    height: 600px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-  }
 </style>
 </head>
 <body>
 
-<h1>Customizable Portfolio Gallery</h1>
+<h1>Portfolio Gallery</h1>
 
 <div class="gallery" id="gallery"></div>
 
-<div class="embed-container">
-  <iframe id="embedFrame" src="" frameborder="0" allowfullscreen></iframe>
-</div>
-
 <script>
 const defaultProjects = [
-  {name: "Project 1", url: "https://example.com"},
-  {name: "Project 2", url: "https://example.com"},
-  {name: "Project 3", url: "https://example.com"},
-  {name: "Project 4", url: "https://example.com"},
-  {name: "Project 5", url: "https://example.com"},
+  {name: "Project 1", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Preview+1"},
+  {name: "Project 2", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Preview+2"},
+  {name: "Project 3", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Preview+3"},
+  {name: "Project 4", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Preview+4"},
+  {name: "Project 5", url: "https://example.com", img: "https://via.placeholder.com/220x120.png?text=Preview+5"},
 ];
 
-// Load saved projects from localStorage or use default
 let projects = JSON.parse(localStorage.getItem('projects')) || defaultProjects;
 
 const gallery = document.getElementById('gallery');
-const embedFrame = document.getElementById('embedFrame');
 
 function saveProjects() {
   localStorage.setItem('projects', JSON.stringify(projects));
-}
-
-function loadEmbed(index) {
-  embedFrame.src = projects[index].url;
 }
 
 function renderGallery() {
@@ -119,9 +96,9 @@ function renderGallery() {
     const card = document.createElement('div');
     card.className = 'card';
 
-    const iframe = document.createElement('iframe');
-    iframe.src = project.url;
-    card.appendChild(iframe);
+    const img = document.createElement('img');
+    img.src = project.img;
+    card.appendChild(img);
 
     const title = document.createElement('div');
     title.className = 'title';
@@ -135,14 +112,16 @@ function renderGallery() {
       e.stopPropagation();
       const newName = prompt("Enter project name:", project.name);
       const newURL = prompt("Enter project URL:", project.url);
+      const newImg = prompt("Enter preview image URL:", project.img);
       if(newName !== null) project.name = newName;
       if(newURL !== null) project.url = newURL;
+      if(newImg !== null) project.img = newImg;
       saveProjects();
       renderGallery();
     };
     card.appendChild(editIcon);
 
-    card.onclick = () => loadEmbed(index);
+    card.onclick = () => window.open(project.url, "_blank");
 
     gallery.appendChild(card);
   });
