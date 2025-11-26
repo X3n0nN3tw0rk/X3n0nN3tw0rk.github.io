@@ -1,16 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Google Search</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embed Site Gallery</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  #embedForm {
+    margin-bottom: 20px;
+  }
+  input[type="text"] {
+    width: 300px;
+    padding: 5px;
+  }
+  button {
+    padding: 5px 10px;
+    margin-left: 5px;
+  }
+  .embedItem {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+  }
+  .embedItem button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  iframe {
+    width: 100%;
+    height: 400px;
+    border: none;
+  }
+</style>
 </head>
 <body>
-    <h1>Google Search Embed</h1>
 
-    <!-- Google Custom Search Element -->
-    <div id="cse" style="width: 100%;"></div>
+<h2>Embed Site Gallery</h2>
 
-    <script async src="https://cse.google.com/cse.js?cx=YOUR_CSE_ID"></script>
+<div id="embedForm">
+  <input type="text" id="siteURL" placeholder="Enter website URL">
+  <button onclick="addEmbed()">Add Embed</button>
+</div>
+
+<div id="embedGallery"></div>
+
+<script>
+function addEmbed() {
+  const urlInput = document.getElementById('siteURL');
+  let url = urlInput.value.trim();
+
+  if (!url) {
+    alert('Please enter a URL');
+    return;
+  }
+
+  // Ensure URL starts with http:// or https://
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url;
+  }
+
+  const embedGallery = document.getElementById('embedGallery');
+
+  // Create container div
+  const container = document.createElement('div');
+  container.className = 'embedItem';
+
+  // Create iframe
+  const iframe = document.createElement('iframe');
+  iframe.src = url;
+
+  // Create delete button
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Delete';
+  delBtn.onclick = () => container.remove();
+
+  container.appendChild(delBtn);
+  container.appendChild(iframe);
+  embedGallery.appendChild(container);
+
+  urlInput.value = '';
+}
+</script>
+
 </body>
 </html>
