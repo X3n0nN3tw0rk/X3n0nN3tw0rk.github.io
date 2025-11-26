@@ -3,8 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="IMG_0616.png">
-<title>Home | Schoology</title>
+
+<!-- Favicon -->
+<link id="favicon" rel="icon" type="image/png" href="IMG_0616.png">
+
+<title>Loading...</title>
+
 <style>
   html, body {
     margin: 0;
@@ -18,6 +22,26 @@
     border: none;
   }
 </style>
+
+<script>
+  // Five random names — change these to whatever you want
+  const names = [
+    "Home | Schoology",
+    "User Dashboard",
+    "Student Profile | Home | Infinite Campus",
+    "New Tab",
+    "Gmail"
+  ];
+
+  // Pick a random one
+  const randomName = names[Math.floor(Math.random() * names.length)];
+
+  // Apply it to the tab title
+  document.addEventListener("DOMContentLoaded", () => {
+      document.title = randomName;
+  });
+</script>
+
 </head>
 <body>
 
