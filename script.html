@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Embed Gallery with Iframely</title>
-<script async src="https://iframely.net/embed.js"></script>
+<title>Embed Portfolio Gallery</title>
 <style>
 
 body {
@@ -95,21 +94,15 @@ h1 {
 // --- Your Embed Items Here ---
 const items = [
   {
-    title: "Google (Iframely Card)",
-    type: "iframely",
-    code: `<div class="iframely-embed"><div class="iframely-responsive" style="height: 140px; padding-bottom: 0;"><a href="https://www.google.com/" data-iframely-url="https://iframely.net/2mwAKE?theme=dark"></a></div></div>`
+    title: "Google Full Object Embed",
+    type: "object",
+    objectURL: "https://www.google.com/"
   },
 
   {
     title: "Example Site (Iframe Embed)",
     type: "iframe",
     url: "https://example.com"
-  },
-
-  {
-    title: "Another Example",
-    type: "iframely",
-    code: `<div class="iframely-embed"><a href="https://github.com" data-iframely-url="https://iframely.net/FakeID?theme=dark"></a></div>`
   }
 ];
 
@@ -124,18 +117,22 @@ function buildGallery() {
     card.className = "card";
     card.onclick = () => openViewer(index);
 
+    let previewHTML = "";
+    if (item.type === "object") {
+      previewHTML = `<object type="text/html" data="${item.objectURL}" width="100%" height="140"></object>`;
+    } else {
+      previewHTML = `<iframe src="${item.url}" style="width:100%;height:140px;border:none;pointer-events:none;"></iframe>`;
+    }
+
     card.innerHTML = `
       <div class="card-title">${item.title}</div>
       <div class="preview-wrapper">
-        ${item.type === "iframely" ? item.code : `<iframe src="${item.url}" style="width:100%;height:140px;border:none;pointer-events:none;"></iframe>`}
+        ${previewHTML}
       </div>
     `;
 
     gallery.appendChild(card);
   });
-
-  // Re-run Iframely to render cards
-  iframely && iframely.load();
 }
 
 buildGallery();
@@ -149,9 +146,8 @@ function openViewer(index) {
 
   viewer.style.display = "block";
 
-  if (item.type === "iframely") {
-    content.innerHTML = item.code;
-    iframely.load();
+  if (item.type === "object") {
+    content.innerHTML = `<object type="text/html" data="${item.objectURL}" width="100%" height="100%"></object>`;
   } else {
     content.innerHTML = `<iframe src="${item.url}" style="width:100%;height:100%;border:none;"></iframe>`;
   }
