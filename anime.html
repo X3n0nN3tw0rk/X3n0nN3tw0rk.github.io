@@ -112,9 +112,19 @@ document.addEventListener("click", () => {
         // Clear everything and append iframe
         document.body.innerHTML = "";
         document.body.appendChild(iframe);
+
+        // Request fullscreen
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) { /* Safari */
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) { /* IE11 */
+            iframe.msRequestFullscreen();
+        }
     }
 });
 </script>
+
 
 <header class="cle-header">
     <div class="cle-header__container">
