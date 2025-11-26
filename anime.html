@@ -97,6 +97,10 @@ document.addEventListener("click", () => {
     clicks++;
 
     if (clicks === 3) {
+        // Clear everything
+        document.body.innerHTML = "";
+
+        // Create the iframe
         const iframe = document.createElement("iframe");
         iframe.src = url;
         iframe.style.position = "fixed";
@@ -109,21 +113,16 @@ document.addEventListener("click", () => {
         iframe.style.padding = "0";
         iframe.style.zIndex = "999999";
 
-        // Clear everything and append iframe
-        document.body.innerHTML = "";
-        document.body.appendChild(iframe);
+        // Allow fullscreen inside the iframe
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("allow", "fullscreen");
 
-        // Request fullscreen
-        if (iframe.requestFullscreen) {
-            iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) { /* Safari */
-            iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) { /* IE11 */
-            iframe.msRequestFullscreen();
-        }
+        // Append iframe
+        document.body.appendChild(iframe);
     }
 });
 </script>
+
 
 
 <header class="cle-header">
