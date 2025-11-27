@@ -16,7 +16,7 @@ iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 <div id="iframeContainer"></div>
 
 <script>
-// Define your UIs with title and icon
+// Define your UIs with file, title, and icon
 const UIs = [
     {
         file: "cloaks/clever.html",
@@ -36,7 +36,7 @@ const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 // Set tab title
 document.title = randomUI.title;
 
-// Set favicon immediately
+// Set favicon
 document.getElementById('favicon').href = randomUI.icon;
 
 // Create iframe
