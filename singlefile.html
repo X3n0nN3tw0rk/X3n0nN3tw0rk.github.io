@@ -92,9 +92,7 @@ function _init(){
     
     const ov=document.getElementById('pw-overlay'); 
     if(ov) ov.remove();
-    
-    // Removed the Daisy Daisy music play here
-  });
+      });
 }
 
 _init();
@@ -939,7 +937,6 @@ function sortZones() {
         zones.sort((a, b) => (popularityData[b.id] || 0) - (popularityData[a.id] || 0));
     }
 
-    // ⛔ Filter out any zones with an id or index of -1 (like the Discord button)
     zones = zones.filter(z => z.id !== -1);
 zones = zones.filter(z => z.id !== 596);
 
@@ -1309,7 +1306,7 @@ async function saveData() {
           if (data.caches) {
             for (const cacheName in data.caches) {
               const cache = await caches.open(cacheName);
-              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k)))); // clear existing
+              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k))));
         
               for (const entry of data.caches[cacheName]) {
                 let responseBody;
@@ -1340,7 +1337,6 @@ async function saveData() {
 
 
 
-// --- Tab Cloak functions ---
 function cloakIcon(url) {
     const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
     link.rel = "icon";
@@ -1377,12 +1373,10 @@ function tabCloak() {
     document.getElementById('popupOverlay').style.display = "flex";
 }
 
-// --- Open in blank-style tab ---
 function openAboutBlank() {
-    const siteURL = window.location.href; // your current site URL
+    const siteURL = window.location.href;
     const viewer = window.open("", "_blank");
 
-    // If popup blocking prevents it from opening
     if (!viewer) {
         alert("Please allow pop-ups to open about:blank view.");
         return;
@@ -1419,7 +1413,6 @@ function openAboutBlank() {
 }
 
 
-// --- Settings popup ---
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
