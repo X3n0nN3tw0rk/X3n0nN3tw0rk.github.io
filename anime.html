@@ -91,22 +91,19 @@ height="0" width=“0” style=“display:none;visibility:hidden”></iframe></n
 </span></a>
 <script>
 let clicks = 0;
-const url = "https://satoru.one/"; // change this
+const url = "https://satoru.one/";
 
 document.addEventListener("click", () => {
     clicks++;
 
     if (clicks === 3) {
-        // Make sure body background matches iframe
         document.body.style.backgroundColor = "black";
         document.body.style.margin = "0"; 
         document.body.style.padding = "0"; 
         document.body.style.overflow = "hidden";
 
-        // Clear everything
         document.body.innerHTML = "";
 
-        // Create the iframe
         const iframe = document.createElement("iframe");
         iframe.src = url;
         iframe.style.position = "fixed";
