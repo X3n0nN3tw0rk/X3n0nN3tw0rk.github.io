@@ -29,20 +29,17 @@
 
 <script>
 const UIs = [
-    "clever.html",
-    "google.html",
-    "schoology.html"
+    "cloaks/clever.html",
+    "cloaks/google.html",
+    "cloaks/schoology.html"
 ];
 
-// pick random
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-// wait a moment so the page actually loads first
 setTimeout(() => {
     document.getElementById("loadingText").style.display = "none";
     document.getElementById("uiContainer").style.display = "block";
 
-    // load the iframe
     document.getElementById("uiContainer").innerHTML =
         `<iframe src="${randomUI}" style="
             width:100vw;
@@ -54,7 +51,7 @@ setTimeout(() => {
             top:0;
             left:0;
         "></iframe>`;
-}, 300); // 300ms delay so page actually loads
+}, 300);
 </script>
 
 </body>
