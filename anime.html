@@ -3,40 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anime Landing Page</title>
+<title>Landing Page</title>
+<link id="favicon" rel="icon" href=""> <!-- no gray icon yet -->
 <style>
-  html, body {
-    margin:0; padding:0; height:100%; overflow:hidden;
-  }
-  #uiContainer {
-    width:100vw;
-    height:100vh;
-    position:fixed;
-    top:0;
-    left:0;
-  }
-  iframe {
-    width:100%;
-    height:100%;
-    border:none;
-    margin:0;
-    padding:0;
-  }
+html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+#iframeContainer { width:100vw; height:100vh; position:fixed; top:0; left:0; }
+iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 </style>
 </head>
 <body>
 
-<div id="uiContainer"></div>
+<div id="iframeContainer"></div>
 
 <script>
 const UIs = [
-    "cloaks/clever.html",
-    "cloaks/github.html"
+    { file: "cloaks/clever.html", title: "Clever" },
+    { file: "cloaks/github.html", title: "GitHub" }
 ];
 
+// Pick a random site
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-document.getElementById("uiContainer").innerHTML = `<iframe src="${randomUI}" allowfullscreen></iframe>`;
+// Update tab title immediately
+document.title = randomUI.title;
+
+// Create iframe
+const iframe = document.createElement('iframe');
+iframe.src = randomUI.file;
+iframe.allowFullscreen = true;
+document.getElementById('iframeContainer').appendChild(iframe);
+
+// When iframe loads, copy its favicon to the parent page
+iframe.onload = () => {
+    try {
+        const icon = iframe.contentDocument.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+        if (icon) {
+            const favicon = document.getElementById('favicon');
+            favicon.href = icon.href;
+        }
+    } catch (e) {
+        // Cross-origin: can't access favicon
+        // Fallback: leave default or set a manual icon
+        console.log('Cannot access favicon due to cross-origin:', e);
+    }
+};
 </script>
 
 </body>
