@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Landing Page</title>
-<link id="favicon" rel="icon" href=""> <!-- no gray icon yet -->
+<link id="favicon" rel="icon" href="">
 <style>
 html, body { margin:0; padding:0; height:100%; overflow:hidden; }
 #iframeContainer { width:100vw; height:100vh; position:fixed; top:0; left:0; }
@@ -16,37 +16,34 @@ iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 <div id="iframeContainer"></div>
 
 <script>
+// Define your UIs with title and icon
 const UIs = [
-    { file: "cloaks/clever.html", title: "Clever" },
-    { file: "cloaks/github.html", title: "GitHub" }
+    {
+        file: "cloaks/clever.html",
+        title: "Clever",
+        icon: "https://www.clever.com/wp-content/uploads/2023/06/cropped-Favicon-512px-192x192.png"
+    },
+    {
+        file: "cloaks/github.html",
+        title: "GitHub",
+        icon: "https://images.ctfassets.net/8aevphvgewt8/4pe4eOtUJ0ARpZRE4fNekf/f52b1f9c52f059a33170229883731ed0/GH-Homepage-Universe-img.png"
+    }
 ];
 
 // Pick a random site
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-// Update tab title immediately
+// Set tab title
 document.title = randomUI.title;
+
+// Set favicon immediately
+document.getElementById('favicon').href = randomUI.icon;
 
 // Create iframe
 const iframe = document.createElement('iframe');
 iframe.src = randomUI.file;
 iframe.allowFullscreen = true;
 document.getElementById('iframeContainer').appendChild(iframe);
-
-// When iframe loads, copy its favicon to the parent page
-iframe.onload = () => {
-    try {
-        const icon = iframe.contentDocument.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
-        if (icon) {
-            const favicon = document.getElementById('favicon');
-            favicon.href = icon.href;
-        }
-    } catch (e) {
-        // Cross-origin: can't access favicon
-        // Fallback: leave default or set a manual icon
-        console.log('Cannot access favicon due to cross-origin:', e);
-    }
-};
 </script>
 
 </body>
