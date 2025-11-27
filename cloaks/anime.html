@@ -1,14 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Main Page</title>
+</head>
+<body style="margin:0;padding:0;">
+
+<div id="uiContainer"></div>
+
 <script>
-// List of UI pages
 const UIs = [
     "clever.html",
     "google.html",
     "ui3.html"
 ];
 
-// Pick a random UI
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-// Redirect to it
-window.location.replace(randomUI);
+document.getElementById("uiContainer").innerHTML =
+    `<iframe src="${randomUI}" style="
+        width:100vw;
+        height:100vh;
+        border:none;
+        margin:0;
+        padding:0;
+        position:fixed;
+        top:0;
+        left:0;
+    "></iframe>`;
 </script>
+
+</body>
+</html>
