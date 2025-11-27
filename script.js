@@ -16,7 +16,7 @@ const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
 let zones = [];
 let popularityData = {};
-// const featuredContainer = document.getElementById('featuredZones'); // ⛔ Removed
+// const featuredContainer = document.getElementById('featuredZones');
 
 async function listZones() {
     try {
@@ -136,20 +136,18 @@ function sortZones() {
         zones.sort((a, b) => (popularityData[b.id] || 0) - (popularityData[a.id] || 0));
     }
 
-    // ⛔ Filter out any zones with an id or index of -1 (like the Discord button)
     zones = zones.filter(z => z.id !== -1);
     zones = zones.filter(z => z.id !== 596);
 
     // if (featuredContainer.innerHTML === "") {
     //     const featured = zones.filter(z => z.featured);
     //     displayFeaturedZones(featured);
-    // } // ⛔ Removed featured zones
+    // }
 
     displayZones(zones);
 }
 
-// function displayFeaturedZones(featuredZones) { ... } // ⛔ Removed
-
+// function displayFeaturedZones(featuredZones) { ... }
 function displayZones(zones) {
     container.innerHTML = "";
     zones.forEach((file, index) => {
@@ -201,7 +199,7 @@ function filterZones() {
     const query = searchBar.value.toLowerCase();
     const filteredZones = zones.filter(zone => zone.name.toLowerCase().includes(query));
     // if (query.length !== 0) {
-    //     document.getElementById("featuredZonesWrapper").removeAttribute("open"); // ⛔ Removed
+    //     document.getElementById("featuredZonesWrapper").removeAttribute("open");
     // }
     displayZones(filteredZones);
 }
@@ -460,7 +458,7 @@ async function saveData() {
           if (data.caches) {
             for (const cacheName in data.caches) {
               const cache = await caches.open(cacheName);
-              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k)))); // clear existing
+              await cache.keys().then(keys => Promise.all(keys.map(k => cache.delete(k))));
         
               for (const entry of data.caches[cacheName]) {
                 let responseBody;
@@ -489,7 +487,6 @@ async function saveData() {
     reader.readAsText(file);
   }
 
-// --- Tab Cloak functions ---
 function cloakIcon(url) {
     const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
     link.rel = "icon";
@@ -526,12 +523,10 @@ function tabCloak() {
     document.getElementById('popupOverlay').style.display = "flex";
 }
 
-// --- Open in blank-style tab ---
 function openAboutBlank() {
-    const siteURL = window.location.href; // your current site URL
+    const siteURL = window.location.href;
     const viewer = window.open("", "_blank");
 
-    // If popup blocking prevents it from opening
     if (!viewer) {
         alert("Please allow pop-ups to open about:blank view.");
         return;
@@ -567,7 +562,6 @@ function openAboutBlank() {
     viewer.document.close();
 }
 
-// --- Settings popup ---
 const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
@@ -586,19 +580,16 @@ settings.addEventListener('click', () => {
 function closePopup() {
     document.getElementById('popupOverlay').style.display = "none";
 }
-// --- Favicon click audio ---
-const faviconImg = document.querySelector('.logo-favicon'); // your <img class="logo-favicon">
-const clickAudio = new Audio('click-sound.mp3'); // replace with your audio file path
+const faviconImg = document.querySelector('.logo-favicon');
+const clickAudio = new Audio('click-sound.mp3');
 
 if (faviconImg) {
-    faviconImg.style.cursor = 'pointer'; // makes it clear it's clickable
+    faviconImg.style.cursor = 'pointer';
     faviconImg.addEventListener('click', () => {
-        clickAudio.currentTime = 0; // restart if clicked multiple times
+        clickAudio.currentTime = 0;
         clickAudio.play().catch(e => console.log("Audio play failed:", e));
     });
 }
-// Create the audio object
-// == Audio Setup ==
 
 listZones();
 
@@ -631,23 +622,3 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
