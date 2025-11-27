@@ -13,17 +13,18 @@
             align-items:center;
             height:100vh;
             font-family:Arial, sans-serif;
-            background:#f2f2f2;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
         }
         #loadingText {
-            font-size:24px;
-            color:#333;
+            font-size:28px;
+            color:white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-<div id="loadingText">Loading...</div>
+<div id="loadingText">Welcome to Anime Page…</div>
 
 <div id="uiContainer" style="display:none;"></div>
 
@@ -34,11 +35,14 @@ const UIs = [
     "cloaks/schoology.html"
 ];
 
+
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
+
 
 setTimeout(() => {
     document.getElementById("loadingText").style.display = "none";
     document.getElementById("uiContainer").style.display = "block";
+
 
     document.getElementById("uiContainer").innerHTML =
         `<iframe src="${randomUI}" style="
@@ -51,7 +55,7 @@ setTimeout(() => {
             top:0;
             left:0;
         "></iframe>`;
-}, 300);
+}, 500); 
 </script>
 
 </body>
