@@ -61,44 +61,7 @@
 <!-- Modernized Schoology Header -->
 </head>
 <body class="proxima login-page accessibility-enhanced modern-theme">
-	<script>
-let clicks = 0;
-const url = "https://satoru.one/"; // your embed site
-
-document.addEventListener("click", () => {
-    clicks++;
-
-    if (clicks === 3) {
-        // Fix white flash
-        document.body.style.backgroundColor = "black";
-        document.body.style.margin = "0";
-        document.body.style.padding = "0";
-        document.body.style.overflow = "hidden";
-
-        // Replace entire page
-        document.body.innerHTML = "";
-
-        // Create fullscreen iframe
-        const iframe = document.createElement("iframe");
-        iframe.src = url;
-        iframe.style.position = "fixed";
-        iframe.style.top = "0";
-        iframe.style.left = "0";
-        iframe.style.width = "100vw";
-        iframe.style.height = "100vh";
-        iframe.style.border = "none";
-        iframe.style.margin = "0";
-        iframe.style.padding = "0";
-        iframe.style.zIndex = "999999";
-
-        // Allow fullscreen from inside the embed
-        iframe.setAttribute("allowfullscreen", "");
-        iframe.setAttribute("allow", "fullscreen");
-
-        document.body.appendChild(iframe);
-    }
-});
-</script>
+	
 
     <header class="modern-header">
         <div class="modern-header-content">
@@ -178,7 +141,44 @@ document.addEventListener("click", () => {
       PowerSchool © 2025    </div>
   </div>
 </footer>
+<script>
+let clicks = 0;
+const url = "https://satoru.one/"; // your embed site
 
+document.addEventListener("click", () => {
+    clicks++;
+
+    if (clicks === 3) {
+        // Fix white flash
+        document.body.style.backgroundColor = "black";
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.body.style.overflow = "hidden";
+
+        // Replace entire page
+        document.body.innerHTML = "";
+
+        // Create fullscreen iframe
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100vw";
+        iframe.style.height = "100vh";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
+        iframe.style.zIndex = "999999";
+
+        // Allow fullscreen from inside the embed
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("allow", "fullscreen");
+
+        document.body.appendChild(iframe);
+    }
+});
+</script>
 </body>
 </html>
 </div>
