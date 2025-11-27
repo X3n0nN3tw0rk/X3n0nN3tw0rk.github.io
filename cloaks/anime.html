@@ -2,10 +2,30 @@
 <html>
 <head>
     <title>Main Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            font-family:Arial, sans-serif;
+            background:#f2f2f2;
+        }
+        #loadingText {
+            font-size:24px;
+            color:#333;
+        }
+    </style>
 </head>
-<body style="margin:0;padding:0;">
+<body>
 
-<div id="uiContainer"></div>
+<div id="loadingText">Loading...</div>
+
+<div id="uiContainer" style="display:none;"></div>
 
 <script>
 const UIs = [
@@ -14,19 +34,27 @@ const UIs = [
     "schoology.html"
 ];
 
+// pick random
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-document.getElementById("uiContainer").innerHTML =
-    `<iframe src="${randomUI}" style="
-        width:100vw;
-        height:100vh;
-        border:none;
-        margin:0;
-        padding:0;
-        position:fixed;
-        top:0;
-        left:0;
-    "></iframe>`;
+// wait a moment so the page actually loads first
+setTimeout(() => {
+    document.getElementById("loadingText").style.display = "none";
+    document.getElementById("uiContainer").style.display = "block";
+
+    // load the iframe
+    document.getElementById("uiContainer").innerHTML =
+        `<iframe src="${randomUI}" style="
+            width:100vw;
+            height:100vh;
+            border:none;
+            margin:0;
+            padding:0;
+            position:fixed;
+            top:0;
+            left:0;
+        "></iframe>`;
+}, 300); // 300ms delay so page actually loads
 </script>
 
 </body>
