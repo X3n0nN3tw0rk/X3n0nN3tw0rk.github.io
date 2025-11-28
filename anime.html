@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landing Page</title>
+<title>New Tab</title>
 <link id="favicon" rel="icon" href="">
 <style>
 html, body { margin:0; padding:0; height:100%; overflow:hidden; }
@@ -16,7 +16,7 @@ iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 <div id="iframeContainer"></div>
 
 <script>
-// Define your UIs with file, title, and icon
+
 const UIs = [
     {
         file: "cloaks/clever.html",
@@ -29,16 +29,16 @@ const UIs = [
     }
 ];
 
-// Pick a random site
+
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-// Set tab title
+
 document.title = randomUI.title;
 
-// Set favicon
+
 document.getElementById('favicon').href = randomUI.icon;
 
-// Create iframe
+
 const iframe = document.createElement('iframe');
 iframe.src = randomUI.file;
 iframe.allowFullscreen = true;
