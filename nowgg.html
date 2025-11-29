@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Embed now.gg</title>
+</head>
+<body>
+
+<!-- Where the website will be embedded -->
+<div id="myElement" style="width:100%; height:600px;"></div>
+
+<script>
+function embedNowGG(elementId) {
+    const element = document.getElementById(elementId);
+    if (!element) {
+        throw new Error(`HTML element with ID '${elementId}' does not exist.`);
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://now.gg';
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.frameBorder = '0';
+    iframe.allowFullscreen = true;
+
+    element.appendChild(iframe);
+}
+
+// Example usage:
+embedNowGG("myElement");
+</script>
+
+</body>
+</html>
