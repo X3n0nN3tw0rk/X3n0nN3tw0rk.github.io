@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Tab</title>
@@ -12,15 +10,16 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
 #iframeContainer { width:100vw; height:100vh; position:fixed; top:0; left:0; }
 iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 </style>
+<script>
+// Block all new-tab redirects silently
+window.open = () => null;
+</script>
 </head>
 <body>
-    <script>
-window.open = function() { return null; };
-</script>
 <div id="iframeContainer"></div>
 
 <script>
-
+// List of UI embeds
 const UIs = [
     {
         file: "AnimeCloaks/clever.html",
@@ -33,19 +32,18 @@ const UIs = [
     }
 ];
 
-
+// Pick a random UI
 const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
 
-
+// Set page title and favicon
 document.title = randomUI.title;
+if(randomUI.icon) document.getElementById('favicon').href = randomUI.icon;
 
-
-document.getElementById('favicon').href = randomUI.icon;
-
-
+// Create iframe with sandbox to allow scripts but block new tabs
 const iframe = document.createElement('iframe');
 iframe.src = randomUI.file;
 iframe.allowFullscreen = true;
+iframe.sandbox = "allow-scripts allow-same-origin"; // sandbox prevents popups/new tabs
 document.getElementById('iframeContainer').appendChild(iframe);
 </script>
 
