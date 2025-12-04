@@ -2,46 +2,53 @@
 <html>
 <head>
     <script>
+// IIFE runs immediately
 (function() {
     const noop = () => null;
 
-    // === MAIN PAGE BLOCKERS ===
-    window.open = noop;
-    window.showModalDialog = noop;
-
+    // Prevent window.open immediately
     Object.defineProperty(window, "open", {
         configurable: false,
         writable: false,
         value: noop
     });
 
-    // Block <a target="_blank"> links
+    // Also block legacy popups
+    Object.defineProperty(window, "showModalDialog", {
+        configurable: false,
+        writable: false,
+        value: noop
+    });
+
+    // Block any link that tries to open a new tab
     document.addEventListener("click", function(e) {
         const link = e.target.closest("a");
-        if(link && link.target === "_blank") {
-            link.removeAttribute("target");
-        }
+        if(link && link.target === "_blank") link.removeAttribute("target");
     }, true);
 
     // === IFRAME POPUP BLOCKERS ===
     function blockIframePopups(iframe) {
         try {
-            // Override window.open inside iframe
-            iframe.contentWindow.open = noop;
-            iframe.contentWindow.showModalDialog = noop;
-
+            // Same-origin iframes
             Object.defineProperty(iframe.contentWindow, "open", {
                 configurable: false,
                 writable: false,
                 value: noop
             });
+            Object.defineProperty(iframe.contentWindow, "showModalDialog", {
+                configurable: false,
+                writable: false,
+                value: noop
+            });
         } catch(e) {
-            // Cross-origin iframes cannot be fully blocked
-            // Only same-origin iframe scripts are fully controlled
+            // Cross-origin: cannot override directly
         }
     }
 
-    // Monitor all iframes on the page
+    // Apply to existing iframes
+    document.querySelectorAll("iframe").forEach(blockIframePopups);
+
+    // Observe dynamically added iframes
     const observer = new MutationObserver(mutations => {
         mutations.forEach(m => {
             m.addedNodes.forEach(node => {
@@ -50,10 +57,8 @@
         });
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document, { childList: true, subtree: true });
 
-    // Block any existing iframes already on the page
-    document.querySelectorAll("iframe").forEach(blockIframePopups);
 })();
 </script>
 
