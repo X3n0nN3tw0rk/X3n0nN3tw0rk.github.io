@@ -3,25 +3,57 @@
 <head>
     <script>
 (function() {
-    // Block window.open in all forms
     const noop = () => null;
-    window.open = noop;
-    window.showModalDialog = noop; // old IE-style popups
 
-    // Intercept attempts to override window.open
+    // === MAIN PAGE BLOCKERS ===
+    window.open = noop;
+    window.showModalDialog = noop;
+
     Object.defineProperty(window, "open", {
         configurable: false,
         writable: false,
         value: noop
     });
 
-    // Prevent links from opening new tabs
+    // Block <a target="_blank"> links
     document.addEventListener("click", function(e) {
-        const target = e.target.closest("a");
-        if(target && target.target === "_blank") {
-            target.removeAttribute("target");
+        const link = e.target.closest("a");
+        if(link && link.target === "_blank") {
+            link.removeAttribute("target");
         }
     }, true);
+
+    // === IFRAME POPUP BLOCKERS ===
+    function blockIframePopups(iframe) {
+        try {
+            // Override window.open inside iframe
+            iframe.contentWindow.open = noop;
+            iframe.contentWindow.showModalDialog = noop;
+
+            Object.defineProperty(iframe.contentWindow, "open", {
+                configurable: false,
+                writable: false,
+                value: noop
+            });
+        } catch(e) {
+            // Cross-origin iframes cannot be fully blocked
+            // Only same-origin iframe scripts are fully controlled
+        }
+    }
+
+    // Monitor all iframes on the page
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(m => {
+            m.addedNodes.forEach(node => {
+                if(node.tagName === "IFRAME") blockIframePopups(node);
+            });
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Block any existing iframes already on the page
+    document.querySelectorAll("iframe").forEach(blockIframePopups);
 })();
 </script>
 
