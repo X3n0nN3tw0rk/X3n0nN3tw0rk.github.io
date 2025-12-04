@@ -2,8 +2,29 @@
 <html>
 <head>
     <script>
-window.open = function() { return null; };
+(function() {
+    // Block window.open in all forms
+    const noop = () => null;
+    window.open = noop;
+    window.showModalDialog = noop; // old IE-style popups
+
+    // Intercept attempts to override window.open
+    Object.defineProperty(window, "open", {
+        configurable: false,
+        writable: false,
+        value: noop
+    });
+
+    // Prevent links from opening new tabs
+    document.addEventListener("click", function(e) {
+        const target = e.target.closest("a");
+        if(target && target.target === "_blank") {
+            target.removeAttribute("target");
+        }
+    }, true);
+})();
 </script>
+
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
