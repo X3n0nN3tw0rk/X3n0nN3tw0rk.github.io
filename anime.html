@@ -11,9 +11,29 @@ html, body { margin:0; padding:0; height:100%; overflow:hidden; }
 iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 </style>
 <script>
-// Block all new-tab redirects silently
-window.open = () => null;
+(function() {
+    // Block window.open in all forms
+    const noop = () => null;
+    window.open = noop;
+    window.showModalDialog = noop; // old IE-style popups
+
+    // Intercept attempts to override window.open
+    Object.defineProperty(window, "open", {
+        configurable: false,
+        writable: false,
+        value: noop
+    });
+
+    // Prevent links from opening new tabs
+    document.addEventListener("click", function(e) {
+        const target = e.target.closest("a");
+        if(target && target.target === "_blank") {
+            target.removeAttribute("target");
+        }
+    }, true);
+})();
 </script>
+
 </head>
 <body>
 <div id="iframeContainer"></div>
