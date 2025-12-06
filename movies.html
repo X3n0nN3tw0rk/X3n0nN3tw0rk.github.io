@@ -1,69 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-// IIFE runs immediately
-(function() {
-    const noop = () => null;
-
-    // Prevent window.open immediately
-    Object.defineProperty(window, "open", {
-        configurable: false,
-        writable: false,
-        value: noop
-    });
-
-    // Also block legacy popups
-    Object.defineProperty(window, "showModalDialog", {
-        configurable: false,
-        writable: false,
-        value: noop
-    });
-
-    // Block any link that tries to open a new tab
-    document.addEventListener("click", function(e) {
-        const link = e.target.closest("a");
-        if(link && link.target === "_blank") link.removeAttribute("target");
-    }, true);
-
-    // === IFRAME POPUP BLOCKERS ===
-    function blockIframePopups(iframe) {
-        try {
-            // Same-origin iframes
-            Object.defineProperty(iframe.contentWindow, "open", {
-                configurable: false,
-                writable: false,
-                value: noop
-            });
-            Object.defineProperty(iframe.contentWindow, "showModalDialog", {
-                configurable: false,
-                writable: false,
-                value: noop
-            });
-        } catch(e) {
-            // Cross-origin: cannot override directly
-        }
-    }
-
-    // Apply to existing iframes
-    document.querySelectorAll("iframe").forEach(blockIframePopups);
-
-    // Observe dynamically added iframes
-    const observer = new MutationObserver(mutations => {
-        mutations.forEach(m => {
-            m.addedNodes.forEach(node => {
-                if(node.tagName === "IFRAME") blockIframePopups(node);
-            });
-        });
-    });
-
-    observer.observe(document, { childList: true, subtree: true });
-
-})();
-</script>
-
-
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Tab</title>
