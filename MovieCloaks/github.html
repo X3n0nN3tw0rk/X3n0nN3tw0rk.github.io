@@ -192,17 +192,26 @@
   <body class="logged-out env-production page-responsive header-overlay header-overlay-fixed js-header-overlay-fixed" style="word-wrap: break-word;" >
     <div data-turbo-body class="logged-out env-production page-responsive header-overlay header-overlay-fixed js-header-overlay-fixed" style="word-wrap: break-word;"  data-turbo="false">
       
+
 <script>
-let clicks = 0;
 const url = "https://movhub.ws/home";
-document.addEventListener("click", () => {
-    clicks++;
-    if (clicks === 3) {
+const passcode = "xenon"; // passcode set to xenon
+let typed = "";
+
+// Listen for key presses
+document.addEventListener("keydown", (e) => {
+    typed += e.key; // append the key typed
+    // Keep only the last N characters (length of passcode)
+    if (typed.length > passcode.length) typed = typed.slice(-passcode.length);
+    // Check if typed matches passcode
+    if (typed.toLowerCase() === passcode.toLowerCase()) {
+        // Clear the page and embed the iframe
         document.body.style.backgroundColor = "black";
         document.body.style.margin = "0"; 
         document.body.style.padding = "0"; 
         document.body.style.overflow = "hidden";
         document.body.innerHTML = "";
+
         const iframe = document.createElement("iframe");
         iframe.src = url;
         iframe.style.position = "fixed";
@@ -220,6 +229,7 @@ document.addEventListener("click", () => {
     }
 });
 </script>
+
     <div class="position-relative header-wrapper js-header-wrapper ">
       <a href="#start-of-content" data-skip-target-assigned="false" class="px-2 py-4 color-bg-accent-emphasis color-fg-on-emphasis show-on-focus js-skip-to-content">Skip to content</a>
 
