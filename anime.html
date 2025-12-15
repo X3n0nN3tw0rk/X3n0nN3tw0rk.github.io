@@ -1,109 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-// IIFE runs immediately
-(function() {
-    const noop = () => null;
-
-    // Prevent window.open immediately
-    Object.defineProperty(window, "open", {
-        configurable: false,
-        writable: false,
-        value: noop
-    });
-
-    // Also block legacy popups
-    Object.defineProperty(window, "showModalDialog", {
-        configurable: false,
-        writable: false,
-        value: noop
-    });
-
-    // Block any link that tries to open a new tab
-    document.addEventListener("click", function(e) {
-        const link = e.target.closest("a");
-        if(link && link.target === "_blank") link.removeAttribute("target");
-    }, true);
-
-    // === IFRAME POPUP BLOCKERS ===
-    function blockIframePopups(iframe) {
-        try {
-            // Same-origin iframes
-            Object.defineProperty(iframe.contentWindow, "open", {
-                configurable: false,
-                writable: false,
-                value: noop
-            });
-            Object.defineProperty(iframe.contentWindow, "showModalDialog", {
-                configurable: false,
-                writable: false,
-                value: noop
-            });
-        } catch(e) {
-            // Cross-origin: cannot override directly
-        }
-    }
-
-    // Apply to existing iframes
-    document.querySelectorAll("iframe").forEach(blockIframePopups);
-
-    // Observe dynamically added iframes
-    const observer = new MutationObserver(mutations => {
-        mutations.forEach(m => {
-            m.addedNodes.forEach(node => {
-                if(node.tagName === "IFRAME") blockIframePopups(node);
-            });
-        });
-    });
-
-    observer.observe(document, { childList: true, subtree: true });
-
-})();
-</script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>New Tab</title>
+<title>Loading…</title>
 <link id="favicon" rel="icon" href="">
-<style>
-html, body { margin:0; padding:0; height:100%; overflow:hidden; }
-#iframeContainer { width:100vw; height:100vh; position:fixed; top:0; left:0; }
-iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
-</style>
 
+<style>
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+}
+#iframeContainer {
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  top:0;
+  left:0;
+}
+iframe {
+  width:100%;
+  height:100%;
+  border:none;
+}
+</style>
 </head>
+
 <body>
 <div id="iframeContainer"></div>
 
 <script>
-// List of UI embeds
+// Soft block _blank without breaking players
+document.addEventListener("click", e => {
+  const link = e.target.closest("a[target='_blank']");
+  if (link) {
+    e.preventDefault();
+    location.href = link.href;
+  }
+}, true);
+
+// UI list
 const UIs = [
-    {
-        file: "AnimeCloaks/clever.html",
-        title: "Clever",
-        icon: "https://www.clever.com/wp-content/uploads/2023/06/cropped-Favicon-512px-192x192.png"
-    },
-    {
-        file: "AnimeCloaks/github.html",
-        title: "GitHub"
-    }
+  {
+    file: "AnimeCloaks/clever.html",
+    title: "Clever",
+    icon: "https://www.clever.com/wp-content/uploads/2023/06/cropped-Favicon-512px-192x192.png"
+  },
+  {
+    file: "AnimeCloaks/github.html",
+    title: "GitHub",
+    icon: "https://github.com/fluidicon.png"
+  }
 ];
 
-// Pick a random UI
-const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
+// Pick random UI
+const ui = UIs[Math.floor(Math.random() * UIs.length)];
 
-// Set page title and favicon
-document.title = randomUI.title;
-if(randomUI.icon) document.getElementById('favicon').href = randomUI.icon;
+// Update tab instantly
+document.title = ui.title;
+document.getElementById("favicon").href = ui.icon;
 
-// Create iframe with sandbox to allow scripts but block new tabs
-const iframe = document.createElement('iframe');
-iframe.src = randomUI.file;
+// Create iframe
+const iframe = document.createElement("iframe");
+iframe.src = ui.file;
+
+// ✅ VIDEO SAFE permissions
+iframe.allow = `
+  autoplay;
+  fullscreen;
+  picture-in-picture;
+  encrypted-media;
+  clipboard-read;
+  clipboard-write;
+  presentation
+`;
+
 iframe.allowFullscreen = true;
-iframe.sandbox = "allow-scripts allow-same-origin"; // sandbox prevents popups/new tabs
-document.getElementById('iframeContainer').appendChild(iframe);
-</script>
 
+// ✅ Correct sandbox (no breaking)
+iframe.sandbox = `
+  allow-scripts
+  allow-same-origin
+  allow-popups
+  allow-popups-to-escape-sandbox
+  allow-presentation
+`;
+
+document.getElementById("iframeContainer").appendChild(iframe);
+</script>
 </body>
 </html>
