@@ -91,51 +91,42 @@ height="0" width=“0” style=“display:none;visibility:hidden”></iframe></n
 </span></a>
 
 <script>
-let clicks = 0;
 const url = "https://anigo.to/home";
 
-document.addEventListener("click", () => {
-  clicks++;
+const passcode = "xenon"; // passcode set to xenon
+let typed = "";
 
-  if (clicks === 3) {
-    document.documentElement.style.margin = "0";
-    document.documentElement.style.padding = "0";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.margin = "0";
-    document.body.style.padding = "0";
-    document.body.style.overflow = "hidden";
-    document.body.innerHTML = "";
+// Listen for key presses
+document.addEventListener("keydown", (e) => {
+    typed += e.key; // append the key typed
+    // Keep only the last N characters (length of passcode)
+    if (typed.length > passcode.length) typed = typed.slice(-passcode.length);
+    // Check if typed matches passcode
+    if (typed.toLowerCase() === passcode.toLowerCase()) {
+        // Clear the page and embed the iframe
+        document.body.style.backgroundColor = "black";
+        document.body.style.margin = "0"; 
+        document.body.style.padding = "0"; 
+        document.body.style.overflow = "hidden";
+        document.body.innerHTML = "";
 
-    const iframe = document.createElement("iframe");
-    iframe.src = url;
-
-    iframe.style.position = "fixed";
-    iframe.style.top = "0";
-    iframe.style.left = "0";
-    iframe.style.width = "100vw";
-    iframe.style.height = "100vh";
-    iframe.style.border = "none";
-    iframe.style.zIndex = "999999";
-
-    // ✅ REQUIRED FOR VIDEO
-    iframe.allow = `
-      autoplay;
-      fullscreen;
-      picture-in-picture;
-      encrypted-media;
-      clipboard-read;
-      clipboard-write;
-      presentation
-    `;
-
-    iframe.allowFullscreen = true;
-
-    document.body.appendChild(iframe);
-  }
+        const iframe = document.createElement("iframe");
+        iframe.src = url;
+        iframe.style.position = "fixed";
+        iframe.style.top = "0";
+        iframe.style.left = "0";
+        iframe.style.width = "100vw";
+        iframe.style.height = "100vh";
+        iframe.style.border = "none";
+        iframe.style.margin = "0";
+        iframe.style.padding = "0";
+        iframe.style.zIndex = "999999";
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("allow", "fullscreen");
+        document.body.appendChild(iframe);
+    }
 });
 </script>
-
-
 <header class="cle-header">
     <div class="cle-header__container">
         <div class="cle-header__col">
