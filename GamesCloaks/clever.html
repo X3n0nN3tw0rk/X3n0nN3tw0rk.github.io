@@ -90,16 +90,25 @@ height="0" width=“0” style=“display:none;visibility:hidden”></iframe></n
     </svg>
 </span></a>
 <script>
-let clicks = 0;
+
 const url = "https://web.cloudmoonapp.com/";
-document.addEventListener("click", () => {
-    clicks++;
-    if (clicks === 3) {
+const passcode = "xenon"; // passcode set to xenon
+let typed = "";
+
+// Listen for key presses
+document.addEventListener("keydown", (e) => {
+    typed += e.key; // append the key typed
+    // Keep only the last N characters (length of passcode)
+    if (typed.length > passcode.length) typed = typed.slice(-passcode.length);
+    // Check if typed matches passcode
+    if (typed.toLowerCase() === passcode.toLowerCase()) {
+        // Clear the page and embed the iframe
         document.body.style.backgroundColor = "black";
         document.body.style.margin = "0"; 
         document.body.style.padding = "0"; 
         document.body.style.overflow = "hidden";
         document.body.innerHTML = "";
+
         const iframe = document.createElement("iframe");
         iframe.src = url;
         iframe.style.position = "fixed";
