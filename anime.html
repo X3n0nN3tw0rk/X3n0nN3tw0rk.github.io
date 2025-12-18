@@ -3,92 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loading…</title>
+<title>Random UI Embed</title>
 <link id="favicon" rel="icon" href="">
-
 <style>
-html, body {
-  margin:0;
-  padding:0;
-  height:100%;
-  overflow:hidden;
-}
-#iframeContainer {
-  width:100vw;
-  height:100vh;
-  position:fixed;
-  top:0;
-  left:0;
-}
-iframe {
-  width:100%;
-  height:100%;
-  border:none;
-}
+html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+#iframeContainer { width:100vw; height:100vh; position:fixed; top:0; left:0; }
+iframe { width:100%; height:100%; border:none; margin:0; padding:0; }
 </style>
+<script>
+// Optional: block new-tab popups
+Object.defineProperty(window, "open", { configurable:false, writable:false, value:()=>null });
+</script>
 </head>
-
 <body>
 <div id="iframeContainer"></div>
-
 <script>
-// Soft block _blank without breaking players
-document.addEventListener("click", e => {
-  const link = e.target.closest("a[target='_blank']");
-  if (link) {
-    e.preventDefault();
-    location.href = link.href;
-  }
-}, true);
-
-// UI list
 const UIs = [
-  {
-    file: "AnimeCloaks/clever.html",
-    title: "Clever",
-    icon: "https://www.clever.com/wp-content/uploads/2023/06/cropped-Favicon-512px-192x192.png"
-  },
-  {
-    file: "AnimeCloaks/github.html",
-    title: "GitHub",
-    icon: "https://github.com/fluidicon.png"
-  }
+    { file: "MovieCloaks/clever.html", title: "Clever", icon: "https://www.clever.com/wp-content/uploads/2023/06/cropped-Favicon-512px-192x192.png" },
+    { file: "MovieCloaks/github.html", title: "GitHub" }
 ];
 
-// Pick random UI
-const ui = UIs[Math.floor(Math.random() * UIs.length)];
+const randomUI = UIs[Math.floor(Math.random() * UIs.length)];
+document.title = randomUI.title;
+if(randomUI.icon) document.getElementById('favicon').href = randomUI.icon;
 
-// Update tab instantly
-document.title = ui.title;
-document.getElementById("favicon").href = ui.icon;
-
-// Create iframe
 const iframe = document.createElement("iframe");
-iframe.src = ui.file;
+iframe.src = randomUI.file;
+iframe.allow = "fullscreen autoplay clipboard-read clipboard-write";
+iframe.setAttribute("allowfullscreen", "");
+iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups";
 
-// ✅ VIDEO SAFE permissions
-iframe.allow = `
-  autoplay;
-  fullscreen;
-  picture-in-picture;
-  encrypted-media;
-  clipboard-read;
-  clipboard-write;
-  presentation
-`;
-
-iframe.allowFullscreen = true;
-
-// ✅ Correct sandbox (no breaking)
-iframe.sandbox = `
-  allow-scripts
-  allow-same-origin
-  allow-popups
-  allow-popups-to-escape-sandbox
-  allow-presentation
-`;
-
-document.getElementById("iframeContainer").appendChild(iframe);
+document.getElementById('iframeContainer').appendChild(iframe);
 </script>
 </body>
 </html>
