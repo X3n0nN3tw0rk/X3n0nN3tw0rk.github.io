@@ -8,3 +8,4 @@ Huge thanks to GN-Math for the header and zones design and the importation of ga
 
 
 Made By XenonNetwork
+- Fuckass school blocked the site so this is the new url
