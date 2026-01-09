@@ -1,1 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Auto URL Buttons</title>
 
+<style>
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 300px;
+}
+
+.modal-content button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="modal">
+  <div class="modal-content" id="buttonContainer">
+    <h2>Select a Page</h2>
+  </div>
+</div>
+
+<script>
+/* ADD URLS HERE */
+const urls = [
+  "https://xen0nkidd.github.io/JjkEps/Ep1.html",
+  "https://xen0nkidd.github.io/JjkEps/Ep2.html"
+  // "https://newsite.com",
+];
+
+const container = document.getElementById("buttonContainer");
+
+urls.forEach(url => {
+  const button = document.createElement("button");
+
+  // Get page name from URL
+  const name = url
+    .replace("https://", "")
+    .replace("http://", "")
+    .split("/")[0];
+
+  button.textContent = name;
+  button.onclick = () => window.location.href = url;
+
+  container.appendChild(button);
+});
+</script>
+
+</body>
+</html>
