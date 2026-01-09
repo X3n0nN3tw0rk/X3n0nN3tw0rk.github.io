@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Auto URL Buttons</title>
+<title>Custom Buttons</title>
 
 <style>
 .modal {
@@ -36,35 +36,30 @@
 <body>
 
 <div class="modal">
-  <div class="modal-content" id="buttonContainer">
-    <h2>Select a Page</h2>
+  <div class="modal-content">
+    <h2>Select Episode</h2>
+
+    <button onclick="go('https://xen0nkidd.github.io/JjkEps/Ep1.html')">
+      Episode 1
+    </button>
+
+    <button onclick="go('https://xen0nkidd.github.io/JjkEps/Ep2.html')">
+      Episode 2
+    </button>
+
+    <!-- Add more buttons like this -->
+    <!--
+    <button onclick="go('https://example.com')">
+      Custom Name
+    </button>
+    -->
   </div>
 </div>
 
 <script>
-/* ADD URLS HERE */
-const urls = [
-  "https://xen0nkidd.github.io/JjkEps/Ep1.html",
-  "https://xen0nkidd.github.io/JjkEps/Ep2.html"
-  // "https://newsite.com",
-];
-
-const container = document.getElementById("buttonContainer");
-
-urls.forEach(url => {
-  const button = document.createElement("button");
-
-  // Get page name from URL
-  const name = url
-    .replace("https://", "")
-    .replace("http://", "")
-    .split("/")[0];
-
-  button.textContent = name;
-  button.onclick = () => window.location.href = url;
-
-  container.appendChild(button);
-});
+function go(url) {
+  window.location.href = url;
+}
 </script>
 
 </body>
