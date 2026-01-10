@@ -1421,19 +1421,21 @@ function openAboutBlank() {
 
 
 const settings = document.getElementById('settings');
+settings.innerHTML = '<img src="settings.png" alt="Settings" style="width:32px;height:32px;">';
+
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
 
     popupBody.innerHTML = `
-        <button id="settings-button" onclick="tabCloak()">Tab Cloak</button>
+        <button onclick="tabCloak()">Tab Cloak</button>
         <br><br>
-        <button id="settings-button" onclick="openAboutBlank()">Open in blank tab</button>
-        <br>
+        <button onclick="openAboutBlank()">Open in blank tab</button>
     `;
-    popupBody.contentEditable = false;
+
     document.getElementById('popupOverlay').style.display = "flex";
 });
+
 
 
 function closePopup() {
