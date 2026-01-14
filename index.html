@@ -188,45 +188,7 @@ _init();
             }
         }
     </script>
-  <script>
-(function() {
-  let locked = false;
-  let firstClickDone = false;
-
-  // Click anywhere first
-  document.body.addEventListener("click", () => {
-    firstClickDone = true;
-    console.log("Page is ready for pointer lock (press B)");
-  });
-
-  // Toggle mouse lock on B key
-  document.addEventListener("keydown", (e) => {
-    if (!firstClickDone) return; // must click first
-    if (e.key.toLowerCase() === "b") {
-      e.preventDefault();
-      if (!document.pointerLockElement) {
-        document.body.requestPointerLock();
-      } else {
-        document.exitPointerLock();
-      }
-    }
-  });
-
-  // Detect pointer lock changes
-  document.addEventListener("pointerlockchange", () => {
-    locked = !!document.pointerLockElement;
-    console.log(locked ? "Mouse locked ✅" : "Mouse unlocked ❌");
-  });
-
-  // Track mouse movement
-  document.addEventListener("mousemove", (e) => {
-    if (locked) {
-      console.log("Mouse moved:", "X:", e.movementX, "Y:", e.movementY);
-    }
-  });
-})();
-</script>
-
+  
     <ins class="adsbygoogle"
          style="display:block; text-align:center;"
          data-ad-client="ca-pub-5521219086088837"
@@ -288,6 +250,7 @@ _init();
     </script>
 </body>
 </html>
+
 
 
 
