@@ -182,132 +182,109 @@ _init();
     --gradient-surface: linear-gradient(135deg, #1e293b 0%, #334155 100%);
 }
 
+/* ===== RESET ===== */
 * {
     box-sizing: border-box;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.6;
+/* ===== BODY ===== */
+body.dark-mode {
     margin: 0;
-    padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    background-color: #0f0f0f;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
 }
 
+/* ===== HEADER ===== */
 header {
-    background: var(--gradient-primary);
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(20px);
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 12px 20px;
 }
 
+/* HEADER CONTENT */
 .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.25rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
 }
 
+/* LOGO */
 .logo {
-    font-size: 1.75rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
 }
 
+/* ===== SEARCH + DROPDOWNS ===== */
 .search-container {
     display: flex;
-    flex: 1;
-    max-width: 500px;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 10px;
 }
 
-#searchBar {
-    flex: 1;
-    padding: 0.875rem 1rem;
-    border: 0;
-    border-radius: var(--radius);
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    color: var(--text);
-    font-size: 15px;
+/* SEARCH INPUT */
+.search-container input {
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.search-container input::placeholder {
+    color: #bbbbbb;
+}
+
+/* ===== DROPDOWNS (BOTH SORT + QUICK LINKS) ===== */
+.search-container select {
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    appearance: none;
+}
+
+/* DROPDOWN OPTIONS */
+.search-container option {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+/* HOVER + FOCUS */
+.search-container select:hover,
+.search-container input:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.search-container select:focus,
+.search-container input:focus {
     outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
+    background: rgba(255, 255, 255, 0.22);
 }
 
-#searchBar:focus {
-    background: var(--text);
-    box-shadow: 0 0 0 3px rgba(252, 38, 81, 0.25), var(--shadow);
-    transform: translateY(-1px);
-    color: var(--glass);
-}
-
-#searchBar::placeholder {
-    color: var(--text-muted);
-}
-
-#sortOptions {
-    padding: 0.875rem 1rem;
-    border: 0;
-    border-radius: var(--radius);
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    color: var(--text-muted);
+/* ===== SETTINGS BUTTON ===== */
+.control-buttons button {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 6px;
+    border: none;
+    background: #4a90e2;
+    color: #ffffff;
     font-size: 15px;
     cursor: pointer;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 130px;
-    box-shadow: var(--shadow-sm);
 }
 
-#sortOptions:hover {
-    background: var(--text);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-    color: var(--glass);
-}
-#quickLinks {
-    padding: 0.875rem 1rem;
-    border: 0;
-    border-radius: var(--radius);
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    color: var(--text-muted);
-    font-size: 15px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 150px;
-    box-shadow: var(--shadow-sm);
+.control-buttons button:hover {
+    background: #3a78c2;
 }
 
-#quickLinks:hover {
-    background: var(--text);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-    color: var(--glass);
-}
-
-.control-buttons {
-    display: flex;
-    gap: 0.5rem;
-}
 
 #settings {
     background: rgba(255, 255, 255, 0.1);
