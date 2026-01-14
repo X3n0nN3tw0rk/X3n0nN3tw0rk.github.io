@@ -173,6 +173,32 @@ header {
     box-shadow: #2a0440;
     color: var(--text);
 }
+#quickLinks {
+    padding: 0.875rem 1rem;
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 150px;
+    box-shadow: var(--shadow-sm);
+}
+
+#quickLinks:hover {
+    background: var(--glass);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+#quickLinks option {
+    background: var(--surface);
+    color: var(--text);
+}
 
 .control-buttons {
     display: flex;
@@ -578,6 +604,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
