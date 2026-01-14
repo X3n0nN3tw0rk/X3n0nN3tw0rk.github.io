@@ -1505,5 +1505,14 @@ HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
     </script>
+    <script>
+function handleQuickLink(select) {
+    if (select.value) {
+        window.location.href = select.value;
+        select.value = "";
+    }
+}
+</script>
+
 </body>
 </html>
