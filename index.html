@@ -149,6 +149,41 @@ _init();
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
+  <script>
+(function() {
+  let locked = false;
+
+  // Toggle mouse lock on Ctrl + G
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key.toLowerCase() === "g") {
+      e.preventDefault(); // block browser default if possible
+
+      if (!document.pointerLockElement) {
+        // Request pointer lock
+        document.body.requestPointerLock();
+      } else {
+        // Exit pointer lock
+        document.exitPointerLock();
+      }
+    }
+  });
+
+  // Detect pointer lock changes
+  document.addEventListener("pointerlockchange", () => {
+    locked = !!document.pointerLockElement;
+    console.log(locked ? "Mouse locked" : "Mouse unlocked");
+  });
+
+  // Track mouse movement
+  document.addEventListener("mousemove", (e) => {
+    if (locked) {
+      // Replace this with your own logic (e.g., game camera)
+      console.log("Mouse moved:", "X:", e.movementX, "Y:", e.movementY);
+    }
+  });
+})();
+</script>
+
     <header>
         <div class="header-content">
             <div class="logo">Xen0nkidd</div>
@@ -248,6 +283,7 @@ _init();
     </script>
 </body>
 </html>
+
 
 
 
