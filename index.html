@@ -192,16 +192,17 @@ _init();
 (function() {
   let locked = false;
 
-  // Toggle mouse lock on Ctrl + G
+  // Toggle mouse lock on B key
   document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey && e.key.toLowerCase() === "g") {
-      e.preventDefault(); // block browser default if possible
+    if (e.key.toLowerCase() === "b") {
+      e.preventDefault(); // optional, prevents default behavior
 
+      // Some browsers (esp. iPad) require user gesture before pointer lock
       if (!document.pointerLockElement) {
-        // Request pointer lock
-        document.body.requestPointerLock();
+        // If first time, pointer lock may fail without click
+        const lockResult = document.body.requestPointerLock();
+        if (lockResult) console.log("Request sent");
       } else {
-        // Exit pointer lock
         document.exitPointerLock();
       }
     }
@@ -216,12 +217,12 @@ _init();
   // Track mouse movement
   document.addEventListener("mousemove", (e) => {
     if (locked) {
-      // Replace this with your own logic (e.g., game camera)
       console.log("Mouse moved:", "X:", e.movementX, "Y:", e.movementY);
     }
   });
 })();
 </script>
+
 
     <ins class="adsbygoogle"
          style="display:block; text-align:center;"
@@ -284,6 +285,7 @@ _init();
     </script>
 </body>
 </html>
+
 
 
 
