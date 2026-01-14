@@ -191,17 +191,21 @@ _init();
   <script>
 (function() {
   let locked = false;
+  let firstClickDone = false;
+
+  // Click anywhere first
+  document.body.addEventListener("click", () => {
+    firstClickDone = true;
+    console.log("Page is ready for pointer lock (press B)");
+  });
 
   // Toggle mouse lock on B key
   document.addEventListener("keydown", (e) => {
+    if (!firstClickDone) return; // must click first
     if (e.key.toLowerCase() === "b") {
-      e.preventDefault(); // optional, prevents default behavior
-
-      // Some browsers (esp. iPad) require user gesture before pointer lock
+      e.preventDefault();
       if (!document.pointerLockElement) {
-        // If first time, pointer lock may fail without click
-        const lockResult = document.body.requestPointerLock();
-        if (lockResult) console.log("Request sent");
+        document.body.requestPointerLock();
       } else {
         document.exitPointerLock();
       }
@@ -211,7 +215,7 @@ _init();
   // Detect pointer lock changes
   document.addEventListener("pointerlockchange", () => {
     locked = !!document.pointerLockElement;
-    console.log(locked ? "Mouse locked" : "Mouse unlocked");
+    console.log(locked ? "Mouse locked ✅" : "Mouse unlocked ❌");
   });
 
   // Track mouse movement
@@ -222,7 +226,6 @@ _init();
   });
 })();
 </script>
-
 
     <ins class="adsbygoogle"
          style="display:block; text-align:center;"
@@ -285,6 +288,7 @@ _init();
     </script>
 </body>
 </html>
+
 
 
 
