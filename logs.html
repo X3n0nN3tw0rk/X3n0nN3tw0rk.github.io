@@ -15,7 +15,7 @@
   font-size:16px;
   display:inline-block;
 }
-#globalCounter span{
+#num{
   font-weight:700;
   font-size:18px;
 }
@@ -26,15 +26,46 @@
 
 <div id="globalCounter">
   Global page opens:
-  <span id="counter">…</span>
+  <span id="num">0</span>
 </div>
 
-<!-- ✅ TRACKER MUST BE AFTER THE SPAN -->
+<!-- Counter.dev loader -->
 <script
   src="https://cdn.counter.dev/script.js"
   data-id="bdad96f3-e256-4fb1-8bee-da58d4c7d280"
   data-utcoffset="-6">
 </script>
+
+<script>
+(function(){
+  let last=0;
+  const el=document.getElementById("num");
+
+  const obs=new MutationObserver(()=>{
+    const real=document.getElementById("counter");
+    if(!real) return;
+    const target=parseInt(real.textContent,10);
+    if(isNaN(target)) return;
+
+    obs.disconnect();
+    let cur=0;
+    const step=Math.max(1,Math.floor(target/60));
+    const t=setInterval(()=>{
+      cur+=step;
+      if(cur>=target){
+        cur=target;
+        clearInterval(t);
+      }
+      el.textContent=cur;
+    },16);
+  });
+
+  obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+<!-- hidden real counter -->
+<span id="counter" style="display:none"></span>
 
 </body>
 </html>
