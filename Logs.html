@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Opens</title>
+<title>Live Global Opens</title>
 
-<!-- GLOBAL OPEN TRACKER -->
 <script
   src="https://cdn.counter.dev/script.js"
   data-id="bdad96f3-e256-4fb1-8bee-da58d4c7d280"
@@ -12,41 +11,29 @@
 </script>
 
 <style>
-#openStats{
-  display:none;
-  margin-top:12px;
-  padding:12px;
+#globalCounter{
+  margin-top:20px;
+  padding:14px 18px;
   background:#0f0f10;
   color:#fff;
-  border-radius:8px;
+  border-radius:10px;
   font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;
+  font-size:16px;
+  display:inline-block;
 }
-#openBtn{
-  padding:8px 14px;
-  border:0;
-  border-radius:6px;
-  background:#460969;
-  color:#fff;
-  cursor:pointer;
+#globalCounter span{
+  font-weight:700;
+  font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<button id="openBtn">Show Global Opens</button>
-
-<div id="openStats">
-  Total global page opens:
-  <strong><span id="counter"></span></strong>
+<div id="globalCounter">
+  Global page opens:
+  <span id="counter"></span>
 </div>
-
-<script>
-document.getElementById("openBtn").onclick=function(){
-  const d=document.getElementById("openStats");
-  d.style.display=d.style.display==="none"?"block":"none";
-};
-</script>
 
 </body>
 </html>
