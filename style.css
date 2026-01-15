@@ -117,6 +117,16 @@ header {
     margin-right: 0.5rem;       
 }
 
+.logo::before {
+  content: "";
+  background-image: url("/favicon.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  margin-right: 8px;
+}
 
 .search-container {
     display: flex;
@@ -604,6 +614,7 @@ main {
         transform: translateY(-4px) scale(1.01);
     }
 }
+
 
 
 
