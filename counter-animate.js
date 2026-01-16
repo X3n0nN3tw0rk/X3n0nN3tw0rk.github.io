@@ -1,26 +1,26 @@
 const el = document.getElementById("num");
+const API = "https://api.countapi.xyz";
+const NAMESPACE = "xen0nkidd-live";
+const KEY = "opens";
 
-// Poll until the counter.dev element is ready
-const interval = setInterval(() => {
-  // Select the counter.dev span using the data-id
-  const real = document.querySelector('[data-id="bdad96f3-e256-4fb1-8bee-da58d4c7d280"]');
-  if (!real) return;
+let last = 0;
 
-  // Parse the number from counter.dev
-  const target = parseInt(real.textContent.replace(/,/g, ""), 10);
-  if (isNaN(target)) return;
+// +1 on every page open
+fetch(`${API}/hit/${NAMESPACE}/${KEY}`)
+  .then(r => r.json())
+  .then(d => {
+    last = d.value;
+    el.textContent = d.value;
+  });
 
-  clearInterval(interval);
-
-  // Animate from 0 to target
-  let cur = 0;
-  const step = Math.max(1, Math.floor(target / 60)); // smooth steps
-  const t = setInterval(() => {
-    cur += step;
-    if (cur >= target) {
-      cur = target;
-      clearInterval(t);
-    }
-    el.textContent = cur.toLocaleString();
-  }, 16);
-}, 100);
+// live updates
+setInterval(() => {
+  fetch(`${API}/get/${NAMESPACE}/${KEY}`)
+    .then(r => r.json())
+    .then(d => {
+      if (d.value !== last) {
+        el.textContent = d.value;
+        last = d.value;
+      }
+    });
+}, 3000);
