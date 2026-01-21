@@ -1377,6 +1377,7 @@ async function saveData() {
 
 
 
+// Change tab icon dynamically
 function cloakIcon(url) {
     const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
     link.rel = "icon";
@@ -1388,6 +1389,7 @@ function cloakIcon(url) {
     document.head.appendChild(link);
 }
 
+// Change tab title dynamically
 function cloakName(string) {
     if ((string + "").trim().length === 0) {
         document.title = "gn-math";
@@ -1396,6 +1398,7 @@ function cloakName(string) {
     document.title = string;
 }
 
+// Open Tab Cloak settings
 function tabCloak() {
     const popupTitle = document.getElementById('popupTitle');
     const popupBody = document.getElementById('popupBody');
@@ -1413,6 +1416,7 @@ function tabCloak() {
     document.getElementById('popupOverlay').style.display = "flex";
 }
 
+// Open current page in a new blank tab with iframe
 function openAboutBlank() {
     const siteURL = window.location.href;
     const viewer = window.open("", "_blank");
@@ -1452,10 +1456,11 @@ function openAboutBlank() {
     viewer.document.close();
 }
 
-
+// Settings button image
 const settings = document.getElementById('settings');
 settings.innerHTML = '<img src="settings.png" alt="Settings" style="width:32px;height:32px;">';
 
+// Settings button click behavior
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
