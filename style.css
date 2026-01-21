@@ -613,7 +613,37 @@ main {
     .zone-item:hover {
         transform: translateY(-4px) scale(1.01);
     }
+    #popupBody button {
+    width: 100%;
+    padding: 0.9rem 1rem;
+
+    background: var(--gradient-primary);
+    color: #bac3cb;
+
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+#popupBody button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    filter: brightness(1.05);
+}
+
+#popupBody button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+}
+
 
 
 
