@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Fullscreen Video</title>
+<title>Embedded MEGA Video</title>
 <style>
   html, body {
     margin: 0;
@@ -12,22 +12,23 @@
     background: #000;
     overflow: hidden;
   }
-  video {
+  iframe {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    border: none;
   }
 </style>
 </head>
 <body>
 
-<video controls autoplay>
-  <source src="https://docs.google.com/uc?export=download&id=1Anvt0DMIjmXO_z4e-4R3M9AvFpIO-6s8" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<iframe
+  src="https://mega.nz/embed/jFFi1ICb#DbELDk60prhtdzZ5Wy79CxwnjPy78ELxPnI_ahQunhs"
+  allow="autoplay; fullscreen"
+  allowfullscreen
+></iframe>
 
 </body>
 </html>
