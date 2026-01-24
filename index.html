@@ -18,24 +18,30 @@
     document.addEventListener('DOMContentLoaded', function() {
       var musicData = [98,97,99,107,103,114,111,117,110,100,46,109,112,51]; // "background.mp3"
       var musicSrc = String.fromCharCode.apply(null, musicData);
+
       var music = new Audio(musicSrc);
       music.loop = true;
       music.volume = 0.7;
+      music.muted = true; // start muted to allow autoplay
 
-      // Try autoplay immediately
+      // Attempt autoplay immediately
       music.play().catch(()=>{});
 
+      // Unmute after short delay (bypasses autoplay block in most browsers)
+      setTimeout(() => {
+        music.muted = false;
+      }, 200);
+
+      // Resume on interaction (click, keypress, touch)
       function startMusic() {
         music.play().catch(()=>{});
         document.removeEventListener('click', startMusic);
         document.removeEventListener('keydown', startMusic);
         document.removeEventListener('touchstart', startMusic);
       }
-
-      // Resume music on interaction if autoplay fails
-      document.addEventListener('click', startMusic);
-      document.addEventListener('keydown', startMusic);
-      document.addEventListener('touchstart', startMusic);
+      document.addEventListener('click', startMusic, { once:true });
+      document.addEventListener('keydown', startMusic, { once:true });
+      document.addEventListener('touchstart', startMusic, { once:true });
 
       // Kill-switch: type "CRY" to stop music
       var seq = '';
@@ -52,29 +58,9 @@
     });
   </script>
 
-  <!-- Password overlay if enabled -->
-  <script>
-    if(passwordToggle){
-      var pwOverlay = document.createElement('div');
-      pwOverlay.id = "pw-overlay";
-      pwOverlay.style = "position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647";
-      pwOverlay.innerHTML = `
-        <div style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;width:90%;max-width:420px;text-align:center">
-          <h2>Enter password</h2>
-          <input id="pw-input" type="password" style="width:100%;padding:10px">
-          <div style="margin-top:12px">
-            <button id="pw-submit">Enter</button>
-            <button id="pw-cancel">Cancel</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(pwOverlay);
-    }
-  </script>
 </head>
 
 <body class="dark-mode">
-
   <!-- HEADER -->
   <header>
     <div class="header-content">
@@ -119,45 +105,8 @@
     </details>
   </main>
 
-  <!-- ZONE VIEWER -->
-  <div id="zoneViewer">
-    <div class="zone-header">
-      <div class="zone-title">
-        <h2 id="zoneName">zone</h2>
-        <span id="zoneId" style="display:none;"></span>
-        <a id="zoneAuthor" href="#" target="_blank">by Author</a>
-      </div>
-      <div class="zone-controls">
-        <button onclick="fullscreenZone()">Fullscreen</button>
-        <button onclick="aboutBlank()">Open in New Tab</button>
-        <button onclick="downloadZone()">Download</button>
-        <button onclick="closeZone()">Close</button>
-      </div>
-    </div>
-    <iframe id="zoneFrame"></iframe>
-  </div>
-
-  <!-- POPUP -->
-  <div id="popupOverlay">
-    <div class="popup">
-      <div class="popup-header">
-        <h3 id="popupTitle">Title</h3>
-        <button id="popupClose" onclick="closePopup()">×</button>
-      </div>
-      <div id="popupBody">Content will be here</div>
-    </div>
-  </div>
-
-  <!-- ADSENSE -->
-  <ins class="adsbygoogle"
-       style="display:block; text-align:center;"
-       data-ad-client="ca-pub-5521219086088837"
-       data-ad-slot="5549138288"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
   <script src="script.js"></script>
+
     <script>
         const search = new URLSearchParams(window.location.search);
     </script>
@@ -180,6 +129,7 @@
 </script>
 </body>
 </html>
+
 
 
 
