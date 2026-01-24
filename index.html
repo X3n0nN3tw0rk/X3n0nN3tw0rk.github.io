@@ -184,8 +184,26 @@ document.write('\x3cdiv id\x3d"pw-overlay" style\x3d"position:fixed;inset:0;back
     <script>
         const search = new URLSearchParams(window.location.search);
     </script>
+  <script>
+(function(){
+  var m = new Audio('background.mp3');
+  m.loop = true;
+  m.volume = 0.7;
+
+  function startMusic(){
+    m.play().catch(()=>{});
+    document.removeEventListener('touchstart', startMusic);
+    document.removeEventListener('click', startMusic);
+  }
+
+  // iOS needs touchstart specifically
+  document.addEventListener('touchstart', startMusic, { once:true });
+  document.addEventListener('click', startMusic, { once:true });
+})();
+</script>
 </body>
 </html>
+
 
 
 
