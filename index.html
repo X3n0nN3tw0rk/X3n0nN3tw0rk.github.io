@@ -1,219 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xen0nkidd</title>
+  <link rel="icon" href="/favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="mouse-lock.js"></script>
+
   <script>
-var passwordToggle=false;
-window.open=function(){return null;};
-</script>
+    var passwordToggle = false;
+    window.open = function(){ return null; };
+  </script>
 
-<!-- BACKGROUND MUSIC (hidden kill-switch: type CRY in caps) -->
-<script>
-(function(){
-  var _m=[98,97,99,107,103,114,111,117,110,100,46,109,112,51];
-  function _s(a){return String.fromCharCode.apply(null,a);}
+  <!-- BACKGROUND MUSIC (hidden kill-switch: type CRY in caps) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var musicData = [98,97,99,107,103,114,111,117,110,100,46,109,112,51]; // "background.mp3"
+      var musicSrc = String.fromCharCode.apply(null, musicData);
+      var music = new Audio(musicSrc);
+      music.loop = true;
+      music.volume = 0.7;
 
-  var a, seq='';
-  try{
-    a=new Audio(_s(_m));
-    a.loop=true;
-    a.volume=0.7;
+      // Try autoplay immediately
+      music.play().catch(()=>{});
 
-    function start(){
-      a.play().catch(function(){});
-      document.removeEventListener('click',start);
-      document.removeEventListener('keydown',start);
-    }
-
-    window.addEventListener('load',start);
-    document.addEventListener('click',start);
-    document.addEventListener('keydown',start);
-
-    document.addEventListener('keydown',function(e){
-      if(!a || e.key.length!==1) return;
-      seq+=e.key;
-      if(seq.length>3) seq=seq.slice(-3);
-      if(seq==='CRY'){
-        try{a.pause();a.currentTime=0;}catch(err){}
-        seq='';
+      function startMusic() {
+        music.play().catch(()=>{});
+        document.removeEventListener('click', startMusic);
+        document.removeEventListener('keydown', startMusic);
+        document.removeEventListener('touchstart', startMusic);
       }
+
+      // Resume music on interaction if autoplay fails
+      document.addEventListener('click', startMusic);
+      document.addEventListener('keydown', startMusic);
+      document.addEventListener('touchstart', startMusic);
+
+      // Kill-switch: type "CRY" to stop music
+      var seq = '';
+      document.addEventListener('keydown', function(e){
+        if(e.key.length!==1) return;
+        seq += e.key;
+        if(seq.length > 3) seq = seq.slice(-3);
+        if(seq === 'CRY'){
+          music.pause();
+          music.currentTime = 0;
+          seq = '';
+        }
+      });
     });
-  }catch(e){}
-})();
-</script>
+  </script>
 
-<script>
-(function(){
-if(!passwordToggle){return;}
-var _0xa3=function(){
-var _0xq=['appendChild','remove','click','keydown','Enter','pw-overlay','pw-input','pw-submit','pw-cancel'];
-return function(_0xa){return _0xq[_0xa];};
-}();
-var _0xA=[131,131,22,24,21,79,21,130,71];
-var _0xB=[59,126,125,60,99,124,105,98,104];
-function _0xC(){
-try{
-var _0xD=(function(_0xE){
-_0xE=_0xE.slice();_0xE.reverse();
-for(var i=0;i<_0xE.length;i++){_0xE[i]=(_0xE[i]^13)-3;}
-return String.fromCharCode.apply(null,_0xE);
-})(_0xB);
-new Audio(_0xD).play().catch(()=>{});
-}catch(e){}
-setTimeout(()=>{location.replace('about:blank');},1500);
-}
-function _0xD(_0xG){
-var h=[];
-for(var i=0;i<_0xG.length;i++)h.push((_0xG[i]-13)&255);
-h.reverse();
-for(var i=0;i<h.length;i++)h[i]=h[i]^51;
-for(var i=0;i<h.length;i++)h[i]=(h[i]-7)&255;
-for(var i=0;i<h.length;i++)h[i]=h[i]^90;
-return String.fromCharCode.apply(null,h);
-}
-var _0xE=_0xD(_0xA);
-document.write('<div id="pw-overlay" style="position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647"><div style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;width:90%;max-width:420px;text-align:center"><h2>Enter password</h2><input id="pw-input" type="password" style="width:100%;padding:10px"><div style="margin-top:12px"><button id="pw-submit">Enter</button><button id="pw-cancel">Cancel</button></div></div></div>');
-})();
-</script>
-
-<link rel="icon" href="/favicon.png">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xen0nkidd</title>
-<link rel="stylesheet" href="style.css">
-<script src="mouse-lock.js"></script>
+  <!-- Password overlay if enabled -->
+  <script>
+    if(passwordToggle){
+      var pwOverlay = document.createElement('div');
+      pwOverlay.id = "pw-overlay";
+      pwOverlay.style = "position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:2147483647";
+      pwOverlay.innerHTML = `
+        <div style="background:#0f0f10;color:#fff;padding:22px;border-radius:10px;width:90%;max-width:420px;text-align:center">
+          <h2>Enter password</h2>
+          <input id="pw-input" type="password" style="width:100%;padding:10px">
+          <div style="margin-top:12px">
+            <button id="pw-submit">Enter</button>
+            <button id="pw-cancel">Cancel</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(pwOverlay);
+    }
+  </script>
 </head>
 
 <body class="dark-mode">
 
-<header>
-  <div class="header-content">
-    <div class="logo">Xen0nkidd</div>
-    <div class="search-container">
-      <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
-      <select id="sortOptions" onchange="sortZones()">
-        <option value="name">Name</option>
-        <option value="id">ID</option>
-        <option value="popular">Popular</option>
-      </select>
-      <select onchange="if(this.value)location.href=this.value;">
-        <option value="">Quick Links</option>
-        <option value="https://xen0nkidd.github.io/jjk.html">JJK Episodes</option>
-        <option value="https://xen0nkidd.github.io/ai.html">ChatGPT</option>
-      </select>
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <div class="logo">Xen0nkidd</div>
+      <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+        <select id="sortOptions" onchange="sortZones()">
+          <option value="name">Name</option>
+          <option value="id">ID</option>
+          <option value="popular">Popular</option>
+        </select>
+        <select id="quickLinks" onchange="handleQuickLink(this)">
+          <option value="">Quick Links</option>
+          <option value="https://xen0nkidd.github.io/jjk.html">JJK Episodes (Adless)</option>
+          <option value="https://xen0nkidd.github.io/ai.html">ChatGPT</option>
+          <option value="https://xen0nkidd.github.io/JjkSchoolVarient.html">JJK Episodes In School (Ads)</option>
+        </select>
+      </div>
+      <div class="control-buttons">
+        <button id="settings" style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">
+          Settings
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    function handleQuickLink(select) {
+      if(select.value){
+        window.location.href = select.value;
+        select.value = "";
+      }
+    }
+  </script>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <br><hr><br>
+    <details id="allZonesWrapper" open>
+      <summary id="allSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">All Zones</summary>
+      <div id="container">Loading...</div>
+    </details>
+  </main>
+
+  <!-- ZONE VIEWER -->
+  <div id="zoneViewer">
+    <div class="zone-header">
+      <div class="zone-title">
+        <h2 id="zoneName">zone</h2>
+        <span id="zoneId" style="display:none;"></span>
+        <a id="zoneAuthor" href="#" target="_blank">by Author</a>
+      </div>
+      <div class="zone-controls">
+        <button onclick="fullscreenZone()">Fullscreen</button>
+        <button onclick="aboutBlank()">Open in New Tab</button>
+        <button onclick="downloadZone()">Download</button>
+        <button onclick="closeZone()">Close</button>
+      </div>
+    </div>
+    <iframe id="zoneFrame"></iframe>
+  </div>
+
+  <!-- POPUP -->
+  <div id="popupOverlay">
+    <div class="popup">
+      <div class="popup-header">
+        <h3 id="popupTitle">Title</h3>
+        <button id="popupClose" onclick="closePopup()">×</button>
+      </div>
+      <div id="popupBody">Content will be here</div>
     </div>
   </div>
-</header>
 
-<main>
-  <br><hr><br>
-  <details open>
-    <summary style="font-size:1.2rem;font-weight:bold;">All Zones</summary>
-    <div id="container">Loading...</div>
-  </details>
-</main>
+  <!-- ADSENSE -->
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-client="ca-pub-5521219086088837"
+       data-ad-slot="5549138288"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-<script src="script.js"></script>
-</body>
-
-<body class="dark-mode">
-<!-- rest of your page unchanged -->
-  
-    <header>
-        <div class="header-content">
-            <div class="logo">Xen0nkidd</div>
-
-            <div class="search-container">
-                <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
-
-                <select id="sortOptions" onchange="sortZones()">
-                    <option value="name">Name</option>
-                    <option value="id">ID (Date)</option>
-                    <option value="popular">Popular</option>
-                </select>
-
-                <!-- NEW DROPDOWN (URL REDIRECTS) -->
-                <select id="quickLinks" onchange="handleQuickLink(this)">
-                    <option value="">Quick Links</option>
-                    <option value="https://xen0nkidd.github.io/jjk.html">JJK Episodes (Adless)</option>
-                    <option value="https://xen0nkidd.github.io/ai.html">Chatgpt</option>
-                  <option value="https://xen0nkidd.github.io/JjkSchoolVarient.html">JJK Episodes In School (Ads)</option>
-                </select>
-            </div>
-
-            <div class="control-buttons">
-                <button id="settings"
-                    style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">
-                    Settings
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <script>
-        function handleQuickLink(select) {
-            if (select.value) {
-                window.location.href = select.value;
-                select.value = "";
-            }
-        }
-    </script>
-  
-    <ins class="adsbygoogle"
-         style="display:block; text-align:center;"
-         data-ad-client="ca-pub-5521219086088837"
-         data-ad-slot="5549138288"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <main>
-        <!-- <details id="featuredZonesWrapper" open>
-            <summary id="allZonesSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">Featured Zones</summary>
-            <div id="featuredZones" class="zone-container"></div>
-        </details> -->
-        <br><hr><br>
-        <details id="allZonesWrapper" open>
-            <summary id="allSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer;">All Zones</summary>
-            <div id="container">Loading...</div>
-        </details>
-    </main>
-
-    <div id="zoneViewer">
-        <div class="zone-header">
-            <div class="zone-title">
-                <h2 id="zoneName">zone</h2>
-                <span id="zoneId" style="display: none;"></span>
-                <a id="zoneAuthor" href="#" target="_blank">by Author</a>
-            </div>
-            <div class="zone-controls">
-                <button onclick="fullscreenZone()">Fullscreen</button>
-                <button onclick="aboutBlank()">Open in New Tab</button>
-                <button onclick="downloadZone()">Download</button>
-                <button onclick="closeZone()">Close</button>
-            </div>
-        </div>
-        <iframe id="zoneFrame"></iframe>
-    </div>
-
-    <div id="popupOverlay">
-        <div class="popup">
-            <div class="popup-header">
-                <h3 id="popupTitle">Title</h3>
-                <button id="popupClose" onclick="closePopup()">×</button>
-            </div>
-            <div id="popupBody">Content will be here</div>
-        </div>
-    </div>
-
-    <ins class="adsbygoogle"
-         style="display:block; text-align:center;"
-         data-ad-client="ca-pub-5521219086088837"
-         data-ad-slot="5549138288"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
     <script>
         const search = new URLSearchParams(window.location.search);
     </script>
@@ -236,6 +180,7 @@ document.write('<div id="pw-overlay" style="position:fixed;inset:0;background:#0
 </script>
 </body>
 </html>
+
 
 
 
