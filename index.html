@@ -9,9 +9,19 @@
   <script src="mouse-lock.js"></script>
 
   <script>
-    var passwordToggle = false;
-    window.open = function(){ return null; };
-  </script>
+var passwordToggle = false;
+
+(function(){
+const _open = window.open;
+window.open = function(url, name, specs){
+// allow settings
+if (name === 'settings' || (url && url.includes('settings'))) {
+return _open.call(window, url, name, specs);
+}
+return null;
+};
+})();
+</script>
 
   <!-- BACKGROUND MUSIC (hidden kill-switch: type CRY in caps) -->
   <script>
@@ -129,6 +139,7 @@
 </script>
 </body>
 </html>
+
 
 
 
