@@ -92,7 +92,7 @@ header {
 .header-content {
     max-width: 1200px;
     margin: 0 auto;
-
+padding: 1.25rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -657,6 +657,7 @@ main {
     box-shadow: var(--shadow-sm);
 }
 }
+
 
 
 
