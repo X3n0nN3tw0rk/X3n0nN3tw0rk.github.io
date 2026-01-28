@@ -741,32 +741,26 @@ footer {
 <body class="dark-mode">
     <header>
         <div class="header-content">
-            <div class="logo">Xen0nkidd</div>
+       <div class="header-pill">
+    <div class="logo">Xen0nkidd</div>
 
-            <div class="search-container">
-                <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search zones..." oninput="filterZones()">
 
-                <select id="sortOptions" onchange="sortZones()">
-                    <option value="name">Name</option>
-                    <option value="id">ID (Date)</option>
-                    <option value="popular">Popular</option>
-                </select>
+        <select id="sortOptions" onchange="sortZones()">
+            <option value="name">Name</option>
+            <option value="id">ID (Date)</option>
+            <option value="popular">Popular</option>
+        </select>
 
-                <!-- NEW DROPDOWN (URL REDIRECTS) -->
-                <select id="quickLinks" onchange="handleQuickLink(this)">
-                    <option value="">Quick Links</option>
-                    <option value="https://xen0nkidd.github.io/jjk.html">JJK Episodes</option>
-                    <option value="https://xen0nkidd.github.io/ai.html">GitHub</option>
-                </select>
-            </div>
+        <select id="quickLinks" onchange="handleQuickLink(this)">
+            <option value="">Quick Links</option>
+            <option value="https://xen0nkidd.github.io/jjk.html">JJK Episodes</option>
+            <option value="https://xen0nkidd.github.io/ai.html">GitHub</option>
+        </select>
+    </div>
+</div>
 
-            <div class="control-buttons">
-                <button id="settings"
-                    style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 0.5rem 1rem; font-size: 16px; cursor: pointer;">
-                    Settings
-                </button>
-            </div>
-        </div>
     </header>
 
     <script>
