@@ -98,6 +98,34 @@ header {
     justify-content: space-between;
     gap: 1.5rem;
 }
+/* REMOVE GAP BETWEEN HEADER AND ZONES */
+main {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Kill AdSense placeholder height */
+.adsbygoogle {
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Tighten the divider */
+main hr {
+  margin: 8px 0;
+}
+
+/* Remove default spacing from details/summary */
+details {
+  margin-top: 0;
+}
+
+summary {
+  margin: 0;
+  padding-top: 6px;
+}
 
 .logo {
     display: flex;              
@@ -643,6 +671,7 @@ main {
     box-shadow: var(--shadow-sm);
 }
 }
+
 
 
 
